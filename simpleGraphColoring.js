@@ -6,10 +6,12 @@ class simpleGraphColoring {
         this.x = null;
         this.stack = [];
         this.container = container;
+        this.undo = []
+        this.currentState = state.STACKING;
     }
 
 
-    init(file) {
+    init(file, stepping) {
 
 
         let reader = new FileReader();
@@ -17,12 +19,10 @@ class simpleGraphColoring {
         // var rawgraph;
         reader.onload = e => {
             //  saveinfo(e.target.result);
+
             this.createGraph(vis.network.convertDot(e.target.result));
-            this.stacking();
-            this.painting();
-            setTimeout(
-                () => this.show(), 3000
-            )
+            if (stepping === type.SOLUTION) this.commonSteps();
+            else createStepButtons(this)
         }
 
 
@@ -32,9 +32,42 @@ class simpleGraphColoring {
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
         this.rawgraph = graph;
-        this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, {})
+        this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, { edges: { color: { color: 'black' } } })
 
     }
+
+
+    commonSteps() {
+        this.stacking(false);
+        this.painting(false);
+        setTimeout(
+            () => this.show(), 1500
+        )
+    }
+
+    stepping() {
+        console.log(this.stack);
+
+        switch (this.currentState) {
+            case state.PAINTING:
+                this.currentState = this.painting(true)
+                this.show();
+                break;
+            case state.OVER:
+                alert('Algorithm complete')
+                console.log('Algorithm complete')
+                break
+            case state.STACKING:
+                this.currentState = this.stacking(true)
+                break;
+            default:
+                alert('U SHOULDNT BE HERE')
+        }
+    }
+
+
+    //
+
 
     /**
      * 
@@ -47,29 +80,47 @@ class simpleGraphColoring {
      * After 1000 (a number) iterations return error 
      * 
      */
-    stacking() {
+    stacking(step) {
 
+        this.currentState = state.STACKING
         let nodes = this.graph.nodes
-        let nodesIndexes = Object.keys(nodes);
+        let moved = null
+        let nodesIndexes = Object.keys(nodes).filter((v) => {
+            for (let c of this.stack) {
+                if (c == v) return false;
+            }
+            return true;
+        });
+
+
         let length = nodesIndexes.length
 
-        while (this.stack.length != length) {
+        console.log(length);
+        console.log(nodes)
+        console.log(nodesIndexes)
+
+        
+        while (nodesIndexes.length > 0) {
             for (let n in nodesIndexes) {
                 let index = nodesIndexes[n];
                 if (nodes[index].degree() < this.k) {
                     this.stack.push(nodes[index].id)
-
+                    moved = nodes[index].id;
                     this.graph.removeNeighbors(nodes[index]);
                     nodesIndexes.splice(n, 1)
+                    
                 }
+
+                if (moved && step) { return state.STACKING };
             }
-
-
         }
+
+        return state.PAINTING
     }
 
-    painting() {
+    painting(step) {
 
+        this.currentState = state.PAINTING;
         let colors = Array.from(Array(this.k), (x, index) => index + 1)
 
         let nodes = this.paintingGraph.nodes
@@ -97,9 +148,10 @@ class simpleGraphColoring {
             }, this)[0]
 
             currentNode.color = color
-
+            if (step) break;
         }
 
+        return this.stack.length === 0 ? state.OVER : state.PAINTING
     }
 
     show() {
