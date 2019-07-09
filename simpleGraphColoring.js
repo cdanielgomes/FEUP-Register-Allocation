@@ -3,11 +3,12 @@ class simpleGraphColoring {
     constructor(k, container) {
 
         this.k = k;
-        this.x = null;
+        this.x = 0;
         this.stack = [];
         this.container = container;
         this.undo = []
         this.currentState = state.STACKING;
+
     }
 
 
@@ -46,7 +47,9 @@ class simpleGraphColoring {
     }
 
     stepping() {
-        console.log(this.stack);
+
+
+
 
         switch (this.currentState) {
             case state.PAINTING:
@@ -63,9 +66,20 @@ class simpleGraphColoring {
             default:
                 alert('U SHOULDNT BE HERE')
         }
+
+        this.x++;
+
+        if (this.x % 4 === 0) {
+            this.undo.forEach((e) => {
+                console.log(e.graph);
+            })
+        }
     }
 
 
+    copy() {
+        return JSON.parse(JSON.stringify(this));
+    }
     //
 
 
@@ -99,7 +113,7 @@ class simpleGraphColoring {
         console.log(nodes)
         console.log(nodesIndexes)
 
-        
+
         while (nodesIndexes.length > 0) {
             for (let n in nodesIndexes) {
                 let index = nodesIndexes[n];
@@ -108,7 +122,7 @@ class simpleGraphColoring {
                     moved = nodes[index].id;
                     this.graph.removeNeighbors(nodes[index]);
                     nodesIndexes.splice(n, 1)
-                    
+
                 }
 
                 if (moved && step) { return state.STACKING };
