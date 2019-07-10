@@ -6,7 +6,7 @@ class simpleGraphColoring {
         this.x = 0;
         this.stack = [];
         this.container = container;
-        this.undo = []
+        this.history = []
         this.currentState = state.STACKING;
 
     }
@@ -46,10 +46,19 @@ class simpleGraphColoring {
         )
     }
 
+
+    copy() {
+        return {
+            painting: deepClone(this.paintingGraph),
+            graph: deepClone(this.graph),
+            stack: this.stack.slice(0),
+            state: this.currentState.slice(0)
+        }
+    }
+
     stepping() {
 
-
-
+        this.history.push(this.copy());
 
         switch (this.currentState) {
             case state.PAINTING:
@@ -67,20 +76,30 @@ class simpleGraphColoring {
                 alert('U SHOULDNT BE HERE')
         }
 
-        this.x++;
+        console.log(this.stack)
+    }
 
-        if (this.x % 4 === 0) {
-            this.undo.forEach((e) => {
-                console.log(e.graph);
-            })
+
+    undo() {
+
+        let temp = this.history.length === 1 ? this.history[0] : this.history.pop()
+
+        this.graph = temp.graph
+        this.paintingGraph = temp.painting
+        this.stack = temp.stack
+        this.currentState = temp.state
+        this.show()
+
+        console.log(this.stack)
+    }
+
+    solution() {
+
+        while (this.currentState != state.OVER) {
+          this.stepping()
         }
     }
 
-
-    copy() {
-        return JSON.parse(JSON.stringify(this));
-    }
-    //
 
 
     /**
@@ -108,11 +127,6 @@ class simpleGraphColoring {
 
 
         let length = nodesIndexes.length
-
-        console.log(length);
-        console.log(nodes)
-        console.log(nodesIndexes)
-
 
         while (nodesIndexes.length > 0) {
             for (let n in nodesIndexes) {
