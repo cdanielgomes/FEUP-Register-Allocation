@@ -83,7 +83,7 @@ class simpleGraphColoring {
             if(node.isMoveRelated()) {
                 let moveNode = node.move;
                 let combinedNeighbors = [...new Set(node.neighbors.concat(moveNode.neighbors))]; // set to eliminate duplicates
-                if(combinedNeighbors.length < this.k) { // coalesce
+                if(this.coalesceHeuristic === 1 && combinedNeighbors.length < this.k) { // coalesce
                     this.stack.push(node.id);   
 
                     node.id = node.id + '-' + moveNode.id;
