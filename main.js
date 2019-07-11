@@ -47,13 +47,17 @@ serialInclude([
 
             if (input.files && input.files[0] && checked) {
 
-                let coloring = new simpleGraphColoring(3, print)
+            if (input.files && input.files[0]) {
+               
+                // TO DO: get K and Heuristics from input
+                let coloring = new simpleGraphColoring(4, print, 1);
                 coloring.init(input.files[0], checked);
-            } else {
+            }
+            else {
                 let s = document.createElement('span');
                 s.innerHTML = "Insert a file please";
                 button.parentElement.appendChild(s)
             }
-        })
+        }})
     }
 ]);

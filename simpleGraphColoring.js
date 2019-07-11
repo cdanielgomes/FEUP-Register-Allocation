@@ -1,28 +1,25 @@
 class simpleGraphColoring {
 
-    constructor(k, container) {
+    constructor(k, container, coalesceHeuristic) {
 
         this.k = k;
-        this.x = 0;
         this.stack = [];
         this.container = container;
+        this.coalesceHeuristic = coalesceHeuristic; // 1 - Briggs, 2 - George
         this.history = []
         this.currentState = state.STACKING;
-
     }
 
 
     init(file, stepping) {
-
-
         let reader = new FileReader();
         reader.readAsText(file);
 
         reader.onload = e => {
-
             this.createGraph(vis.network.convertDot(e.target.result));
        
        //     return
+            this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
             if (stepping === type.SOLUTION) this.commonSteps();
             else createStepButtons(this)
         }
@@ -52,10 +49,16 @@ class simpleGraphColoring {
 
     }
 
-
     commonSteps() {
-        this.stacking(false);
+        while(this.remainingNodes.length > 0) {
+            this.simplify(false);
+            if(this.remainingNodes.length > 0) {
+                this.coalesce();
+            }
+        }
+        
         this.painting(false);
+
         setTimeout(
             () => this.show(this.paintingGraph), 1500
         )
@@ -83,9 +86,14 @@ class simpleGraphColoring {
             case state.OVER:
                 alert('Algorithm complete')
                 console.log('Algorithm complete')
-                break
+                break;
             case state.STACKING:
-                this.currentState = this.stacking(true)
+                this.simplify(true);
+                if(this.currentState != state.COALESCING) {
+                    break;
+                }
+            case state.COALESCING:
+                this.coalesce();
                 break;
             default:
                 alert('U SHOULDNT BE HERE')
@@ -112,11 +120,10 @@ class simpleGraphColoring {
     solution() {
 
         while (this.currentState != state.OVER) {
-            this.stepping()
-            showStack(this.stack)
+            this.stepping();
+            showStack(this.stack);
         }
     }
-
 
 
     /**
@@ -130,11 +137,81 @@ class simpleGraphColoring {
      * After 1000 (a number) iterations return error 
      * 
      */
-    stacking(step) {
+    simplify(step) {
+        let nodesIndexes = this.remainingNodes;
+        this.currentState = state.STACKING;
+        let nodes = this.graph.nodes;
+        let moved = null;
 
-        this.currentState = state.STACKING
-        let nodes = this.graph.nodes
-        let moved = null
+        let simplifiable = false;
+
+        // simplify to the max
+        do {
+            simplifiable = false;
+            for(let n in nodesIndexes) {
+                let index = nodesIndexes[n];
+
+                if(nodes[index].degree() < this.k && !nodes[index].isMoveRelated()) {
+                    this.stack.push(nodes[index].id);
+                    this.graph.removeNeighbors(nodes[index]);
+                    nodesIndexes.splice(n, 1);
+                    moved = nodes[index].id;
+                    simplifiable = true;
+                }
+
+                if ((moved == 0 || moved) && step) {
+                    this.currentState = state.STACKING;
+                    break;
+                }
+            }            
+        } while(simplifiable);
+
+        if(nodesIndexes.length > 0 && moved === null) {
+            this.currentState = state.COALESCING;
+        }
+        else if(nodesIndexes.length == 0 && moved === null) {
+            this.currentState = state.PAINTING;
+        }
+
+        this.remainingNodes = nodesIndexes;
+    }
+
+    coalesce() {
+        let nodes = this.graph.nodes;
+
+        for(let i in this.remainingNodes) {
+            let node = nodes[this.remainingNodes[i]];
+
+            if(node.isMoveRelated()) {
+                let moveNode = node.move;
+                let combinedNeighbors = [...new Set(node.neighbors.concat(moveNode.neighbors))]; // set to eliminate duplicates
+                if(this.coalesceHeuristic === 1 && combinedNeighbors.length < this.k) { // coalesce, Briggs
+                    this.stack.push(node.id);  
+                    node.id = node.id + '-' + moveNode.id;
+                    node.setNeighbors(combinedNeighbors);
+                    this.graph.nodes[node.id] = node;
+
+                    this.graph.removeNeighbors(moveNode);
+                    this.remainingNodes.splice(i, 1);
+                    this.remainingNodes.splice(this.remainingNodes.indexOf(moveNode.id), 1);
+                    node.setCoalesced(true);
+                    break;
+                }
+            }
+        }
+    
+        if(this.remainingNodes.length == 0) {
+            this.currentState = state.PAINTING;
+        }
+        else {
+            this.currentState = state.STACKING;
+        }
+    }
+
+    stacking(step) {
+        this.currentState = state.STACKING;
+        let nodes = this.graph.nodes;
+        let moved = null;
         let nodesIndexes = Object.keys(nodes).filter((v) => {
             for (let c of this.stack) {
                 if (c == v) return false;
@@ -189,7 +266,11 @@ class simpleGraphColoring {
                 return true;
             }, this)[0]
 
-            currentNode.color = color
+            currentNode.color = color;
+            if(currentNode.move != null) {
+                currentNode.move.color = color;
+            }
+
             if (step) break;
         }
 
