@@ -13,9 +13,6 @@
 
 <body>
     <div class="col-sm">
-        <input id="myFile" type='file' accept=".gv,.dot">
-        <br>
-
         <div class="col-sm-9">
 
         </div>
@@ -107,20 +104,32 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                                Collapsible Group 3</a>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#spilling">
+                                Spilling
+                            </a>
                         </h4>
                     </div>
 
-                    <div id="collapse3" class="panel-collapse collapse">
-                        <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
-                            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                            ut aliquip ex ea commodo consequat.
+                    <div id="spilling" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <input type="radio" name="typeRegisters" value="degreeOfNodes"> Degree of Nodes
+                            <br>
+
+                            <input type="radio" name="typeRegisters" value="orderingNodes"> Ordering nodes
+                            <br>
+                            <div class="form-group">
+                                    <label for="exampleInputEmail1"></label>
+                                    <input class="form-control" type="text" placeholder="Input name of nodes">
+                                    <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
+                                </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <input id="myFile" type='file' accept=".gv,.dot">
+        <br>
     </div>
 </body>
 
