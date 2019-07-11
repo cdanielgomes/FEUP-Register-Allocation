@@ -17,14 +17,6 @@ class simpleGraphColoring {
 
         reader.onload = e => {
             this.createGraph(vis.network.convertDot(e.target.result));
-
-            this.painting();
-            setTimeout(
-                () => this.show(), 3000
-            )
-            //  saveinfo(e.target.result);
-
-            this.createGraph(vis.network.convertDot(e.target.result));
             if (stepping === type.SOLUTION) this.commonSteps();
             else createStepButtons(this)
         }
@@ -196,7 +188,6 @@ class simpleGraphColoring {
     }
 
     stacking(step) {
-
         this.currentState = state.STACKING;
         let nodes = this.graph.nodes;
         let moved = null;
