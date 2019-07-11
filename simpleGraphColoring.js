@@ -17,6 +17,7 @@ class simpleGraphColoring {
 
         reader.onload = e => {
             this.createGraph(vis.network.convertDot(e.target.result));
+            this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
             if (stepping === type.SOLUTION) this.commonSteps();
             else createStepButtons(this)
         }
@@ -44,11 +45,10 @@ class simpleGraphColoring {
     }
 
     commonSteps() {
-        let remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
-        while(remainingNodes.length > 0) {
-            remainingNodes = this.simplify(false, remainingNodes);
-            if(remainingNodes.length > 0) {
-                remainingNodes = this.coalesce(false, remainingNodes);
+        while(this.remainingNodes.length > 0) {
+            this.simplify(false);
+            if(this.remainingNodes.length > 0) {
+                this.coalesce();
             }
         }
         
@@ -81,9 +81,14 @@ class simpleGraphColoring {
             case state.OVER:
                 alert('Algorithm complete')
                 console.log('Algorithm complete')
-                break
+                break;
             case state.STACKING:
-                this.currentState = this.stacking(true)
+                this.simplify(true);
+                if(this.currentState != state.COALESCING) {
+                    break;
+                }
+            case state.COALESCING:
+                this.coalesce();
                 break;
             default:
                 alert('U SHOULDNT BE HERE')
@@ -116,7 +121,6 @@ class simpleGraphColoring {
     }
 
 
-
     /**
      * 
      * Fill the stack. When a node degree > K, it will be reavaluated in the next iteration, until all nodes have degree < K
@@ -128,7 +132,8 @@ class simpleGraphColoring {
      * After 1000 (a number) iterations return error 
      * 
      */
-    simplify(step, nodesIndexes) {
+    simplify(step) {
+        let nodesIndexes = this.remainingNodes;
         this.currentState = state.STACKING;
         let nodes = this.graph.nodes;
         let moved = null;
@@ -156,35 +161,46 @@ class simpleGraphColoring {
             }            
         } while(simplifiable);
 
+        if(nodesIndexes.length > 0 && moved === null) {
+            this.currentState = state.COALESCING;
+        }
+        else if(nodesIndexes.length == 0 && moved === null) {
+            this.currentState = state.PAINTING;
+        }
 
-        return nodesIndexes;
+        this.remainingNodes = nodesIndexes;
     }
 
-    coalesce(step, remainingNodes) {
+    coalesce() {
         let nodes = this.graph.nodes;
 
-        for(let i in remainingNodes) {
-            let node = nodes[remainingNodes[i]];
+        for(let i in this.remainingNodes) {
+            let node = nodes[this.remainingNodes[i]];
 
             if(node.isMoveRelated()) {
                 let moveNode = node.move;
                 let combinedNeighbors = [...new Set(node.neighbors.concat(moveNode.neighbors))]; // set to eliminate duplicates
-                if(this.coalesceHeuristic === 1 && combinedNeighbors.length < this.k) { // coalesce
-                    this.stack.push(node.id);   
-
+                if(this.coalesceHeuristic === 1 && combinedNeighbors.length < this.k) { // coalesce, Briggs
+                    this.stack.push(node.id);  
                     node.id = node.id + '-' + moveNode.id;
                     node.setNeighbors(combinedNeighbors);
+                    this.graph.nodes[node.id] = node;
 
                     this.graph.removeNeighbors(moveNode);
-                    remainingNodes.splice(i, 1);
-                    remainingNodes.splice(remainingNodes.indexOf(moveNode.id), 1);
+                    this.remainingNodes.splice(i, 1);
+                    this.remainingNodes.splice(this.remainingNodes.indexOf(moveNode.id), 1);
                     node.setCoalesced(true);
                     break;
                 }
             }
         }
-
-        return remainingNodes;
+    
+        if(this.remainingNodes.length == 0) {
+            this.currentState = state.PAINTING;
+        }
+        else {
+            this.currentState = state.STACKING;
+        }
     }
 
     stacking(step) {
