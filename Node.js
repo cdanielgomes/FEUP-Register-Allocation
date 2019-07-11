@@ -6,8 +6,14 @@ class Node {
         this.color = null;
         this.label = node.label;
         this.neighbors = [];
+        this.move = null;
+        this.coalesce = false;
+        this.raw = node;
     }
 
+    addMove(node) {
+        this.move = node;
+    }
 
     addNeighbor(node) {
         this.neighbors.push(node);
@@ -26,8 +32,21 @@ class Node {
             let temp = node.neighbors;
 
             node.neighbors = temp.filter((value) => {
-                return value.id === this.id
+                return value.id !== this.id
             }, this);
         }
     }
+
+    isMoveRelated() {
+        return this.move != null;
+    }
+
+    setCoalesced(coalesce) {
+        this.coalesced = coalesce;
+    }
+
+    setNeighbors(neighbors) {
+        this.neighbors = neighbors;
+    }
+
 }

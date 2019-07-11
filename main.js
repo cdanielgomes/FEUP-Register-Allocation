@@ -39,7 +39,8 @@ serialInclude([
 
             if (input.files && input.files[0]) {
                
-                let coloring = new simpleGraphColoring(3, print);
+                // TO DO: get K and Heuristics from input
+                let coloring = new simpleGraphColoring(4, print, 1);
                 coloring.init(input.files[0]);
             } else{
                 let s = document.createElement('span');

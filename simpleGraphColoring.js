@@ -1,24 +1,29 @@
 class simpleGraphColoring {
 
-    constructor(k, container) {
+    constructor(k, container, coalesceHeuristic) {
 
         this.k = k;
-        this.x = null;
         this.stack = [];
         this.container = container;
+        this.coalesceHeuristic = coalesceHeuristic; // 1 - Briggs, 2 - George
     }
 
 
     init(file) {
-
-
         let reader = new FileReader();
         reader.readAsText(file);
-        // var rawgraph;
+
         reader.onload = e => {
-            //  saveinfo(e.target.result);
             this.createGraph(vis.network.convertDot(e.target.result));
-            this.stacking();
+
+            let remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
+            while(remainingNodes.length > 0) {
+                remainingNodes = this.simplify(remainingNodes);
+                if(remainingNodes.length > 0) {
+                    remainingNodes = this.coalesce(remainingNodes);
+                }
+            }
+
             this.painting();
             setTimeout(
                 () => this.show(), 3000
@@ -32,8 +37,7 @@ class simpleGraphColoring {
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
         this.rawgraph = graph;
-        this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, {})
-
+        this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, {});
     }
 
     /**
@@ -47,25 +51,54 @@ class simpleGraphColoring {
      * After 1000 (a number) iterations return error 
      * 
      */
-    stacking() {
+    simplify(nodesIndexes) {
+        let nodes = this.graph.nodes;
 
-        let nodes = this.graph.nodes
-        let nodesIndexes = Object.keys(nodes);
-        let length = nodesIndexes.length
+        let simplifiable = false;
 
-        while (this.stack.length != length) {
-            for (let n in nodesIndexes) {
+        // simplify to the max
+        do {
+            simplifiable = false;
+            for(let n in nodesIndexes) {
                 let index = nodesIndexes[n];
-                if (nodes[index].degree() < this.k) {
-                    this.stack.push(nodes[index].id)
 
+                if(nodes[index].degree() < this.k && !nodes[index].isMoveRelated()) {
+                    this.stack.push(nodes[index].id);
                     this.graph.removeNeighbors(nodes[index]);
-                    nodesIndexes.splice(n, 1)
+                    nodesIndexes.splice(n, 1);
+                    simplifiable = true;
                 }
             }
+        } while(simplifiable);
 
+        return nodesIndexes;
+    }
 
+    coalesce(remainingNodes) {
+        let nodes = this.graph.nodes;
+
+        for(let i in remainingNodes) {
+            let node = nodes[remainingNodes[i]];
+
+            if(node.isMoveRelated()) {
+                let moveNode = node.move;
+                let combinedNeighbors = [...new Set(node.neighbors.concat(moveNode.neighbors))]; // set to eliminate duplicates
+                if(combinedNeighbors.length < this.k) { // coalesce
+                    this.stack.push(node.id);   
+
+                    node.id = node.id + '-' + moveNode.id;
+                    node.setNeighbors(combinedNeighbors);
+
+                    this.graph.removeNeighbors(moveNode);
+                    remainingNodes.splice(i, 1);
+                    remainingNodes.splice(remainingNodes.indexOf(moveNode.id), 1);
+                    node.setCoalesced(true);
+                    break;
+                }
+            }
         }
+
+        return remainingNodes;
     }
 
     painting() {
@@ -96,7 +129,10 @@ class simpleGraphColoring {
                 return true;
             }, this)[0]
 
-            currentNode.color = color
+            currentNode.color = color;
+            if(currentNode.move != null) {
+                currentNode.move.color = color;
+            }
 
         }
 
