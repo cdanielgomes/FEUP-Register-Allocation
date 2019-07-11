@@ -4,6 +4,8 @@ class Graph {
 
 
 
+        this.edges = JSON.parse(JSON.stringify(graph.edges))
+
         this.nodes = {};
 
 
@@ -24,6 +26,12 @@ class Graph {
 
     removeNeighbors(node) {
         node.removeMe();
+
+        this.edges.forEach((element, index, obj) => {
+            if(node.id === element.from || node.id === element.to){
+                obj.splice(index, 1);
+            }
+        });
     }
 
 

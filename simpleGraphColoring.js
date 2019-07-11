@@ -17,11 +17,12 @@ class simpleGraphColoring {
 
         let reader = new FileReader();
         reader.readAsText(file);
-        // var rawgraph;
+
         reader.onload = e => {
-            //  saveinfo(e.target.result);
 
             this.createGraph(vis.network.convertDot(e.target.result));
+       
+       //     return
             if (stepping === type.SOLUTION) this.commonSteps();
             else createStepButtons(this)
         }
@@ -30,8 +31,11 @@ class simpleGraphColoring {
     }
 
     createGraph(graph) {
+
+
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
+
         this.rawgraph = graph;
         this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, {
             edges: {
@@ -40,7 +44,7 @@ class simpleGraphColoring {
             },
             physics: {
                 enabled: true,
-                stabilization: {   
+                stabilization: {
                     enabled: true
                 }
             }
@@ -53,7 +57,7 @@ class simpleGraphColoring {
         this.stacking(false);
         this.painting(false);
         setTimeout(
-            () => this.show(), 1500
+            () => this.show(this.paintingGraph), 1500
         )
     }
 
@@ -74,7 +78,7 @@ class simpleGraphColoring {
         switch (this.currentState) {
             case state.PAINTING:
                 this.currentState = this.painting(true)
-                this.show();
+                this.show(this.paintingGraph);
                 break;
             case state.OVER:
                 alert('Algorithm complete')
@@ -100,7 +104,7 @@ class simpleGraphColoring {
         this.paintingGraph = temp.painting
         this.stack = temp.stack
         this.currentState = temp.state
-        this.show()
+        this.show(this.paintingGraph)
         showStack(this.stack)
         console.log(this.stack)
     }
@@ -192,23 +196,39 @@ class simpleGraphColoring {
         return this.stack.length === 0 ? state.OVER : state.PAINTING
     }
 
-    show() {
+    show(graph) {
+        /*
+                for (let node of this.rawgraph.nodes) {
+                    let color = this.paintingGraph.nodes[node.id].color
+                    node.color = { background: colorsPallete[color - 1] }
+                }
+        
+                let data = {
+                    nodes: graph.nodes,
+                    edges: graph.edges
+                }*/
 
-        for (let node of this.rawgraph.nodes) {
-            let color = this.paintingGraph.nodes[node.id].color
-            node.color = { background: colorsPallete[color - 1] }
+        let nodes = new vis.DataSet({});
+
+        let ind = Object.keys(graph.nodes)
+
+        for (let i of ind) {
+            let n = graph.nodes[i]
+            nodes.add({
+                color: { background: colorsPallete[n.color - 1] },
+                id: n.id,
+                label: n.label
+            })
         }
 
-        let data = {
-            nodes: this.rawgraph.nodes,
-            edges: this.rawgraph.edges
-        }
+        this.network.setData({
+            nodes: nodes,
+            edges: graph.edges
+        });
 
-        this.network.setData(data);
+        //this.network.setOptions(this.network)
         this.network.redraw();
     }
-
-
 
     updateNodes() {
 
