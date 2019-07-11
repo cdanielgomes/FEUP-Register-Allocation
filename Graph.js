@@ -3,6 +3,7 @@ class Graph {
     constructor(graph) {
         this.nodes = {};
 
+
         for (let node of graph.nodes) {
             this.nodes[node.id] = new Node(node);
         }
