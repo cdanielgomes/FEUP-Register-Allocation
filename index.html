@@ -7,16 +7,28 @@
 </head>
 
 <body>
-        <input id="myFile" type='file' accept=".gv,.dot" ><br>
-     
-        <div>
-            <button id="start" value="start"> Start </button>   
-        </div>
+   <input id="myFile" type='file' accept=".gv,.dot" ><br>
+   
+   <div id="options" >
+        <fieldset>
+                <legend> Options </legend>
+                <label> <input type="radio" class="option" name="options" value="step"> Step by Step </label>
+                <label> <input type="radio" class="option" name="options" value="solution"> Final Solution </label>
+                <!-- etc -->
+              </fieldset>
+   </div>
 
 
-        <div id="network">
+    <div>
+        <button id="start" value="start"> Start </button>   
+    </div>
+
+
+    <div id='stack'> </div>
+
+    <div id="network">
             
-        </div>
+    </div>
 
 
         

@@ -19,7 +19,7 @@ function getUrlVars() {
     console.log("201603404", "Carlos Gomes");
     console.log("201605017", "Joana Ramos");
 
-    
+
 })();
 
 //Include additional files here
@@ -27,23 +27,31 @@ serialInclude([
     // Vis.js Library
     'http://visjs.org/dist/vis.js',
     // core/ Main class files
-    'Graph.js', 'Node.js', 'simpleGraphColoring.js', 'colors.js',
+    'Graph.js', 'Node.js', 'simpleGraphColoring.js', 'global.js', 'auxiliars.js',
     main = function () {
 
         let button = document.getElementById('start');
         let input = document.getElementById("myFile");
         let print = document.getElementById('network')
+        //  let options = document.getElementsByClassName('option')
+        let options = document.querySelectorAll('.option')
+
 
         button.addEventListener('click', function (e) {
             e.preventDefault();
+            let checked;
+            options.forEach(element => {
+                if (element.checked) checked = element.value;
 
-            if (input.files && input.files[0]) {
-               
-                let coloring = new simpleGraphColoring(3, print);
-                coloring.init(input.files[0]);
-            } else{
+            });
+
+            if (input.files && input.files[0] && checked) {
+
+                let coloring = new simpleGraphColoring(3, print)
+                coloring.init(input.files[0], checked);
+            } else {
                 let s = document.createElement('span');
-                s.innerHTML="Insert a file please";
+                s.innerHTML = "Insert a file please";
                 button.parentElement.appendChild(s)
             }
         })

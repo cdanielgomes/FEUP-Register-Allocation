@@ -26,7 +26,8 @@ class Node {
             let temp = node.neighbors;
 
             node.neighbors = temp.filter((value) => {
-                return value.id === this.id
+
+                return value.id !== this.id
             }, this);
         }
     }
