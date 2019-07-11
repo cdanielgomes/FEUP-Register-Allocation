@@ -1,5 +1,13 @@
 function createStepButtons(graph) {
+    let stepping = document.getElementById('stepping');
+    let st = document.getElementById('stack')
+
+    if (stepping) {
+        stepping.remove();
+        st.innerHTML = ''
+    }
     let position = document.getElementById('network');
+
     let step = document.createElement('button')
     let fill = document.createElement('button')
     let undo = document.createElement('button')
@@ -23,11 +31,28 @@ function createStepButtons(graph) {
     undo.onclick = (e) => { e.preventDefault(); graph.undo() }
 
     position.parentElement.insertBefore(div, position);
-
+    let temp = document.createElement('span')
+    temp.innerHTML = 'Stack: Empty'
+    st.appendChild(temp)
 
 
 }
 
+function showStack(stack) {
+
+    let st = document.getElementById('stack')
+    st.innerHTML = stack.length === 0 ? '<span>Stack: Empty</span>' : 'Stack: ';
+    stack.forEach(element => {
+        let c = document.createElement('span')
+        c.innerHTML = element + '  '
+        st.appendChild(c)
+    });
+
+
+}
+
+
+// copied from stackOverflow
 function deepClone(obj, hash = new WeakMap()) {
     // Do not try to clone primitives or functions
     if (Object(obj) !== obj || obj instanceof Function) return obj;

@@ -33,7 +33,18 @@ class simpleGraphColoring {
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
         this.rawgraph = graph;
-        this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, { edges: { color: { color: 'black' } } })
+        this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, {
+            edges: {
+                color:
+                    { color: 'black' }
+            },
+            physics: {
+                enabled: true,
+                stabilization: {   
+                    enabled: true
+                }
+            }
+        })
 
     }
 
@@ -75,6 +86,7 @@ class simpleGraphColoring {
             default:
                 alert('U SHOULDNT BE HERE')
         }
+        showStack(this.stack);
 
         console.log(this.stack)
     }
@@ -89,14 +101,15 @@ class simpleGraphColoring {
         this.stack = temp.stack
         this.currentState = temp.state
         this.show()
-
+        showStack(this.stack)
         console.log(this.stack)
     }
 
     solution() {
 
         while (this.currentState != state.OVER) {
-          this.stepping()
+            this.stepping()
+            showStack(this.stack)
         }
     }
 
@@ -125,9 +138,6 @@ class simpleGraphColoring {
             return true;
         });
 
-
-        let length = nodesIndexes.length
-
         while (nodesIndexes.length > 0) {
             for (let n in nodesIndexes) {
                 let index = nodesIndexes[n];
@@ -139,7 +149,7 @@ class simpleGraphColoring {
 
                 }
 
-                if (moved && step) { return state.STACKING };
+                if ((moved == 0 || moved) && step) { return state.STACKING };
             }
         }
 
@@ -199,4 +209,8 @@ class simpleGraphColoring {
     }
 
 
+
+    updateNodes() {
+
+    }
 }
