@@ -37,12 +37,25 @@ class Node {
         }
     }
 
+    removeNeighbor(node) {
+
+        for (let n in this.neighbors) {
+            if (this.neighbors[n].id == node.id) {
+                this.neighbors.splice(n, 1)
+                break
+
+            };
+        }
+
+    }
+
     isMoveRelated() {
         return this.move != null;
     }
 
     setCoalesced(coalesce) {
         this.coalesced = coalesce;
+        this.move = null;
     }
 
     setNeighbors(neighbors) {

@@ -46,8 +46,6 @@ serialInclude([
             });
 
             if (input.files && input.files[0] && checked) {
-
-            if (input.files && input.files[0]) {
                
                 // TO DO: get K and Heuristics from input
                 let coloring = new simpleGraphColoring(4, print, 1);
@@ -58,6 +56,6 @@ serialInclude([
                 s.innerHTML = "Insert a file please";
                 button.parentElement.appendChild(s)
             }
-        }})
+        })
     }
 ]);
