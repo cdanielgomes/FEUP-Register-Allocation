@@ -11,6 +11,15 @@ class Graph {
             this.nodes.push(new Node(node));
         }
 
+     
+        /*
+        this.nodes.sort((a, b) => {
+            if (a.id < b.id) return -1;
+            if (a.id > b.id) return 1;
+            return 0
+        })*/
+
+        
 
         let from = null;
         let to = null;
@@ -36,8 +45,6 @@ class Graph {
             from = null;
             to = null;
         }
-
-
     }
 
     findNode(id) {
@@ -46,7 +53,7 @@ class Graph {
         }
     }
 
-    
+
 
     removeNode(node) {
         node.removeMe();
@@ -68,7 +75,7 @@ class Graph {
         }
     }
 
-    
+
 
 
 }

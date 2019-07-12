@@ -67,7 +67,7 @@ class simpleGraphColoring {
 
         while (this.currentState === state.PAINTING) {
             this.paintNode()
-            console.log('painting')
+           // console.log('painting')
         }
 
         setTimeout(
@@ -138,7 +138,7 @@ class simpleGraphColoring {
                 alert('U SHOULDNT BE HERE')
         }
         showStack(this.stack);
-        console.log(this.stack)
+       // console.log(this.stack)
     }
 
     undo() {
@@ -149,9 +149,27 @@ class simpleGraphColoring {
         this.paintingGraph = temp.painting
         this.stack = temp.stack
         this.currentState = temp.state
-        this.show(this.paintingGraph)
+        this.print();
         showStack(this.stack)
-        console.log(this.stack)
+     //   console.log(this.stack)
+    }
+
+    print() {
+        switch (this.currentState) {
+            case state.PAINTING:
+                this.show(this.paintingGraph);
+                break;
+            case state.OVER:
+                break;
+            case state.STACKING:
+                this.show(this.graph)
+                break;
+            case state.COALESCING:
+                this.coalesce();
+                break;
+            default:
+                alert('U SHOULDNT BE HERE')
+        }
     }
 
     solution() {
@@ -259,12 +277,11 @@ class simpleGraphColoring {
                 let combinedNeighbors = [...new Set(node.neighbors.concat(moveNode.neighbors))]; // set to eliminate duplicates
 
                 if (this.coalesceHeuristic === 1 && combinedNeighbors.length < this.k) { // coalesce, Briggs
-
+                    this.graph.removeNode(node);
                     node.id = node.id + '-' + moveNode.id;
                     this.stack.push(node.id);
                     node.setNeighbors(combinedNeighbors);
                     this.graph.removeNode(moveNode);
-                   // this.graph.removeNode(node);
                     node.setCoalesced(true);
                     break;
                 }
@@ -296,7 +313,6 @@ class simpleGraphColoring {
     findAddStack() {
 
         let nodes = this.graph.nodes;
-
         for (let node of nodes) {
 
             if (node.degree() < this.k && !node.isMoveRelated()) {
@@ -328,18 +344,24 @@ class simpleGraphColoring {
 
         let colors = Array.from(Array(this.k), (x, index) => index + 1)
 
+
         let nodeId = this.stack.pop()
         nodeId = nodeId.split('-') // in case of coalesce, in the stack will be x-x, so they will have the same color
-    
+       // console.log(nodeId)
+
         let paintingNode = this.paintingGraph.findNode(nodeId[0])
 
         let used = [];
 
         for (let neigh of paintingNode.neighbors) {
-            if (neigh.color === null) continue;
+            // console.log(neigh)
+            if (neigh.color === null)
+                continue;
+
             else used.push(neigh.color);
         }
 
+        // console.log(used)
         let color = colors.filter((value) => {
 
             for (let c of used) {
@@ -350,10 +372,13 @@ class simpleGraphColoring {
 
         paintingNode.color = color;
 
-        nodeId.forEach(element => {
-            this.paintingGraph.findNode(element).color = color;
-        });
+        for (let index = 1; nodeId.length > index; index++) {
+            this.paintingGraph.findNode(nodeId[index]).color = color;
+        }
+
         this.currentState = this.stack.length === 0 ? state.OVER : state.PAINTING
+
+        // console.log(color)
 
     }
 
