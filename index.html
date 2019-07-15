@@ -1,39 +1,172 @@
 <html>
+
 <head>
     <meta charset="utf-8">
     <script src="http://visjs.org/dist/vis.js"></script>
     <link href="http://visjs.org/dist/vis.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link href="./pageIndex.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+        crossorigin="anonymous">
     <script src="main.js" defer></script>
-
 </head>
 
 <body>
-   <input id="myFile" type='file' accept=".gv,.dot" ><br>
-   
-   <div id="options" >
-        <fieldset>
+
+    <div class="col-sm">
+        <!-- 
+        <div id="options">
+            <fieldset>
                 <legend> Options </legend>
-                <label> <input type="radio" class="option" name="options" value="step"> Step by Step </label>
-                <label> <input type="radio" class="option" name="options" value="solution" checked> Final Solution </label>
-                <!-- etc -->
-              </fieldset>
-   </div>
+                <label>
+                    <input type="radio" class="option" name="options" value="step"> Step by Step </label>
+                <label>
+                    <input type="radio" class="option" name="options" value="solution"> Final Solution </label>
+            </fieldset>
+        </div>
 
 
-    <div>
-        <button id="start" value="start"> Start </button>   
+        <div>
+            <button id="start" value="start"> Start </button>
+        </div>
+
+
+        <div id="network">
+
+        </div>
+        -->
+
+        <div class="col-sm-2">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Stack</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-sm-7">
+
+        </div>
+
+        <div class="col-sm-3">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#registerOptions">
+                                Registers
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="registerOptions" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <input type="radio" name="typeRegisters" value="nRegisters"> Number of Registers
+                            <br>
+                            <div class="form-group">
+                                <label for="numberOfRegisters"></label>
+                                <select class="form-control" id="numberOfRegisters">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </div>
+                            <input type="radio" name="typeRegisters" value="nameRegisters"> Name of Registers
+                            <br>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"></label>
+                                <input class="form-control" type="text" placeholder="Input name of registers">
+                                <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. R1, R2, R3</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#heuristics">
+                                Heuristics
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="heuristics" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Briggs
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    George
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#spilling">
+                                Spilling
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="spilling" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <input type="radio" name="typeRegisters" value="degreeOfNodes"> Degree of Nodes
+                            <br>
+
+                            <input type="radio" name="typeRegisters" value="orderingNodes"> Ordering nodes
+                            <br>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"></label>
+                                <input class="form-control" type="text" placeholder="Input name of nodes">
+                                <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input id="myFile" type='file' accept=".gv,.dot">
+            <br>
+
+            <div id="buttonsDiv">
+                <button type="button" class="btn btn-success">
+                    Start
+                </button>
+
+                <button id="buttonArrows" type="button" class="btn btn-light">
+                    <i id="arrows" class="fas fa-caret-left"></i>
+                    Undo
+                </button>
+
+                <button id="buttonArrows" type="button" class="btn btn-light">
+                    <i id="arrows" class="fas fa-caret-right"></i>
+                    Next
+                </button>
+            </div>
+        </div>
     </div>
-
-
-    <div id='stack'> </div>
-
-    <div id="network">
-            
-    </div>
-
-
-        
 </body>
-
 
 </html>
