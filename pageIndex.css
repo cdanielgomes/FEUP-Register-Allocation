@@ -1,7 +1,14 @@
-div#buttonsDiv {
+div#buttonsDiv,
+div#buttonsDivNextUndo {
     display: flex;
     margin-bottom: 10px;
 }
+
+/*
+div#buttonsDivNextUndo {
+    display: flex;
+}
+*/
 
 button#buttonArrows.btn.btn-light {
     border-color: transparent;

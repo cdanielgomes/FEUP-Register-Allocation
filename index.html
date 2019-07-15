@@ -194,11 +194,22 @@
 
                     <div id="soluction" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <input type="radio" name="typeRegisters" value="degreeOfNodes"> Soluction
+                            <input type="radio" name="typeSolution"> Soluction
                             <br>
 
-                            <input type="radio" name="typeRegisters" value="degreeOfNodes"> Step by step
+                            <input id="solutionType" type="radio" name="typeSolution"> Step by step
                             <br>
+                            <script>
+                                $(document).ready(function () {
+                                    $('input[type="radio"]').click(function () {
+                                        if ($(this).attr('id') == 'solutionType') {
+                                            $('#buttonsDivNextUndo').show();
+                                        } else {
+                                            $('#buttonsDivNextUndo').hide();
+                                        }
+                                    });
+                                });
+                            </script>
                         </div>
                     </div>
                 </div>
@@ -210,7 +221,7 @@
                 </button>
             </div>
 
-            <div id="buttonsDiv">
+            <div id="buttonsDivNextUndo" style='display:none'>
                 <button id="buttonArrows" type="button" class="btn btn-light">
                     <i id="arrows" class="fas fa-caret-left"></i>
                     Undo
@@ -222,6 +233,7 @@
                 </button>
 
                 <!--
+                    
                     $(document).ready(function() {
                         $('input[type="radio"]').click(function() {
                             if($(this).attr('id') == 'watch-me') {
