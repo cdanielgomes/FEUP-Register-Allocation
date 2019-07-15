@@ -56,10 +56,34 @@
 
         <div class="col-sm-7">
 
+            <div class="row-2">
+
+            </div>
+
+            <div id="network" class="row-10">
+
+            </div>
         </div>
 
         <div class="col-sm-3">
             <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#uploadFiles">
+                                Upload files
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="uploadFiles" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <input id="myFile" type='file' accept=".gv,.dot">
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -69,9 +93,9 @@
                         </h4>
                     </div>
 
-                    <div id="registerOptions" class="panel-collapse collapse in">
+                    <div id="registerOptions" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <input type="radio" name="typeRegisters" value="nRegisters"> Number of Registers
+                            <input class="nRegisters" type="radio" name="typeRegisters" value="numberRegisters"> Number of Registers
                             <br>
                             <div class="form-group">
                                 <label for="numberOfRegisters"></label>
@@ -83,11 +107,11 @@
                                     <option>5</option>
                                 </select>
                             </div>
-                            <input type="radio" name="typeRegisters" value="nameRegisters"> Name of Registers
+                            <input class="nRegisters" type="radio" name="typeRegisters" value="nameRegisters"> Name of Registers
                             <br>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"></label>
-                                <input class="form-control" type="text" placeholder="Input name of registers">
+                                <input id="nameRegisters" class="form-control" type="text" placeholder="Input name of registers">
                                 <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. R1, R2, R3</small>
                             </div>
                         </div>
@@ -106,7 +130,7 @@
                     <div id="heuristics" class="panel-collapse collapse">
                         <div class="panel-body">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
+                                <input class="form-check-input" type="checkbox" value="Briggs" id="defaultCheck1" checked>
                                 <label class="form-check-label" for="defaultCheck1">
                                     Briggs
                                 </label>
@@ -132,10 +156,10 @@
 
                     <div id="spilling" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <input class="spill" type="radio" name="typeRegisters" value="degreeOfNodes"> Degree of Nodes
+                            <input type="radio" class="spill" name="typeRegisters" value="degreeOfNodes"> Degree of Nodes
                             <br>
 
-                            <input class="spill" type="radio" name="typeRegisters" value="orderingNodes"> Ordering nodes
+                            <input type="radio" class="spill" name="typeRegisters" value="orderingNodes"> Ordering nodes
                             <br>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"></label>
@@ -147,55 +171,87 @@
                 </div>
 
                 <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#nodes">
-                                    Nodes
-                                </a>
-                            </h4>
-                        </div>
-    
-                        <div id="nodes" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1"></label>
-                                    <input class="form-control" type="text" placeholder="Input name of nodes">
-                                    <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
-                                </div>
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#nodes">
+                                Nodes
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="nodes" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"></label>
+                                <input class="form-control" type="text" placeholder="Input name of nodes">
+                                <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#soluction">
+                                Soluction
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="soluction" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <input class="solve" id="fillAll" type="radio" name="typeSolution"> Soluction
+                            <br>
+
+                            <input class="solve" id="stepbystep" type="radio" name="typeSolution"> Step by step
+                            <br>
+                            <script>
+                                $(document).ready(function () {
+                                    $('input[type="radio"]').click(function () {
+                                        if ($(this).attr('id') == 'stepbystep') {
+                                            $('#buttonsDivNextUndo').show();
+                                        } else {
+                                            $('#buttonsDivNextUndo').hide();
+                                        }
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <input id="myFile" type='file' accept=".gv,.dot">
-            <br>
-
             <div id="buttonsDiv">
-                <button id='start' type="button" class="btn btn-success">
+                <button id="start" type="button" class="btn btn-success">
                     Start
                 </button>
-
-                <button type="button" class="btn btn-info">
-                    Solution
-                </button>
             </div>
 
-            <div id="buttonsDiv">
-                <button type="button" class="btn btn-dark">
-                    Step by step
-                </button>
-                
-                <button id="buttonArrows" type="button" class="btn btn-light">
+            <div id="buttonsDivNextUndo" style='display:none'>
+                <button id="buttonArrows" type="button" class="btn btn-light buttonArrowsLeft">
                     <i id="arrows" class="fas fa-caret-left"></i>
                     Undo
                 </button>
 
-                <button id="buttonArrows" type="button" class="btn btn-light">
+                <button id="buttonArrows" type="button" class="btn btn-light buttonArrowsRigth">
                     <i id="arrows" class="fas fa-caret-right"></i>
                     Next
                 </button>
-            </div>
 
+                <!--
+                    
+                    $(document).ready(function() {
+                        $('input[type="radio"]').click(function() {
+                            if($(this).attr('id') == 'watch-me') {
+                                $('#show-me').show();           
+                            }else {
+                                $('#show-me').hide();   
+                            }
+                        });
+                    });
+                -->
+            </div>
         </div>
     </div>
 </body>

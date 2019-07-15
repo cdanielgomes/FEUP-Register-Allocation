@@ -35,129 +35,64 @@ serialInclude([
         let print = document.getElementById('network')
         //  let options = document.getElementsByClassName('option')
         let options = document.querySelectorAll('.option')
-
+        let obj = {
+            container: print
+        }
 
         button.addEventListener('click', function (e) {
             e.preventDefault();
-            let checked;
+            let stepOrSol = run();
 
-            options.forEach(element => {
-                if (element.checked) checked = element.value;
+            if (stepOrSol) {
 
-            });
+                if (input.files && input.files[0]) {
 
-            if (input.files && input.files[0]) {
+                    console.log("running with file")
+                    // TO DO: get K, Heuristics, spilling and order of nodes from input
 
-                // TO DO: get K, Heuristics, spilling and order of nodes from input
+                    let k = getK()
 
-                let k = k()
-                let heuristics = heuristics()
-                let spilling = spilling()
+                    let coalesce = getHeuristics()
 
-                if (k && heuristics && spilling) {
+                    let spilling = getSpilling()
 
-                    let obj = {
-                        k: k,
-                        heuristics: heuristics,
-                        spilling: spilling,
-                        container : print
+                    if (k && coalesce && spilling) {
+                        obj.k = k
+                        obj.coalesce = coalesce
+                        obj.spilling = spilling
+
+                        let coloring = new simpleGraphColoring(obj);
+                        coloring.init(input.files[0], stepOrSol);
+
+                    } else {
+
+                        //print message
+
                     }
-
-                    let coloring = new simpleGraphColoring(4, print, 1);
-                    coloring.init(input.files[0], checked);
-
-                } else {
-
-                    //print message
-
                 }
-            }
-            else {
+                else {
 
-                //Start default
+                    console.log("defautt running")
 
-                // let coloring = new simpleGraphColoring(4, print, 1);
-                // coloring.init(input.files[0], checked);
+                    //Start default
+                    obj.coalesce = 1
+                    obj.spilling = 1
 
-                let s = document.createElement('span');
-                s.innerHTML = "Insert a file please";
-                button.parentElement.appendChild(s)
+                    let random = Math.floor(Math.random() * 2) + 1
 
-                // show message saying -> Start Default Node of 2 options, random between to of them 
+                    console.log(random)
+                    if (random === 2) obj.k = 4
+                    else obj.k = 3
 
+                    let coloring = new simpleGraphColoring(obj);
+                    coloring.initDefault(1, stepOrSol);
+
+
+                    // show message saying -> Start Default Node of 2 options, random between to of them 
+                }
+            } else {
+                //message
             }
         })
     }
 ]);
-
-
-function k() {
-    let kbool = document.getElementsByClassName('nRegisters')
-    let next
-    kbool.forEach(element => {
-        if (element.checked) next = element.value;
-    })
-
-
-    switch (next) {
-        case 'nRegisters':
-            next = document.getElementById('numberOfRegisters').value
-            break;
-        case 'nameRegisters':
-            next = document.getElementById('nameRegisters').value
-            next = next.split('-')
-            next.forEach(element => element.replace(/\s/g, ""))
-            break;
-        default:
-            next = null;
-            ///print the message 
-            break;
-    }
-
-    return next
-}
-
-function heuristics() {
-    let heuris = document.getElementsByClassName('form-check-input')
-    let choice
-    heuris.forEach(element => {
-        if (element.checked) choice = element.value
-    });
-
-
-    return choice
-}
-
-function spilling() {
-    let spill = document.getElementsByClassName('spill')
-    let choice
-
-    spill.forEach(element => {
-        if (element.checked) choice = element.value
-    })
-
-
-    switch (choice) {
-        case 'degreeOfNodes':
-            break;
-        case 'orderingNodes':
-            next = document.getElementById('orderOfNodes').value
-            next = next.split(',')
-            next.forEach(element => element.replace(/\s/g, ""))
-            break;
-        default:
-            next = null;
-            ///print the message 
-            break;
-    }
-
-
-    return choice
-}
-
-
-function run(){
-
-    let run
-
-}

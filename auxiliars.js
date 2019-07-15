@@ -1,40 +1,14 @@
 function createStepButtons(graph) {
-    let stepping = document.getElementById('stepping');
-    let st = document.getElementById('stack')
 
-    if (stepping) {
-        stepping.remove();
-        st.innerHTML = ''
-    }
-    let position = document.getElementById('network');
-
-    let step = document.createElement('button')
+    let step = document.getElementsByClassName('buttonArrowsRigth')[0]
     let fill = document.createElement('button')
-    let undo = document.createElement('button')
-    let div = document.createElement('div');
+    let undo = document.getElementsByClassName('buttonArrowsLeft')[0]
 
-    div.id = "stepping"
-    div.appendChild(step)
-    div.appendChild(fill)
-    div.appendChild(undo)
-
-    step.name = 'step'
-    step.innerHTML = 'Next Step'
     step.onclick = (e) => { e.preventDefault(); graph.stepping() }
 
-    fill.name = 'solution'
-    fill.innerHTML = 'Solution'
     fill.onclick = (e) => { e.preventDefault(); graph.solution() }
 
-    undo.name = 'undo'
-    undo.innerHTML = 'Undo'
     undo.onclick = (e) => { e.preventDefault(); graph.undo() }
-
-    position.parentElement.insertBefore(div, position);
-    let temp = document.createElement('span')
-    temp.innerHTML = 'Stack: Empty'
-    st.appendChild(temp)
-
 
 }
 
@@ -60,8 +34,8 @@ function getRegisters() {
     return regs
 }
 
-function getK(){
-        
+function getK() {
+
 }
 
 function getOrderNodes(nodes) {
@@ -73,15 +47,15 @@ function getOrderNodes(nodes) {
 
     for (let id of order) {
         let found = false
-        for(let node of nodes){
-            if(node.id == id){
+        for (let node of nodes) {
+            if (node.id == id) {
                 array.push(node)
                 found = true
                 break
             }
         }
 
-        if(!found) return // PRINT ERROR 
+        if (!found) return // PRINT ERROR 
     }
 
     return array
@@ -134,4 +108,101 @@ function degreeNode(a, b) {
     if (a.degree() < b.degree()) return 1
     if (a.degree() > b.degree()) return -1
     return 0
+}
+
+function getK() {
+    let kbool = document.getElementsByClassName('nRegisters')
+    let next
+    console.log(kbool)
+
+    for (let element of kbool) {
+        if (element.checked) next = element.value;
+    }
+
+
+
+    switch (next) {
+        case 'numberRegisters':
+            next = document.getElementById('numberOfRegisters').value
+            break;
+        case 'nameRegisters':
+            next = document.getElementById('nameRegisters').value
+            next = next.split('-')
+            next.forEach(element => element.replace(/\s/g, ""))
+            break;
+        default:
+            next = null;
+            ///print the message 
+            break;
+    }
+
+    return next
+}
+
+function getHeuristics() {
+    let heuris = document.getElementsByClassName('form-check-input')
+    let choice
+
+    for (let element of heuris) {
+        if (element.checked) choice = element.value;
+    }
+
+    if (!(choice === 'George' || choice === 'Briggs')) {
+        //print error
+        choice = null
+    }
+
+    return choice
+}
+
+function getSpilling() {
+    let spill = document.getElementsByClassName('spill')
+    let choice
+
+    for (let element of spill) {
+        if (element.checked) choice = element.value;
+    }
+
+    switch (choice) {
+        case 'degreeOfNodes':
+            break;
+        case 'orderingNodes':
+            choice = document.getElementById('orderOfNodes').value
+            choice = choice.split(',')
+            choice.forEach(element => element.replace(/\s/g, ""))
+            break;
+        default:
+            choice = null;
+            ///print the message 
+            break;
+    }
+
+
+    return choice
+}
+
+
+function run() {
+
+    let run = document.getElementsByClassName('solve')
+    let choice
+
+    for (let element of run) {
+        if (element.checked) choice = element.id
+    }
+
+    switch (choice) {
+        case "fillAll":
+            choice = type.SOLUTION
+            break;
+        case "stepbystep":
+            choice = type.STEP
+            break;
+        default:
+            choice = null
+            //print message 
+            break;
+    }
+    
+    return choice
 }

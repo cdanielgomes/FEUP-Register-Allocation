@@ -1,24 +1,24 @@
 class simpleGraphColoring {
 
-    constructor(k, container, coalesceHeuristic) {
+    constructor(obj) {
 
-        this.k = k;
+        this.k = obj.k;
         this.stack = [];
-        this.container = container;
-        this.coalesceHeuristic = coalesceHeuristic; // 1 - Briggs, 2 - George
+        this.container = obj.container;
+        this.coalesceHeuristic = obj.coalesce; // 1 - Briggs, 2 - George
         this.history = []
         this.currentState = state.STACKING;
     }
 
 
     init(file, stepping) {
+
         let reader = new FileReader();
         reader.readAsText(file);
 
         reader.onload = e => {
             this.createGraph(vis.network.convertDot(e.target.result));
-
-            //            this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
+            //this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
             if (stepping === type.SOLUTION) this.commonSteps();
             else createStepButtons(this)
         }
@@ -26,9 +26,18 @@ class simpleGraphColoring {
 
     }
 
+    initDefault(val, stepping) {
+
+        this.createGraph(vis.network.convertDot(eval('graph' + val)));
+        //this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
+        if (stepping === type.SOLUTION) this.commonSteps();
+        else createStepButtons(this)
+    }
+
     createGraph(graph) {
 
 
+        console.log(graph)
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
 
@@ -59,15 +68,13 @@ class simpleGraphColoring {
 
 
         while (this.currentState === state.STACKING) {
-
             this.stacking()
-
-
+            console.log("stacking")
         }
 
-        while (this.currentState === state.PAINTING) {
+        while (this.currentState === state.PAINTING) {           
             this.paintNode()
-           // console.log('painting')
+            console.log("painting")
         }
 
         setTimeout(
@@ -138,7 +145,7 @@ class simpleGraphColoring {
                 alert('U SHOULDNT BE HERE')
         }
         showStack(this.stack);
-       // console.log(this.stack)
+        // console.log(this.stack)
     }
 
     undo() {
@@ -151,7 +158,7 @@ class simpleGraphColoring {
         this.currentState = temp.state
         this.print();
         showStack(this.stack)
-     //   console.log(this.stack)
+        //   console.log(this.stack)
     }
 
     print() {
@@ -346,8 +353,9 @@ class simpleGraphColoring {
 
 
         let nodeId = this.stack.pop()
-        nodeId = nodeId.split('-') // in case of coalesce, in the stack will be x-x, so they will have the same color
-       // console.log(nodeId)
+        console.log(nodeId)
+        nodeId = String(nodeId).split('-') // in case of coalesce, in the stack will be x-x, so they will have the same color
+        // console.log(nodeId)
 
         let paintingNode = this.paintingGraph.findNode(nodeId[0])
 
