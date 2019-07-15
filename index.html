@@ -15,9 +15,6 @@
 
 <body>
     <div class="col-sm">
-        <div class="col-sm-9">
-
-        </div>
         <!-- 
         <div id="options">
             <fieldset>
@@ -39,6 +36,25 @@
 
         </div>
         -->
+
+        <div class="col-sm-2">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Stack</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-sm-7">
+
+        </div>
 
         <div class="col-sm-3">
             <div class="panel-group" id="accordion">
@@ -131,6 +147,22 @@
 
             <input id="myFile" type='file' accept=".gv,.dot">
             <br>
+
+            <div id="buttonsDiv">
+                <button type="button" class="btn btn-success">
+                    Start
+                </button>
+
+                <button id="buttonArrows" type="button" class="btn btn-light">
+                    <i id="arrows" class="fas fa-caret-left"></i>
+                    Undo
+                </button>
+
+                <button id="buttonArrows" type="button" class="btn btn-light">
+                    <i id="arrows" class="fas fa-caret-right"></i>
+                    Next
+                </button>
+            </div>
         </div>
     </div>
 </body>
