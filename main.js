@@ -55,14 +55,30 @@ serialInclude([
                 let spilling = spilling()
 
                 if (k && heuristics && spilling) {
-                    
+
+                    let obj = {
+                        k: k,
+                        heuristics: heuristics,
+                        spilling: spilling,
+                        container : print
+                    }
+
+                    let coloring = new simpleGraphColoring(4, print, 1);
+                    coloring.init(input.files[0], checked);
+
+                } else {
+
+                    //print message
+
                 }
-
-
-                let coloring = new simpleGraphColoring(4, print, 1);
-                coloring.init(input.files[0], checked);
             }
             else {
+
+                //Start default
+
+                // let coloring = new simpleGraphColoring(4, print, 1);
+                // coloring.init(input.files[0], checked);
+
                 let s = document.createElement('span');
                 s.innerHTML = "Insert a file please";
                 button.parentElement.appendChild(s)
@@ -82,16 +98,32 @@ function k() {
         if (element.checked) next = element.value;
     })
 
-    
+
+    switch (next) {
+        case 'nRegisters':
+            next = document.getElementById('numberOfRegisters').value
+            break;
+        case 'nameRegisters':
+            next = document.getElementById('nameRegisters').value
+            next = next.split('-')
+            next.forEach(element => element.replace(/\s/g, ""))
+            break;
+        default:
+            next = null;
+            ///print the message 
+            break;
+    }
+
     return next
 }
 
 function heuristics() {
-    let heuris = document.getElementsByClassName('form-check-label')
+    let heuris = document.getElementsByClassName('form-check-input')
     let choice
     heuris.forEach(element => {
-        if (element.checked) choice = element.innerHTML
+        if (element.checked) choice = element.value
     });
+
 
     return choice
 }
@@ -104,7 +136,28 @@ function spilling() {
         if (element.checked) choice = element.value
     })
 
+
+    switch (choice) {
+        case 'degreeOfNodes':
+            break;
+        case 'orderingNodes':
+            next = document.getElementById('orderOfNodes').value
+            next = next.split(',')
+            next.forEach(element => element.replace(/\s/g, ""))
+            break;
+        default:
+            next = null;
+            ///print the message 
+            break;
+    }
+
+
     return choice
 }
 
 
+function run(){
+
+    let run
+
+}
