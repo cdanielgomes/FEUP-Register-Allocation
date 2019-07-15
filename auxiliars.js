@@ -51,6 +51,42 @@ function showStack(stack) {
 
 }
 
+function getRegisters() {
+    let inputRegisters = document.getElementById('regiterName').value
+    let regs = inputRegisters.split(',')
+
+    regs.forEach(element => element.replace(/\s/g, ""))
+
+    return regs
+}
+
+function getK(){
+    
+}
+
+function getOrderNodes(nodes) {
+
+    let array = []
+    let order = document.getElementById('orderedNodes').split('-')
+
+    if (order.length !== nodes.length) return //PRINT AN ERROR
+
+    for (let id of order) {
+        let found = false
+        for(let node of nodes){
+            if(node.id == id){
+                array.push(node)
+                found = true
+                break
+            }
+        }
+
+        if(!found) return // PRINT ERROR 
+    }
+
+    return array
+
+}
 
 // copied from stackOverflow
 function deepClone(obj, hash = new WeakMap()) {
@@ -73,4 +109,29 @@ function deepClone(obj, hash = new WeakMap()) {
     // Clone and assign enumerable own properties recursively
     return Object.assign(result, ...Object.keys(obj).map(
         key => ({ [key]: deepClone(obj[key], hash) })));
+}
+
+
+
+// sort functions for sort nodes analysis
+
+
+// from https://javascript.info/task/shuffle
+
+// oreder randomly -> all possibilities with prob possible
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+        [array[i], array[j]] = [array[j], array[i]]; // swap elements
+    }
+}
+
+// some combinations have more probability to happen 
+let random = () => { Math.random() - 0.5 }
+
+
+function degreeNode(a, b) {
+    if (a.degree() < b.degree()) return 1
+    if (a.degree() > b.degree()) return -1
+    return 0
 }
