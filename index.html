@@ -54,7 +54,7 @@
             </table>
         </div>
 
-        <div class="col-sm-7">
+        <div class="col-sm-7" id="network">
 
         </div>
 
@@ -71,28 +71,30 @@
 
                     <div id="registerOptions" class="panel-collapse collapse in">
                         <div class="panel-body">
-                            <input type="radio" name="typeRegisters" value="nRegisters"> Number of Registers
+                            <input class="nRegisters" type="radio" name="typeRegisters" value="nRegisters"> Number of Registers
                             <br>
                             <div class="form-group">
                                 <label for="numberOfRegisters"></label>
-                                <select class="form-control" id="numberOfRegisters">
+                                <input id="numberOfRegisters" type="text" class="form-control" type="number">
+                                <!-- <select class="form-control" id="numberOfRegisters">
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
                                     <option>4</option>
                                     <option>5</option>
-                                </select>
+                                </select> -->
                             </div>
-                            <input type="radio" name="typeRegisters" value="nameRegisters"> Name of Registers
+                            <input type="radio" class="nRegisters" name="typeRegisters" value="nameRegisters"> Name of Registers
                             <br>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"></label>
-                                <input class="form-control" type="text" placeholder="Input name of registers">
+                                <input id="nameRegisters" class="form-control" type="text" placeholder="Input name of registers">
                                 <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. R1, R2, R3</small>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -132,10 +134,10 @@
 
                     <div id="spilling" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <input type="radio" name="typeRegisters" value="degreeOfNodes"> Degree of Nodes
+                            <input class="spill" type="radio" name="typeRegisters" value="degreeOfNodes">  Degree of Nodes
                             <br>
 
-                            <input type="radio" name="typeRegisters" value="orderingNodes"> Ordering nodes
+                            <input class="spill" type="radio" name="typeRegisters" value="orderingNodes"> Ordering nodes
                             <br>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"></label>
@@ -145,13 +147,41 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#graph">
+                                Graph
+                            </a>
+                        </h4>
+                    </div>
+
+
+                    <div id="graph" class="panel-collapse collapse">
+                        <div class="panel-body">
+                          
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"> Insert Graph </label>
+                                <input id="myFile" type='file' accept=".gv,.dot" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"> Order of Nodes </label>
+                                <input id="text" class="form-control">
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
-            <input id="myFile" type='file' accept=".gv,.dot">
             <br>
 
             <div id="buttonsDiv">
-                <button type="button" class="btn btn-success">
+                <button type="button" class="btn btn-success" id="start">
                     Start
                 </button>
 

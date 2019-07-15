@@ -61,7 +61,7 @@ function getRegisters() {
 }
 
 function getK(){
-    
+        
 }
 
 function getOrderNodes(nodes) {

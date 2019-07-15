@@ -40,14 +40,25 @@ serialInclude([
         button.addEventListener('click', function (e) {
             e.preventDefault();
             let checked;
+
             options.forEach(element => {
                 if (element.checked) checked = element.value;
 
             });
 
-            if (input.files && input.files[0] && checked) {
-               
-                // TO DO: get K and Heuristics from input
+            if (input.files && input.files[0]) {
+
+                // TO DO: get K, Heuristics, spilling and order of nodes from input
+
+                let k = k()
+                let heuristics = heuristics()
+                let spilling = spilling()
+
+                if (k && heuristics && spilling) {
+                    
+                }
+
+
                 let coloring = new simpleGraphColoring(4, print, 1);
                 coloring.init(input.files[0], checked);
             }
@@ -55,7 +66,45 @@ serialInclude([
                 let s = document.createElement('span');
                 s.innerHTML = "Insert a file please";
                 button.parentElement.appendChild(s)
+
+                // show message saying -> Start Default Node of 2 options, random between to of them 
+
             }
         })
     }
 ]);
+
+
+function k() {
+    let kbool = document.getElementsByClassName('nRegisters')
+    let next
+    kbool.forEach(element => {
+        if (element.checked) next = element.value;
+    })
+
+    
+    return next
+}
+
+function heuristics() {
+    let heuris = document.getElementsByClassName('form-check-label')
+    let choice
+    heuris.forEach(element => {
+        if (element.checked) choice = element.innerHTML
+    });
+
+    return choice
+}
+
+function spilling() {
+    let spill = document.getElementsByClassName('spill')
+    let choice
+
+    spill.forEach(element => {
+        if (element.checked) choice = element.value
+    })
+
+    return choice
+}
+
+
