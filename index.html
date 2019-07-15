@@ -128,6 +128,7 @@
                                     Briggs
                                 </label>
                             </div>
+
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
                                 <label class="form-check-label" for="defaultCheck1">
@@ -167,17 +168,24 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#nodes">
-                                Nodes
+                                Ordering nodes
                             </a>
                         </h4>
                     </div>
 
                     <div id="nodes" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="orderingNodes_check">
+                                <label class="form-check-label" for="defaultCheck1">
+                                    Ordering Nodes
+                                </label>
+                            </div>
+
+                            <div id="inputNameNodes" class="form-group" style="display:nome">
                                 <label for="exampleInputEmail1"></label>
-                                <input class="form-control" type="text" placeholder="Input name of nodes">
-                                <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
+                                <input class="form-control" type="text" placeholder="Input name of registers">
+                                <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V1, V2V3, V4</small>
                             </div>
                         </div>
                     </div>
