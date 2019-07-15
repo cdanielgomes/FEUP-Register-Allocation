@@ -14,17 +14,28 @@
     height: 3.5rem;
 }
 
-div#buttonsDiv{
+div#buttonsDiv {
     display: flex;
+    margin-bottom: 10px;
 }
 
-button#buttonArrows.btn.btn-light{
+button#buttonArrows.btn.btn-light {
     border-color: transparent;
-    background: transparent; 
+    background: transparent;
     display: grid;
 }
 
 i#arrows.fas.fa-caret-right,
-i#arrows.fas.fa-caret-left{
+i#arrows.fas.fa-caret-left {
     font-size: -webkit-xxx-large;
+}
+
+button.btn.btn-info {
+    margin-left: 10px;
+}
+
+button.btn.btn-dark {
+    border-color: RGB(45,45,45);
+    background: RGB(45,45,45);
+    color: white;
 }
