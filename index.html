@@ -63,13 +63,30 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#uploadFiles">
+                                Upload files
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="uploadFiles" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <input id="myFile" type='file' accept=".gv,.dot">
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#registerOptions">
                                 Registers
                             </a>
                         </h4>
                     </div>
 
-                    <div id="registerOptions" class="panel-collapse collapse in">
+                    <div id="registerOptions" class="panel-collapse collapse">
                         <div class="panel-body">
                             <input type="radio" name="typeRegisters" value="nRegisters"> Number of Registers
                             <br>
@@ -147,44 +164,53 @@
                 </div>
 
                 <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#nodes">
-                                    Nodes
-                                </a>
-                            </h4>
-                        </div>
-    
-                        <div id="nodes" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1"></label>
-                                    <input class="form-control" type="text" placeholder="Input name of nodes">
-                                    <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
-                                </div>
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#nodes">
+                                Nodes
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="nodes" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"></label>
+                                <input class="form-control" type="text" placeholder="Input name of nodes">
+                                <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
 
-            <input id="myFile" type='file' accept=".gv,.dot">
-            <br>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#soluction">
+                                Soluction
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="soluction" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <input type="radio" name="typeRegisters" value="degreeOfNodes"> Soluction
+                            <br>
+
+                            <input type="radio" name="typeRegisters" value="degreeOfNodes"> Step by step
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div id="buttonsDiv">
                 <button type="button" class="btn btn-success">
                     Start
                 </button>
-
-                <button type="button" class="btn btn-info">
-                    Solution
-                </button>
             </div>
 
             <div id="buttonsDiv">
-                <button type="button" class="btn btn-dark">
-                    Step by step
-                </button>
-                
                 <button id="buttonArrows" type="button" class="btn btn-light">
                     <i id="arrows" class="fas fa-caret-left"></i>
                     Undo
@@ -194,8 +220,19 @@
                     <i id="arrows" class="fas fa-caret-right"></i>
                     Next
                 </button>
-            </div>
 
+                <!--
+                    $(document).ready(function() {
+                        $('input[type="radio"]').click(function() {
+                            if($(this).attr('id') == 'watch-me') {
+                                $('#show-me').show();           
+                            }else {
+                                $('#show-me').hide();   
+                            }
+                        });
+                    });
+                -->
+            </div>
         </div>
     </div>
 </body>
