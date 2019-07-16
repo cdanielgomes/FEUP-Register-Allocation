@@ -8,7 +8,7 @@ class simpleGraphColoring {
         this.coalesceHeuristic = obj.coalesce; // 1 - Briggs, 2 - George
         this.history = []
         this.currentState = state.STACKING;
-     
+        this.error = obj.error
     }
 
 

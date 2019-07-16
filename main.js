@@ -27,16 +27,18 @@ serialInclude([
     // Vis.js Library
     'http://visjs.org/dist/vis.js',
     // core/ Main class files
-    'Graph.js', 'Node.js', 'simpleGraphColoring.js', 'global.js', 'auxiliars.js',
+    'Graph.js', 'Node.js', 'Errors.js', 'simpleGraphColoring.js', 'global.js', 'auxiliars.js',
     main = function () {
 
         let button = document.getElementById('start');
         let input = document.getElementById("myFile");
         let print = document.getElementById('network')
+        let message = document.getElementById('message')
         //  let options = document.getElementsByClassName('option')
-        let options = document.querySelectorAll('.option')
+        let error = new Error(message)
         let obj = {
-            container: print
+            container: print,
+            error: error
         }
 
         button.addEventListener('click', function (e) {
@@ -65,8 +67,10 @@ serialInclude([
                         coloring.init(input.files[0], stepOrSol);
 
                     } else {
-
-                        //print message
+                        error.addAndPrint("Coalesce, K and Spilling must be selected",
+                            "K = " + k,
+                            "Coalesce = " + coalesce,
+                            "Spilling = " + spilling)
 
                     }
                 }
@@ -80,7 +84,7 @@ serialInclude([
 
                     let random = Math.floor(Math.random() * 2) + 1
 
-                    
+
                     if (random === 2) obj.k = 3
                     else obj.k = 4
 
@@ -88,9 +92,14 @@ serialInclude([
                     coloring.initDefault(random, stepOrSol);
 
 
+                    error.addAndPrint("Starting a random default graph",
+                        "K = " + obj.k,
+                        "Coalesce = " + obj.coalesce,
+                        "Spilling = " + obj.spilling)
                     // show message saying -> Start Default Node of 2 options, random between to of them 
                 }
             } else {
+                error.addAndPrint('You need to select how you want see the result')
                 //message
             }
         })
