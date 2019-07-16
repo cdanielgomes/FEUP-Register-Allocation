@@ -67,9 +67,6 @@ serialInclude([
                         obj.spilling = spilling
                         obj.order = getOrder()
 
-                        console.log(obj)
-                 
-
                         let coloring = new simpleGraphColoring(obj);
                         coloring.init(input.files[0], stepOrSol);
 
@@ -86,23 +83,26 @@ serialInclude([
                     console.log("defautt running")
 
                     //Start default
-                    obj.coalesce = 1
+                    obj.coalesce = 'Briggs'
                     obj.spilling = 1
-
+                    obj.order = getOrder()
                     let random = Math.floor(Math.random() * 2) + 1
 
 
                     if (random === 2) obj.k = 3
                     else obj.k = 4
 
+
+                    error.addAndPrint("Starting a random default graph",
+                    "K = " + obj.k,
+                    "Coalesce = " + obj.coalesce,
+                    "Spilling = " + obj.spilling)
+
                     let coloring = new simpleGraphColoring(obj);
                     coloring.initDefault(random, stepOrSol);
 
 
-                    error.addAndPrint("Starting a random default graph",
-                        "K = " + obj.k,
-                        "Coalesce = " + obj.coalesce,
-                        "Spilling = " + obj.spilling)
+                  
                     // show message saying -> Start Default Node of 2 options, random between to of them 
                 }
             } else {

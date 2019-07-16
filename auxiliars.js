@@ -102,8 +102,13 @@ let random = () => { Math.random() - 0.5 }
 
 
 function degreeNode(a, b) {
-    if (a.degree() < b.degree()) return 1
-    if (a.degree() > b.degree()) return -1
+    if (a.degree() < b.degree()) return -1
+    if (a.degree() > b.degree()) return 1
+
+    else {
+        if (a.id < b.id) return -1
+        if (a.id > b.id) return 1
+    }
     return 0
 }
 

@@ -35,32 +35,9 @@ class simpleGraphColoring {
 
         this.createGraph(vis.network.convertDot(eval('graph' + val)));
         //this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
+        if (!this.checkOrder()) return
         if (stepping === type.SOLUTION) this.commonSteps();
         else createStepButtons(this)
-    }
-
-    checkOrder() {
-
-        switch (this.order) {
-            case 'file':
-                break;
-            case 'random':
-                shuffle(this.graph.nodes)
-                break;
-            case 'degree':
-                this.graph.nodes.sort(degreeNode)
-                break;
-            default:
-                let oi = getOrderNodes(this.order, this.graph.nodes)
-                if (oi.array) this.graph.nodes = oi
-                else {
-                    this.error.addAndPrint(oi.error)
-                    return false
-                }
-                break;
-        }
-
-        return true;
     }
 
     createGraph(graph) {
@@ -84,14 +61,45 @@ class simpleGraphColoring {
 
     }
 
+
+    checkOrder() {
+
+        switch (this.order) {
+            case 'file':
+                break;
+            case 'random':
+                shuffle(this.graph.nodes)
+                break;
+            case 'degree':
+                this.graph.nodes.sort(degreeNode)
+                break;
+            default:
+                let oi = getOrderNodes(this.order, this.graph.nodes)
+                if (oi.array) this.graph.nodes = oi
+                else {
+                    this.error.addAndPrint(oi.error)
+                    return false
+                }
+                break;
+        }
+
+
+        return true;
+    }
+
+
     commonSteps() {
-  
+
+        console.log(this.coalesceHeuristic)
         while (this.currentState === state.STACKING) {
             this.stacking()
+            console.log("stacking")
         }
 
         while (this.currentState === state.PAINTING) {
             this.paintNode()
+            console.log("painting")
+
         }
 
         setTimeout(
@@ -322,6 +330,7 @@ class simpleGraphColoring {
             if (this.graph.nodes.length === 0) this.currentState = state.PAINTING
             else {
                 this.coalesce()
+                console.log("trying coalesce")
             }
         }
     }
