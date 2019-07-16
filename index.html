@@ -175,18 +175,17 @@
 
                     <div id="nodes" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="orderingNodes_check">
-                                <label class="form-check-label" for="defaultCheck1">
-                                    Ordering Nodes
-                                </label>
+                            <input type="radio" name="typeSolution"> Input order for nodes
+                            <br>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1"></label>
+                                <input class="form-control" type="text" placeholder="Input name of nodes">
+                                <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
                             </div>
 
-                            <div id="inputNameNodes" class="form-group" style="display:nome">
-                                <label for="exampleInputEmail1"></label>
-                                <input class="form-control" type="text" placeholder="Input name of registers">
-                                <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V1, V2V3, V4</small>
-                            </div>
+                            <input type="radio" name="typeSolution"> Random by degree of the nodes
+                            <br>
                         </div>
                     </div>
                 </div>
