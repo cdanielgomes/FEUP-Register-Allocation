@@ -20,7 +20,8 @@ class Error {
         this.container.innerHTML = message
     }
 
-    addMessage(...message) {
+    addMessage(message) {
+        
         message.forEach(elem => {
             this.message.push(elem)
         })
@@ -31,7 +32,7 @@ class Error {
     }
 
 
-    addAndPrint(message) {
+    addAndPrint(...message) {
         this.clean()
         this.addMessage(message)
         this.print()

@@ -15,12 +15,13 @@ function createStepButtons(graph) {
 function showStack(stack) {
 
     let st = document.getElementById('stack')
-    st.innerHTML = stack.length === 0 ? '<span>Stack: Empty</span>' : 'Stack: ';
-    stack.forEach(element => {
-        let c = document.createElement('span')
-        c.innerHTML = element + '  '
-        st.appendChild(c)
-    });
+    st.innerHTML = "<thead> <tr> <th scope='col'>Stack</th> </tr> </thead><tbody>"
+
+    for (let index = stack.length - 1; index >= 0; index--) {
+        st.innerHTML += "<tr> <th scope='row'>" + stack[index] + "</th></tr>"
+    }
+
+    st.innerHTML += "</body>"
 
 
 }
@@ -203,7 +204,7 @@ function run() {
             //print message 
             break;
     }
-    
+
     return choice
 }
 
