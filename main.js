@@ -80,12 +80,12 @@ serialInclude([
 
                     let random = Math.floor(Math.random() * 2) + 1
 
-                    console.log(random)
-                    if (random === 2) obj.k = 4
-                    else obj.k = 3
+                    
+                    if (random === 2) obj.k = 3
+                    else obj.k = 4
 
                     let coloring = new simpleGraphColoring(obj);
-                    coloring.initDefault(1, stepOrSol);
+                    coloring.initDefault(random, stepOrSol);
 
 
                     // show message saying -> Start Default Node of 2 options, random between to of them 

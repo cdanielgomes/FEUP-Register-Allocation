@@ -8,6 +8,7 @@ class simpleGraphColoring {
         this.coalesceHeuristic = obj.coalesce; // 1 - Briggs, 2 - George
         this.history = []
         this.currentState = state.STACKING;
+     
     }
 
 
@@ -36,8 +37,6 @@ class simpleGraphColoring {
 
     createGraph(graph) {
 
-
-        console.log(graph)
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
 
@@ -69,12 +68,12 @@ class simpleGraphColoring {
 
         while (this.currentState === state.STACKING) {
             this.stacking()
-            console.log("stacking")
+         //   console.log("stacking")
         }
 
-        while (this.currentState === state.PAINTING) {           
+        while (this.currentState === state.PAINTING) {
             this.paintNode()
-            console.log("painting")
+           // console.log("painting")
         }
 
         setTimeout(
@@ -353,7 +352,7 @@ class simpleGraphColoring {
 
 
         let nodeId = this.stack.pop()
-        console.log(nodeId)
+    
         nodeId = String(nodeId).split('-') // in case of coalesce, in the stack will be x-x, so they will have the same color
         // console.log(nodeId)
 
