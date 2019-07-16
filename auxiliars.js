@@ -35,16 +35,11 @@ function getRegisters() {
     return regs
 }
 
-function getK() {
-
-}
-
-function getOrderNodes(nodes) {
+function getOrderNodes(order, nodes) {
 
     let array = []
-    let order = document.getElementById('orderedNodes').split('-')
 
-    if (order.length !== nodes.length) return //PRINT AN ERROR
+    if (order.length !== nodes.length) return { bool: false, error: "Inserted the wrong number of Nodes" }//PRINT AN ERROR
 
     for (let id of order) {
         let found = false
@@ -56,10 +51,11 @@ function getOrderNodes(nodes) {
             }
         }
 
-        if (!found) return // PRINT ERROR 
+        if (!found)
+            return { bool: false, error: "Inexistence of node" }
     }
 
-    return array
+    return { bool: true, array: array }
 
 }
 
@@ -114,7 +110,7 @@ function degreeNode(a, b) {
 function getK() {
     let kbool = document.getElementsByClassName('nRegisters')
     let next
-    console.log(kbool)
+
 
     for (let element of kbool) {
         if (element.checked) next = element.value;
@@ -125,11 +121,14 @@ function getK() {
     switch (next) {
         case 'numberRegisters':
             next = document.getElementById('numberOfRegisters').value
+            next = parseInt(next)
+            next = { k: next }
             break;
         case 'nameRegisters':
             next = document.getElementById('nameRegisters').value
             next = next.split('-')
             next.forEach(element => element.replace(/\s/g, ""))
+            next = { k: next.length, registers: next }
             break;
         default:
             next = null;
@@ -208,3 +207,29 @@ function run() {
     return choice
 }
 
+function getOrder() {
+
+    let order = document.getElementsByClassName('order')
+    let choice
+
+    for (let element of order) {
+        if (element.checked) choice = element.value
+    }
+
+    switch (choice) {
+        case "random":
+            break;
+        case "degree":
+            break;
+        case "order":
+            choice = document.getElementById("inputOrderNodes").split('-')
+            choice.forEach(element => element.replace(/\s/g, ""))
+            break;
+        default:
+            choice = "file"
+            //print message 
+            break;
+    }
+
+    return choice
+}

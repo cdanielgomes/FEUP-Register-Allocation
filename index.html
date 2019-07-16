@@ -152,10 +152,10 @@
 
                     <div id="spilling" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <input type="radio" class="spill" name="typeRegisters" value="degreeOfNodes"> Degree of Nodes
+                            <input type="radio" class="spill" name="typeSpill" value="degreeOfNodes"> Degree of Nodes
                             <br>
 
-                            <input type="radio" class="spill" name="typeRegisters" value="orderingNodes"> Ordering nodes
+                            <input type="radio" class="spill" name="typeSpill" value="orderingNodes"> Ordering nodes
                             <br>
                             <div class="form-group">
                                 <label for="exampleInputEmail1"></label>
@@ -165,6 +165,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
@@ -177,21 +178,19 @@
                     <div id="nodes" class="panel-collapse collapse">
                         <div class="panel-body">
                         
-                            <input type="radio" name="typeSolution"> Random
+
+                            <input class="order" type="radio" name="typeOrder" value="random"> Random
                             <br>
 
-                            <input type="radio" name="typeSolution"> Degree of the Nodes
+                            <input class="order" type="radio" name="typeOrder" value="degree">  Degree of the Nodes
                             <br>
 
-                            <input type="radio" name="typeSolution"> File order
-                            <br>
-
-                            <input type="radio" name="typeSolution"> Input order for nodes
+                            <input class="order" type="radio" name="typeOrder" value="order"> Input order for nodes
                             <br>
 
                             <div class="form-group">
                                 <label for="exampleInputEmail1"></label>
-                                <input class="form-control" type="text" placeholder="Input name of nodes">
+                                <input id="inputOrderNodes" class="form-control" type="text" placeholder="Input name of nodes">
                                 <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
                             </div>
 
@@ -211,11 +210,15 @@
 
                     <div id="soluction" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <input class="solve" id="fillAll" type="radio" name="typeSolution"> Soluction
-                            <br>
+                            <div class="form-check">                           
+                                <input class="solve" id="fillAll" type="radio" name="typeSolution"> Soluction
+                                <br>
+                            </div>
+                            <div class="form-check">                          
+                                <input class="solve" id="stepbystep" type="radio" name="typeSolution"> Step by step
+                                <br>
+                            </div>
 
-                            <input class="solve" id="stepbystep" type="radio" name="typeSolution"> Step by step
-                            <br>
                             <script>
                                 $(document).ready(function () {
                                     $('input[type="radio"]').click(function () {

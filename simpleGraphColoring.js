@@ -2,13 +2,15 @@ class simpleGraphColoring {
 
     constructor(obj) {
 
-        this.k = obj.k;
+        this.k = obj.k
         this.stack = [];
         this.container = obj.container;
-        this.coalesceHeuristic = obj.coalesce; // 1 - Briggs, 2 - George
+        this.coalesceHeuristic = obj.coalesce === 'Briggs' ? 1 : 2; // 1 - Briggs, 2 - George
         this.history = []
         this.currentState = state.STACKING;
         this.error = obj.error
+        this.order = obj.order
+        this.registers = obj.registers
     }
 
 
@@ -20,6 +22,8 @@ class simpleGraphColoring {
         reader.onload = e => {
             this.createGraph(vis.network.convertDot(e.target.result));
             //this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
+            if (!this.checkOrder()) return
+
             if (stepping === type.SOLUTION) this.commonSteps();
             else createStepButtons(this)
         }
@@ -33,6 +37,30 @@ class simpleGraphColoring {
         //this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
         if (stepping === type.SOLUTION) this.commonSteps();
         else createStepButtons(this)
+    }
+
+    checkOrder() {
+
+        switch (this.order) {
+            case 'file':
+                break;
+            case 'random':
+                shuffle(this.graph.nodes)
+                break;
+            case 'degree':
+                this.graph.nodes.sort(degreeNode)
+                break;
+            default:
+                let oi = getOrderNodes(this.order, this.graph.nodes)
+                if (oi.array) this.graph.nodes = oi
+                else {
+                    this.error.addAndPrint(oi.error)
+                    return false
+                }
+                break;
+        }
+
+        return true;
     }
 
     createGraph(graph) {
@@ -57,23 +85,13 @@ class simpleGraphColoring {
     }
 
     commonSteps() {
-        /*
-                while (this.remainingNodes.length > 0) {
-                    this.simplify(false);
-                    if (this.remainingNodes.length > 0) {
-                        this.coalesce();
-                    }
-                }*/
-
-
+  
         while (this.currentState === state.STACKING) {
             this.stacking()
-         //   console.log("stacking")
         }
 
         while (this.currentState === state.PAINTING) {
             this.paintNode()
-           // console.log("painting")
         }
 
         setTimeout(
@@ -352,7 +370,7 @@ class simpleGraphColoring {
 
 
         let nodeId = this.stack.pop()
-    
+
         nodeId = String(nodeId).split('-') // in case of coalesce, in the stack will be x-x, so they will have the same color
         // console.log(nodeId)
 

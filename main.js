@@ -59,9 +59,16 @@ serialInclude([
                     let spilling = getSpilling()
 
                     if (k && coalesce && spilling) {
-                        obj.k = k
+
+                     
+                        obj.k = k.k
+                        obj.registers = k.registers
                         obj.coalesce = coalesce
                         obj.spilling = spilling
+                        obj.order = getOrder()
+
+                        console.log(obj)
+                 
 
                         let coloring = new simpleGraphColoring(obj);
                         coloring.init(input.files[0], stepOrSol);
