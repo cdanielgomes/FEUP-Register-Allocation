@@ -141,7 +141,6 @@ class simpleGraphColoring {
 
         let temp = this.history.length === 1 ? this.history[0] : this.history.pop();
 
-        console.log(temp)
         this.graph = temp.graph;
         this.paintingGraph = temp.painting;
         this.stack = temp.stack;

@@ -4,10 +4,10 @@ function createStepButtons(graph) {
     let fill = document.createElement('button')
     let undo = document.getElementsByClassName('buttonArrowsLeft')[0]
 
-    step.onclick = (e) => { 
-        e.preventDefault(); 
+    step.onclick = (e) => {
+        e.preventDefault();
         removeMessage();
-        graph.stepping(); 
+        graph.stepping();
     }
 
     fill.onclick = (e) => {
@@ -16,11 +16,11 @@ function createStepButtons(graph) {
         graph.solution();
     }
 
-    undo.onclick = (e) => { 
+    undo.onclick = (e) => {
         e.preventDefault();
-        removeMessage(); 
+        removeMessage();
         graph.undo();
-     }
+    }
 
 }
 
@@ -143,8 +143,17 @@ function getK() {
             break;
         case 'nameRegisters':
             next = document.getElementById('nameRegisters').value
-            next = next.split('-')
-            next.forEach(element => element.replace(/\s/g, ""))
+            next = next.split(',')
+
+            let elem = next.length;
+
+            while (elem--) {
+                next[elem] = next[elem].replace(/\s/g, '')
+                if (next[elem] == '') {
+                    next.splice(elem, 1);
+                }
+            }
+
             next = { k: next.length, registers: next }
             break;
         default:
@@ -255,30 +264,30 @@ function getOrder() {
 function sleep(milliseconds) {
     let start = new Date().getTime();
     for (let i = 0; i < 1e7; i++) {
-      if ((new Date().getTime() - start) > milliseconds){
-        break;
-      }
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
     }
 }
 
 function addMessage(header, text, show) {
-    if(!show) {
+    if (!show) {
         return;
     }
 
     let message = document.createElement('div');
     message.className = 'alert alert-secondary text-center';
-    message.setAttribute('role', 'alert'); 
+    message.setAttribute('role', 'alert');
     message.id = 'newMessage';
-    message.innerHTML = '<strong>' +  header + '</strong> ' + text;
-    
+    message.innerHTML = '<strong>' + header + '</strong> ' + text;
+
     let messageBox = document.getElementById('message');
     messageBox.appendChild(message);
 }
 
 function removeMessage() {
     let messageBox = document.getElementById('message');
-    for(let i=messageBox.childNodes.length - 1; i >= 0; i--) {
+    for (let i = messageBox.childNodes.length - 1; i >= 0; i--) {
         messageBox.removeChild(messageBox.childNodes[i]);
     }
 }
