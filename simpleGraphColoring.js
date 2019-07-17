@@ -228,30 +228,32 @@ class simpleGraphColoring {
             }
         }
 
-        // couldn't freeze - spill
+        this.spill();
     }
 
-    // spill() {
-    //     if(this.spillingHeuristic.length > 0 ){
-    //         return;
-    //     }
+    spill() {
+        if(this.spillingHeuristic.length > 0 ){
+            return;
+        }
 
-    //     let max = -1, index = -1;
-    //     for (let i=0; i<this.graph.nodes; i++) {
-    //         if(this.graph.nodes[i].degree() > max) {
-    //             max = this.graph.nodes[i].degree();
-    //             index = i;
-    //         }
-    //     }
+        let max = -1, index = -1;
 
-    //     if(index != -1) {
-    //         let node = this.graph.nodes[i];
-    //         this.stack.push(node.id)
-    //         this.graph.removeNode(node);
+        for (let i=0; i<this.graph.nodes.length; i++) {
+            if(this.graph.nodes[i].degree() > max) {
+                max = this.graph.nodes[i].degree();
+                index = i;
+            }
+        }
 
-    //         addMessage('May spill', node.id, this.stepbystep);
-    //     }
-    // }
+        if(index != -1) {
+            let node = this.graph.nodes[index];
+            this.stack.push(node.id)
+            this.graph.removeNode(node);
+            this.paintingGraph.findNode(node.id).spilled = true;
+
+            addMessage('May spill', node.id, this.stepbystep);
+        }
+    }
 
     //just stack one
     stacking() {
@@ -313,6 +315,11 @@ class simpleGraphColoring {
         nodeId = String(nodeId).split('-') // in case of coalesce, in the stack will be x-x, so they will have the same color
 
         let paintingNode = this.paintingGraph.findNode(nodeId[0])
+
+        if(paintingNode.spilled) {
+            paintingNode.color = 8;
+            return;
+        }
 
         let used = [];
 
