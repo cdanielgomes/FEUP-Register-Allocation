@@ -233,16 +233,26 @@ class simpleGraphColoring {
     }
 
     spill() {
+        let index = -1;
+
         if (this.spillingHeuristic.length > 0) {
-            return;
-        }
+            for(let i=0; i<this.spillingHeuristic.length; i++) {
+                let id = this.spillingHeuristic[i].trim();
+                index = this.graph.nodes.findIndex(function(node) {
+                    return node.id === id;
+                });
+                if(index != -1) {
+                    break;
+                }
+            }
+        } else {
+            let max = -1;
 
-        let max = -1, index = -1;
-
-        for (let i = 0; i < this.graph.nodes.length; i++) {
-            if (this.graph.nodes[i].degree() > max) {
-                max = this.graph.nodes[i].degree();
-                index = i;
+            for (let i = 0; i < this.graph.nodes.length; i++) {
+                if (this.graph.nodes[i].degree() > max) {
+                    max = this.graph.nodes[i].degree();
+                    index = i;
+                }
             }
         }
 
@@ -317,12 +327,6 @@ class simpleGraphColoring {
 
         let paintingNode = this.paintingGraph.findNode(nodeId[0])
 
-        if (paintingNode.spilled) {
-            paintingNode.color = 8;
-            this.currentState = this.stack.length === 0 ? state.OVER : state.PAINTING
-            return;
-        }
-
         let used = [];
 
         for (let neigh of paintingNode.neighbors) {
@@ -340,7 +344,13 @@ class simpleGraphColoring {
             return true;
         }, this)[0]
 
+        if (paintingNode.spilled && color == null) {
+            color = 8;
+            addMessage('Actual spill', 'in node ' + paintingNode.id, this.stepbystep);
+        }
+
         paintingNode.color = color;
+
 
         for (let index = 1; nodeId.length > index; index++) {
             this.paintingGraph.findNode(nodeId[index]).color = color;
