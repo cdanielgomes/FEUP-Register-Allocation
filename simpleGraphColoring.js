@@ -155,9 +155,6 @@ class simpleGraphColoring {
         }
     }
 
-    /**
-     * Returns true if it was able to coalesce, false otherwise
-     */
     coalesce() {
         for (let node of this.graph.nodes) {
 
@@ -176,7 +173,7 @@ class simpleGraphColoring {
                 if (this.coalesceHeuristic === 2) { // coalesce, George
                     for(let nei of moveNode.neighbors) {
                         if(!node.neighbor(nei) && nei.degree() >= this.k) {
-                            mayCoalesce = false;
+                            mayCoalesce = false; // can't coalesce;
                         }
                     }
                 }
@@ -190,12 +187,26 @@ class simpleGraphColoring {
                     node.setCoalesced(true);
                     moveNode.setCoalesced(true);
 
-                    return true;
+                    return;
                 }
             }
         }
 
-        return false;
+        this.freeze(); // can't coalesce so try to freeze
+    }
+
+    freeze() {
+        for (let node of this.graph.nodes) {
+            if (node.isMoveRelated()) {
+                if(node.degree() < this.k || node.move.degree() < this.k) {
+                    node.freeze(); // mark not move related
+                    this.stacking();
+                    return;
+                }
+            }
+        }
+
+        // couldn't freeze - spill
     }
 
     //just stack one
@@ -204,7 +215,7 @@ class simpleGraphColoring {
         if (!this.findAddStack()) {
             if (this.graph.nodes.length === 0) this.currentState = state.PAINTING
             else {
-                this.coalesce()
+                this.coalesce();
             }
         }
     }
@@ -242,7 +253,7 @@ class simpleGraphColoring {
         this.currentState = state.OVER
     }
 
-    //paint a node until stack empty
+    //paint a node 
     paintNode() {
         let colors = Array.from(Array(this.k), (x, index) => index + 1)
 
