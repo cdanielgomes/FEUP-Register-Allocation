@@ -17,28 +17,6 @@
 <body>
 
     <div class="col-sm">
-        <!-- 
-        <div id="options">
-            <fieldset>
-                <legend> Options </legend>
-                <label>
-                    <input type="radio" class="option" name="options" value="step"> Step by Step </label>
-                <label>
-                    <input type="radio" class="option" name="options" value="solution"> Final Solution </label>
-            </fieldset>
-        </div>
-
-
-        <div>
-            <button id="start" value="start"> Start </button>
-        </div>
-
-
-        <div id="network">
-
-        </div>
-        -->
-
         <div class="col-sm-2">
             <table id="stack" class="table table-bordered">
                 <thead>
@@ -90,7 +68,8 @@
 
                     <div id="registerOptions" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <input class="nRegisters" type="radio" name="typeRegisters" value="numberRegisters"> Number of Registers
+                            <input id="RegistersK" class="nRegisters" type="radio" name="typeRegisters" value="numberRegisters" checked> 
+                            <label for="RegistersK"> Number of Registers (K)</label>
                             <br>
                             <div class="form-group">
                                 <label for="numberOfRegisters"></label>
@@ -102,10 +81,11 @@
                                     <option>5</option>
                                 </select>
                             </div>
-                            <input class="nRegisters" type="radio" name="typeRegisters" value="nameRegisters"> Name of Registers
+
+                            <input id="registersName" class="nRegisters" type="radio" name="typeRegisters" value="nameRegisters"> 
+                            <label for="registersName">Name of Registers</label>
                             <br>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"></label>
                                 <input id="nameRegisters" class="form-control" type="text" placeholder="Input name of registers">
                                 <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. R1, R2, R3</small>
                             </div>
@@ -117,7 +97,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#heuristics">
-                                Heuristics
+                                Coalescing Heuristics
                             </a>
                         </h4>
                     </div>
@@ -145,20 +125,21 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#spilling">
-                                Spilling
+                                Spilling Heuristics
                             </a>
                         </h4>
                     </div>
 
                     <div id="spilling" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <input type="radio" class="spill" name="typeSpill" value="degreeOfNodes"> Degree of Nodes
+                            <input id="degreeOfTheNode" type="radio" class="spill" name="typeSpill" value="degreeOfNodes" checked>
+                            <label for="degreeOfTheNode">Degree of the nodes</label>
                             <br>
 
-                            <input type="radio" class="spill" name="typeSpill" value="orderingNodes"> Ordering nodes
+                            <input id="spillingOrderingNodes"type="radio" class="spill" name="typeSpill" value="orderingNodes"> 
+                            <label for="spillingOrderingNodes">Ordering nodes</label>
                             <br>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"></label>
                                 <input id="orderOfNodes" class="form-control" type="text" placeholder="Input name of nodes">
                                 <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
                             </div>
@@ -170,7 +151,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#nodes">
-                                Ordering nodes
+                                Ordering of analysis of the nodes
                             </a>
                         </h4>
                     </div>
@@ -179,17 +160,19 @@
                         <div class="panel-body">
                         
 
-                            <input class="order" type="radio" name="typeOrder" value="random"> Random
+                            <input id="analysisRandom" class="order" type="radio" name="typeOrder" value="random" checked> 
+                            <label for="analysisRandom">Random</label>
                             <br>
 
-                            <input class="order" type="radio" name="typeOrder" value="degree">  Degree of the Nodes
+                            <input id="analysisDegree" class="order" type="radio" name="typeOrder" value="degree">  
+                            <label for="analysisDegree">Degree of the nodes</label>
                             <br>
 
-                            <input class="order" type="radio" name="typeOrder" value="order"> Input order for nodes
+                            <input id="analysisInputOrder" class="order" type="radio" name="typeOrder" value="order"> 
+                            <label for="analysisInputOrder">Input order for nodes</label>
                             <br>
 
                             <div class="form-group">
-                                <label for="exampleInputEmail1"></label>
                                 <input id="inputOrderNodes" class="form-control" type="text" placeholder="Input name of nodes">
                                 <small id="nameOfRegistersHelp" class="form-text text-muted">e.g. V2, V1, V3</small>
                             </div>
@@ -203,7 +186,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#soluction">
-                                Soluction
+                                Solution options
                             </a>
                         </h4>
                     </div>
@@ -211,11 +194,13 @@
                     <div id="soluction" class="panel-collapse collapse">
                         <div class="panel-body">
                             <div class="form-check">                           
-                                <input class="solve" id="fillAll" type="radio" name="typeSolution"> Soluction
+                                <input class="solve" id="fillAll" type="radio" name="typeSolution" checked> 
+                                <label for="fillAll">Solution only</label>
                                 <br>
                             </div>
                             <div class="form-check">                          
-                                <input class="solve" id="stepbystep" type="radio" name="typeSolution"> Step by step
+                                <input class="solve" id="stepbystep" type="radio" name="typeSolution"> 
+                                <label for="stepbystep">Step by step</label>
                                 <br>
                             </div>
 
@@ -251,19 +236,6 @@
                     <i id="arrows" class="fas fa-caret-right"></i>
                     Next
                 </button>
-
-                <!--
-                    
-                    $(document).ready(function() {
-                        $('input[type="radio"]').click(function() {
-                            if($(this).attr('id') == 'watch-me') {
-                                $('#show-me').show();           
-                            }else {
-                                $('#show-me').hide();   
-                            }
-                        });
-                    });
-                -->
             </div>
         </div>
     </div>
