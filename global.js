@@ -7,7 +7,8 @@ const colorsPallete = [
     '#00bfff',
     '#800080',
     '#FFC0CB',
-    '#835C3B'
+    '#835C3B',
+    'white'
 ]
 
 // state 

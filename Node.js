@@ -9,6 +9,7 @@ class Node {
         this.moveRelated = false;
         this.move = null;
         this.coalesce = false;
+        this.spilled = false;
         this.raw = node;
     }
 
