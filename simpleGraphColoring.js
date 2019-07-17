@@ -34,7 +34,10 @@ class simpleGraphColoring {
         this.createGraph(vis.network.convertDot(eval('graph' + val)));
         if (!this.checkOrder()) return
         if (stepping === type.SOLUTION) this.commonSteps();
-        else createStepButtons(this)
+        else {
+            this.stepbystep = true
+            createStepButtons(this)
+        }
     }
 
     createGraph(graph) {
