@@ -1,12 +1,13 @@
 
 //Colors to be used. Can be accessed with an index
 const colorsPallete = [
-    'red',
-    'green',
-    'yellow',
-    'blue',
-    'purple',
-    'pink'
+    '#ff0000',
+    '#80ff00',
+    '#ffff00',
+    '#00bfff',
+    '#800080',
+    '#FFC0CB',
+    '#835C3B'
 ]
 
 // state 

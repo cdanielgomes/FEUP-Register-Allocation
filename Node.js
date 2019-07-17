@@ -55,7 +55,7 @@ class Node {
 
     setCoalesced(coalesce) {
         this.coalesced = coalesce;
-        this.move = null;
+      //  this.move = null;
     }
 
     setNeighbors(neighbors) {

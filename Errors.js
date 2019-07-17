@@ -12,16 +12,33 @@ class Error {
     }
 
     print() {
+        console.log(this.message)
         let message = ""
 
         this.message.forEach(elem => {
-            message += "<span> " + elem + "</span> <br>"
+            if (elem.register) {
+                message += '<div class="input-color"> <div class="color-box" style="background-color:' + colorsPallete[elem.register] + ';" ></div>'
+                message += "<div class='texting'> " + elem.msg + "</div></div>  <br>"
+            } else {
+
+                if (elem.error) {
+
+                    message += "<div class='.text-danger texting'> " + elem.msg + "</div>"
+
+                }
+            message += "<div class='texting'> " + elem.msg + "</div> "
+
+            }
+
+
+
         })
+        console.log(message)
         this.container.innerHTML = message
     }
 
     addMessage(message) {
-        
+
         message.forEach(elem => {
             this.message.push(elem)
         })
@@ -31,6 +48,11 @@ class Error {
         this.container = container
     }
 
+
+    printError() {
+
+
+    }
 
     addAndPrint(...message) {
         this.clean()

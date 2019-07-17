@@ -10,6 +10,11 @@ div#buttonsDivNextUndo {
 }
 */
 
+/* 
+#message{
+    background-color: grey;
+} */
+
 button#buttonArrows.btn.btn-light {
     border-color: transparent;
     background: transparent;
@@ -26,7 +31,29 @@ button.btn.btn-info {
 }
 
 button.btn.btn-dark {
-    border-color: RGB(45,45,45);
-    background: RGB(45,45,45);
+    border-color: RGB(45, 45, 45);
+    background: RGB(45, 45, 45);
     color: white;
+}
+
+.input-color {
+    position: relative;
+}
+
+.input-color {
+    padding-left: 30px;
+}
+
+.color-box {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-color: #ccc;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+
+.texting {
+    font-size: 125%
 }

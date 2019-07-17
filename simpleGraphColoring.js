@@ -88,6 +88,8 @@ class simpleGraphColoring {
         setTimeout(
             () => this.show(this.paintingGraph), 1500
         )
+
+        setTimeout(() => this.showRegisters(), 2000)
     }
 
     copy() {
@@ -288,5 +290,42 @@ class simpleGraphColoring {
         });
 
         this.network.redraw();
+    }
+
+    showRegisters() {
+        let registers = {}
+
+        for (let number = 0; number < this.k; number++) {
+            registers[number] = {}
+            registers[number].register = this.registers ? this.registers[number] : 'R' + number
+            registers[number].nodes = []
+
+        }
+
+        for (let node of this.paintingGraph.nodes) {
+            registers[node.color - 1].nodes.push(node.id)
+        }
+
+        this.error.clean()
+
+
+        for (let k in registers) {
+            let msg = registers[k].register + " {"
+
+            registers[k].nodes.forEach(element => {
+                msg += " " + element + ','
+            });
+
+
+            msg = msg.slice(0, -1);
+
+            msg += " }"
+
+            this.error.addMessage([{ register: k, msg: msg }])
+        }
+
+
+
+        this.error.print()
     }
 }

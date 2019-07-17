@@ -58,23 +58,26 @@ serialInclude([
 
                     let spilling = getSpilling()
 
+                    let order = getOrder()
+
                     if (k && coalesce && spilling) {
 
-                     
+
                         obj.k = k.k
                         obj.registers = k.registers
                         obj.coalesce = coalesce
                         obj.spilling = spilling
-                        obj.order = getOrder()
+                        obj.order = order
 
                         let coloring = new simpleGraphColoring(obj);
                         coloring.init(input.files[0], stepOrSol);
 
                     } else {
-                        error.addAndPrint("Coalesce, K and Spilling must be selected",
-                            "K = " + k,
-                            "Coalesce = " + coalesce,
-                            "Spilling = " + spilling)
+                        error.addAndPrint({ error: true, msg: "Coalesce, K and Spilling must be selected" },
+                            { error: true, msg: "K = " + k },
+                            { error: true, msg: "Coalesce = " + coalesce },
+                            { error: true, msg: "Spilling = " + spilling },
+                            { error: true, msg: "Node order analysis = " + order })
 
                     }
                 }
@@ -93,16 +96,17 @@ serialInclude([
                     else obj.k = 4
 
 
-                    error.addAndPrint("Starting a random default graph",
-                    "K = " + obj.k,
-                    "Coalesce = " + obj.coalesce,
-                    "Spilling = " + obj.spilling)
+                    error.addAndPrint({ msg: "Starting a random default graph" },
+                        { msg: "K = " + obj.k },
+                        { msg: "Coalesce = " + obj.coalesce },
+                        { msg: "Spilling = " + obj.spilling },
+                        { msg: "Order = " + obj.order})
 
                     let coloring = new simpleGraphColoring(obj);
                     coloring.initDefault(random, stepOrSol);
 
 
-                  
+
                     // show message saying -> Start Default Node of 2 options, random between to of them 
                 }
             } else {
