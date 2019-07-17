@@ -231,16 +231,26 @@ class simpleGraphColoring {
     }
 
     spill() {
+        let index = -1;
+        
         if (this.spillingHeuristic.length > 0) {
-            return;
-        }
+            for(let i=0; i<this.spillingHeuristic.length; i++) {
+                let id = this.spillingHeuristic[i].trim();
+                index = this.graph.nodes.findIndex(function(node) {
+                    return node.id === id;
+                });
+                if(index != -1) {
+                    break;
+                }
+            }
+        } else {
+            let max = -1;
 
-        let max = -1, index = -1;
-
-        for (let i = 0; i < this.graph.nodes.length; i++) {
-            if (this.graph.nodes[i].degree() > max) {
-                max = this.graph.nodes[i].degree();
-                index = i;
+            for (let i = 0; i < this.graph.nodes.length; i++) {
+                if (this.graph.nodes[i].degree() > max) {
+                    max = this.graph.nodes[i].degree();
+                    index = i;
+                }
             }
         }
 
