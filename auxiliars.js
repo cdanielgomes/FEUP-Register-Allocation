@@ -4,11 +4,23 @@ function createStepButtons(graph) {
     let fill = document.createElement('button')
     let undo = document.getElementsByClassName('buttonArrowsLeft')[0]
 
-    step.onclick = (e) => { e.preventDefault(); graph.stepping() }
+    step.onclick = (e) => { 
+        e.preventDefault(); 
+        removeMessage();
+        graph.stepping(); 
+    }
 
-    fill.onclick = (e) => { e.preventDefault(); graph.solution() }
+    fill.onclick = (e) => {
+        e.preventDefault();
+        removeMessage();
+        graph.solution();
+    }
 
-    undo.onclick = (e) => { e.preventDefault(); graph.undo() }
+    undo.onclick = (e) => { 
+        e.preventDefault();
+        removeMessage(); 
+        graph.undo();
+     }
 
 }
 
@@ -137,7 +149,6 @@ function getK() {
             break;
         default:
             next = null;
-            ///print the message 
             break;
     }
 
@@ -145,15 +156,16 @@ function getK() {
 }
 
 function getHeuristics() {
-    let heuris = document.getElementsByClassName('form-check-input')
+    let heuris = document.getElementsByClassName('coalesce');
     let choice
 
     for (let element of heuris) {
-        if (element.checked) choice = element.value;
+        if (element.checked) {
+            choice = element.value;
+        }
     }
 
     if (!(choice === 'George' || choice === 'Briggs')) {
-        //print error
         choice = null
     }
 
@@ -178,7 +190,6 @@ function getSpilling() {
             break;
         default:
             choice = null;
-            ///print the message 
             break;
     }
 
@@ -205,7 +216,6 @@ function run() {
             break;
         default:
             choice = null
-            //print message 
             break;
     }
 
@@ -232,9 +242,45 @@ function getOrder() {
             break;
         default:
             choice = "file"
-            //print message 
             break;
     }
 
     return choice
+}
+
+/* 
+    Source: https://www.sitepoint.com/delay-sleep-pause-wait/
+*/
+function sleep(milliseconds) {
+    let start = new Date().getTime();
+    for (let i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+}
+
+function addMessage(header, text, show) {
+    if(!show) {
+        return;
+    }
+    
+    let message = document.createElement('div');
+    message.className = 'alert alert-secondary text-center';
+    message.setAttribute('role', 'alert'); 
+    message.id = 'newMessage';
+    message.innerHTML = '<strong>' +  header + '</strong> ' + text;
+
+    console.log(message);
+    
+    let messageBox = document.getElementById('message');
+    messageBox.appendChild(message);
+}
+
+function removeMessage() {
+    let messageBox = document.getElementById('message');
+    let message = messageBox.firstElementChild;
+    if(message != null) {
+        messageBox.removeChild(message);
+    }
 }

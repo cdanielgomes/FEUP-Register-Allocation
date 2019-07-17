@@ -6,6 +6,7 @@ class Node {
         this.color = null;
         this.label = node.label;
         this.neighbors = [];
+        this.moveRelated = false;
         this.move = null;
         this.coalesce = false;
         this.raw = node;
@@ -13,6 +14,8 @@ class Node {
 
     addMove(node) {
         this.move = node;
+        this.moveRelated = true;
+        this.move.moveRelated = true;
     }
 
     addNeighbor(node) {
@@ -50,16 +53,20 @@ class Node {
     }
 
     isMoveRelated() {
-        return this.move != null;
+        return this.moveRelated;
     }
 
     setCoalesced(coalesce) {
         this.coalesced = coalesce;
-      //  this.move = null;
     }
 
     setNeighbors(neighbors) {
         this.neighbors = neighbors;
+    }
+
+    freeze() {
+        this.moveRelated = false;
+        this.move.moveRelated = false;
     }
 
 }

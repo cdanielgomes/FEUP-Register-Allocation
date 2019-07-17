@@ -11,16 +11,6 @@ class Graph {
             this.nodes.push(new Node(node));
         }
 
-     
-        /*
-        this.nodes.sort((a, b) => {
-            if (a.id < b.id) return -1;
-            if (a.id > b.id) return 1;
-            return 0
-        })*/
-
-        
-
         let from = null;
         let to = null;
 
@@ -32,14 +22,15 @@ class Graph {
                 if (!to) to = node.id == edge.to ? node : null
             }
 
-            from.addNeighbor(to);
-            to.addNeighbor(from);
-
             // mark move related nodes
             if (edge.dashes != null) {
                 from.addMove(to);
                 to.addMove(from);
 
+            }
+            else {
+                from.addNeighbor(to);
+                to.addNeighbor(from);
             }
 
             from = null;
