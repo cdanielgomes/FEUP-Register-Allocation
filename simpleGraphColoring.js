@@ -1,7 +1,6 @@
 class simpleGraphColoring {
 
     constructor(obj) {
-
         this.k = obj.k
         this.stack = [];
         this.container = obj.container;
@@ -13,35 +12,27 @@ class simpleGraphColoring {
         this.registers = obj.registers
     }
 
-
     init(file, stepping) {
-
         let reader = new FileReader();
         reader.readAsText(file);
 
         reader.onload = e => {
             this.createGraph(vis.network.convertDot(e.target.result));
-            //this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
             if (!this.checkOrder()) return
 
             if (stepping === type.SOLUTION) this.commonSteps();
             else createStepButtons(this)
         }
-
-
     }
 
     initDefault(val, stepping) {
-
         this.createGraph(vis.network.convertDot(eval('graph' + val)));
-        //this.remainingNodes = Object.keys(this.graph.nodes); // node ids (names)
         if (!this.checkOrder()) return
         if (stepping === type.SOLUTION) this.commonSteps();
         else createStepButtons(this)
     }
 
     createGraph(graph) {
-
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
 
@@ -61,9 +52,7 @@ class simpleGraphColoring {
 
     }
 
-
     checkOrder() {
-
         switch (this.order) {
             case 'file':
                 break;
@@ -83,14 +72,10 @@ class simpleGraphColoring {
                 break;
         }
 
-
         return true;
     }
 
-
     commonSteps() {
-
-        console.log(this.coalesceHeuristic)
         while (this.currentState === state.STACKING) {
             this.stacking()
             console.log("stacking")
@@ -107,7 +92,6 @@ class simpleGraphColoring {
         )
     }
 
-
     copy() {
         return {
             painting: deepClone(this.paintingGraph),
@@ -116,35 +100,6 @@ class simpleGraphColoring {
             state: this.currentState.slice(0)
         }
     }
-
-    /*    stepping() {
-    
-            this.history.push(this.copy());
-    
-            switch (this.currentState) {
-                case state.PAINTING:
-                    this.currentState = this.painting(true)
-                    this.show(this.paintingGraph);
-                    break;
-                case state.OVER:
-                    alert('Algorithm complete')
-                    console.log('Algorithm complete')
-                    break;
-                case state.STACKING:
-                    this.simplify(true);
-                    if (this.currentState != state.COALESCING) {
-                        break;
-                    }
-                case state.COALESCING:
-                    this.coalesce();
-                    break;
-                default:
-                    alert('U SHOULDNT BE HERE')
-            }
-            showStack(this.stack);
-    
-            console.log(this.stack)
-        }*/
 
     stepping() {
 
@@ -170,20 +125,18 @@ class simpleGraphColoring {
                 alert('U SHOULDNT BE HERE')
         }
         showStack(this.stack);
-        // console.log(this.stack)
     }
 
     undo() {
 
-        let temp = this.history.length === 1 ? this.history[0] : this.history.pop()
+        let temp = this.history.length === 1 ? this.history[0] : this.history.pop();
 
-        this.graph = temp.graph
-        this.paintingGraph = temp.painting
-        this.stack = temp.stack
-        this.currentState = temp.state
+        this.graph = temp.graph;
+        this.paintingGraph = temp.painting;
+        this.stack = temp.stack;
+        this.currentState = temp.state;
         this.print();
-        showStack(this.stack)
-        //   console.log(this.stack)
+        showStack(this.stack);
     }
 
     print() {
@@ -205,96 +158,11 @@ class simpleGraphColoring {
     }
 
     solution() {
-
         while (this.currentState != state.OVER) {
             this.stepping();
             showStack(this.stack);
         }
     }
-
-
-    /**
-     * 
-     * Fill the stack. When a node degree > K, it will be reavaluated in the next iteration, until all nodes have degree < K
-     * 
-     * TODO: if it is impossible, how to solve?? Possibility: check if the nodes have all the same number of neighbors
-     * 
-     * OR 
-     * 
-     * After 1000 (a number) iterations return error 
-     * 
-     */
-    simplify(step) {
-        let nodesIndexes = this.remainingNodes;
-        this.currentState = state.STACKING;
-        let nodes = this.graph.nodes;
-        let moved = null;
-
-        let simplifiable = false;
-
-        // simplify to the max
-        do {
-            simplifiable = false;
-            for (let n in nodesIndexes) {
-                let index = nodesIndexes[n];
-
-                if (nodes[index].degree() < this.k && !nodes[index].isMoveRelated()) {
-                    this.stack.push(nodes[index].id);
-                    this.graph.removeNeighbors(nodes[index]);
-                    nodesIndexes.splice(n, 1);
-                    moved = nodes[index].id;
-                    simplifiable = true;
-                }
-
-                if ((moved == 0 || moved) && step) {
-                    this.currentState = state.STACKING;
-                    break;
-                }
-            }
-        } while (simplifiable);
-
-        if (nodesIndexes.length > 0 && moved === null) {
-            this.currentState = state.COALESCING;
-        }
-        else if (nodesIndexes.length == 0 && moved === null) {
-            this.currentState = state.PAINTING;
-        }
-
-        this.remainingNodes = nodesIndexes;
-    }
-
-    // coalesce() {
-    //     let nodes = this.graph.nodes;
-
-    //     for (let i in this.remainingNodes) {
-    //         let node = nodes[this.remainingNodes[i]];
-
-    //         if (node.isMoveRelated()) {
-    //             let moveNode = node.move;
-    //             let combinedNeighbors = [...new Set(node.neighbors.concat(moveNode.neighbors))]; // set to eliminate duplicates
-    //             if (this.coalesceHeuristic === 1 && combinedNeighbors.length < this.k) { // coalesce, Briggs
-    //                 this.stack.push(node.id);
-    //                 node.id = node.id + '-' + moveNode.id;
-    //                 node.setNeighbors(combinedNeighbors);
-    //                 this.graph.nodes[node.id] = node;
-
-    //                 this.graph.removeNeighbors(moveNode);
-    //                 this.remainingNodes.splice(i, 1);
-    //                 this.remainingNodes.splice(this.remainingNodes.indexOf(moveNode.id), 1);
-    //                 node.setCoalesced(true);
-    //                 break;
-    //             }
-    //         }
-    //     }
-
-    //     if (this.remainingNodes.length == 0) {
-    //         this.currentState = state.PAINTING;
-    //     }
-    //     else {
-    //         this.currentState = state.STACKING;
-    //     }
-    // }
-
 
     coalesce() {
 
@@ -321,8 +189,6 @@ class simpleGraphColoring {
         }
     }
 
-
-    //need to find when to coasling
     //just stack one
     stacking() {
 
@@ -330,11 +196,9 @@ class simpleGraphColoring {
             if (this.graph.nodes.length === 0) this.currentState = state.PAINTING
             else {
                 this.coalesce()
-                console.log("trying coalesce")
             }
         }
     }
-
 
     /**
      * Add a node to a stack and remove it from the graph
@@ -358,7 +222,6 @@ class simpleGraphColoring {
         return false;
     }
 
-
     //paint all stack
     painting() {
         this.currentState = this.OVER
@@ -370,32 +233,26 @@ class simpleGraphColoring {
         this.currentState = state.OVER
     }
 
-
     //paint a node until stack empty
     paintNode() {
-
-
         let colors = Array.from(Array(this.k), (x, index) => index + 1)
 
 
         let nodeId = this.stack.pop()
 
         nodeId = String(nodeId).split('-') // in case of coalesce, in the stack will be x-x, so they will have the same color
-        // console.log(nodeId)
 
         let paintingNode = this.paintingGraph.findNode(nodeId[0])
 
         let used = [];
 
         for (let neigh of paintingNode.neighbors) {
-            // console.log(neigh)
             if (neigh.color === null)
                 continue;
 
             else used.push(neigh.color);
         }
 
-        // console.log(used)
         let color = colors.filter((value) => {
 
             for (let c of used) {
@@ -411,23 +268,9 @@ class simpleGraphColoring {
         }
 
         this.currentState = this.stack.length === 0 ? state.OVER : state.PAINTING
-
-        // console.log(color)
-
     }
 
     show(graph) {
-        /*
-                for (let node of this.rawgraph.nodes) {
-                    let color = this.paintingGraph.nodes[node.id].color
-                    node.color = { background: colorsPallete[color - 1] }
-                }
-        
-                let data = {
-                    nodes: graph.nodes,
-                    edges: graph.edges
-                }*/
-
         let nodes = new vis.DataSet({});
 
         let ind = Object.keys(graph.nodes)
@@ -446,11 +289,6 @@ class simpleGraphColoring {
             edges: graph.edges
         });
 
-        //this.network.setOptions(this.network)
         this.network.redraw();
-    }
-
-    updateNodes() {
-
     }
 }
