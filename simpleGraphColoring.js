@@ -10,6 +10,7 @@ class simpleGraphColoring {
         this.error = obj.error
         this.order = obj.order
         this.registers = obj.registers
+        this.stepping = false
     }
 
     init(file, stepping) {
@@ -21,7 +22,10 @@ class simpleGraphColoring {
             if (!this.checkOrder()) return
 
             if (stepping === type.SOLUTION) this.commonSteps();
-            else createStepButtons(this)
+            else {
+                this.stepping = true
+                createStepButtons(this)
+            }
         }
     }
 
@@ -187,7 +191,7 @@ class simpleGraphColoring {
                     node.setCoalesced(true);
                     moveNode.setCoalesced(true);
                     
-                    addMessage('Coalesce', node.id + ' and ' + moveNode.id);
+                    addMessage('Coalesce', node.id + ' and ' + moveNode.id, this.stepping);
 
                     return;
                 }
@@ -204,7 +208,7 @@ class simpleGraphColoring {
                     node.freeze(); // mark not move related
                     this.stacking();
 
-                    addMessage('Freeze', 'move related nodes ' + node.id + ' and ' + node.move.id);
+                    addMessage('Freeze', 'move related nodes ' + node.id + ' and ' + node.move.id, this.stepping);
 
                     return;
                 }
@@ -241,7 +245,7 @@ class simpleGraphColoring {
                 this.stack.push(node.id)
                 this.graph.removeNode(node);
 
-                addMessage('Stack', node.id);
+                addMessage('Stack', node.id, this.stepping);
 
                 return true;
             }

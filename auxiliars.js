@@ -260,7 +260,11 @@ function sleep(milliseconds) {
     }
 }
 
-function addMessage(header, text) {
+function addMessage(header, text, show) {
+    if(!show) {
+        return;
+    }
+    
     let message = document.createElement('div');
     message.className = 'alert alert-secondary text-center';
     message.setAttribute('role', 'alert'); 
