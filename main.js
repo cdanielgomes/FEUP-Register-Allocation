@@ -55,6 +55,7 @@ serialInclude([
                     let spilling = getSpilling()
 
                     let order = getOrder()
+                    console.log(order)
 
                     if (k && coalesce && spilling) {
 
@@ -84,7 +85,7 @@ serialInclude([
                     //Start default
                     obj.coalesce = 'Briggs'
                     obj.spilling = 1
-                    obj.order = getOrder()
+                    obj.order = "random"
                     let random = Math.floor(Math.random() * 2) + 1
 
 
@@ -96,7 +97,7 @@ serialInclude([
                         { msg: "K = " + obj.k },
                         { msg: "Coalesce = " + obj.coalesce },
                         { msg: "Spilling = " + obj.spilling },
-                        { msg: "Order = " + obj.order})
+                        { msg: "Order = " + obj.order })
 
                     let coloring = new simpleGraphColoring(obj);
                     coloring.initDefault(random, stepOrSol);

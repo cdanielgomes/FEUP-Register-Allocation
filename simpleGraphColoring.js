@@ -74,9 +74,11 @@ class simpleGraphColoring {
                 break;
             default:
                 let oi = getOrderNodes(this.order, this.graph.nodes)
-                if (oi.array) this.graph.nodes = oi
+          
+                if (oi.array.length != 0) this.graph.nodes = oi.array
+                 
                 else {
-                    this.error.addAndPrint(oi.error)
+                    this.error.addAndPrint({error: 'Nem aqui devia chegar'})
                     return false
                 }
                 break;

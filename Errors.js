@@ -29,9 +29,6 @@ class Error {
             message += "<div class='texting'> " + elem.msg + "</div> "
 
             }
-
-
-
         })
         
         this.container.innerHTML = message
