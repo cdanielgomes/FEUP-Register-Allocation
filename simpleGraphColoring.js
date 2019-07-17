@@ -232,20 +232,20 @@ class simpleGraphColoring {
     }
 
     spill() {
-        if(this.spillingHeuristic.length > 0 ){
+        if (this.spillingHeuristic.length > 0) {
             return;
         }
 
         let max = -1, index = -1;
 
-        for (let i=0; i<this.graph.nodes.length; i++) {
-            if(this.graph.nodes[i].degree() > max) {
+        for (let i = 0; i < this.graph.nodes.length; i++) {
+            if (this.graph.nodes[i].degree() > max) {
                 max = this.graph.nodes[i].degree();
                 index = i;
             }
         }
 
-        if(index != -1) {
+        if (index != -1) {
             let node = this.graph.nodes[index];
             this.stack.push(node.id)
             this.graph.removeNode(node);
@@ -316,7 +316,7 @@ class simpleGraphColoring {
 
         let paintingNode = this.paintingGraph.findNode(nodeId[0])
 
-        if(paintingNode.spilled) {
+        if (paintingNode.spilled) {
             paintingNode.color = 8;
             return;
         }
@@ -380,7 +380,8 @@ class simpleGraphColoring {
         }
 
         for (let node of this.paintingGraph.nodes) {
-            registers[node.color - 1].nodes.push(node.id)
+            if (node.color > this.k);
+            else registers[node.color - 1].nodes.push(node.id)
         }
 
         this.error.clean()
