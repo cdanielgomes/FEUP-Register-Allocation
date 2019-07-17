@@ -241,6 +241,7 @@ class simpleGraphColoring {
                     return node.id === id;
                 });
                 if (index != -1) {
+                    this.spillingHeuristic.splice(i, 1);
                     break;
                 }
             }

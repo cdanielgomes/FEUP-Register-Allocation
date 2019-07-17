@@ -1,0 +1,12 @@
+graph {
+    m -- n;
+    m -- r;
+    m -- v;
+    m -- x;
+    n -- r;
+    n -- v;
+    n -- x;
+    r -- v;
+    r -- x;
+    v -- x;
+}
