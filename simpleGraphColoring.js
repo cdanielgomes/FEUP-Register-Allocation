@@ -25,6 +25,7 @@ class simpleGraphColoring {
             if (stepping === type.SOLUTION) this.commonSteps();
             else {
                 this.stepbystep = true
+                this.history.push(this.copy());
                 createStepButtons(this)
             }
         }
@@ -34,7 +35,11 @@ class simpleGraphColoring {
         this.createGraph(vis.network.convertDot(eval('graph' + val)));
         if (!this.checkOrder()) return
         if (stepping === type.SOLUTION) this.commonSteps();
-        else createStepButtons(this)
+        else {
+            this.stepbystep = true
+            createStepButtons(this)
+            this.history.push(this.copy());
+        }
     }
 
     createGraph(graph) {
@@ -117,8 +122,10 @@ class simpleGraphColoring {
                 this.show(this.paintingGraph);
                 break;
             case state.OVER:
-                alert('Algorithm complete')
+                this.showRegisters()
+                //alert('Algorithm complete')
                 console.log('Algorithm complete')
+
                 break;
             case state.STACKING:
                 this.stacking()
@@ -134,6 +141,7 @@ class simpleGraphColoring {
 
         let temp = this.history.length === 1 ? this.history[0] : this.history.pop();
 
+        console.log(temp)
         this.graph = temp.graph;
         this.paintingGraph = temp.painting;
         this.stack = temp.stack;
@@ -174,20 +182,20 @@ class simpleGraphColoring {
 
                 if (this.coalesceHeuristic === 1) { // coalesce, Briggs
                     let combinedNeighbors = [...new Set(node.neighbors.concat(moveNode.neighbors))]; // set to eliminate duplicates
-                    if(combinedNeighbors.length >= this.k) {
+                    if (combinedNeighbors.length >= this.k) {
                         mayCoalesce = false; // can't coalesce;
                     }
                 }
 
                 if (this.coalesceHeuristic === 2) { // coalesce, George
-                    for(let nei of moveNode.neighbors) {
-                        if(!node.neighbor(nei) && nei.degree() >= this.k) {
+                    for (let nei of moveNode.neighbors) {
+                        if (!node.neighbor(nei) && nei.degree() >= this.k) {
                             mayCoalesce = false; // can't coalesce;
                         }
                     }
                 }
 
-                if(mayCoalesce) {
+                if (mayCoalesce) {
                     this.graph.removeNode(node);
                     this.graph.removeNode(moveNode);
 
@@ -195,7 +203,7 @@ class simpleGraphColoring {
 
                     node.setCoalesced(true);
                     moveNode.setCoalesced(true);
-                    
+
                     addMessage('Coalesce', node.id + ' and ' + moveNode.id, this.stepbystep);
 
                     return;
@@ -209,7 +217,7 @@ class simpleGraphColoring {
     freeze() {
         for (let node of this.graph.nodes) {
             if (node.isMoveRelated()) {
-                if(node.degree() < this.k || node.move.degree() < this.k) {
+                if (node.degree() < this.k || node.move.degree() < this.k) {
                     node.freeze(); // mark not move related
                     this.stacking();
 

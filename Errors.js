@@ -12,13 +12,13 @@ class Error {
     }
 
     print() {
-        console.log(this.message)
+        
         let message = ""
 
         this.message.forEach(elem => {
             if (elem.register) {
                 message += '<div class="input-color"> <div class="color-box" style="background-color:' + colorsPallete[elem.register] + ';" ></div>'
-                message += "<div class='texting'> " + elem.msg + "</div></div>  <br>"
+                message += "<div class='texting'> " + elem.msg + "</div></div> "
             } else {
 
                 if (elem.error) {
@@ -33,7 +33,7 @@ class Error {
 
 
         })
-        console.log(message)
+        
         this.container.innerHTML = message
     }
 
