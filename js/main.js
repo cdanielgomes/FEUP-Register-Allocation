@@ -27,7 +27,7 @@ serialInclude([
     // Vis.js Library
     'http://visjs.org/dist/vis.js',
     // core/ Main class files
-    'Graph.js', 'Node.js', 'Errors.js', 'simpleGraphColoring.js', 'global.js', 'auxiliars.js',
+    'js/graph.js', 'js/node.js', 'js/errors.js', 'js/simpleGraphColoring.js', 'js/global.js', 'js/auxiliars.js',
     main = function () {
 
         let button = document.getElementById('start');
@@ -78,12 +78,9 @@ serialInclude([
                     }
                 }
                 else {
-
-                    //console.log("defautt running")
-
-                    //Start default
+                    // Start default
                     obj.coalesce = 'Briggs'
-                    obj.spilling = 1
+                    obj.spilling = []
                     obj.order = "random"
                     let random = Math.floor(Math.random() * 2) + 1
 
@@ -100,10 +97,6 @@ serialInclude([
 
                     let coloring = new simpleGraphColoring(obj);
                     coloring.initDefault(random, stepOrSol);
-
-
-
-                    // show message saying -> Start Default Node of 2 options, random between to of them 
                 }
             } else {
                 error.addAndPrint('You need to select how you want see the result')
