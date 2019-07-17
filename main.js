@@ -55,8 +55,7 @@ serialInclude([
                     let spilling = getSpilling()
 
                     let order = getOrder()
-                    console.log(order)
-
+                    
                     if (k && coalesce && spilling) {
 
 
