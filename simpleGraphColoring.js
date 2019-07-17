@@ -90,15 +90,12 @@ class simpleGraphColoring {
 
     commonSteps() {
 
-        console.log(this.coalesceHeuristic)
         while (this.currentState === state.STACKING) {
             this.stacking()
-            console.log("stacking")
         }
 
         while (this.currentState === state.PAINTING) {
             this.paintNode()
-            console.log("painting")
 
         }
 
