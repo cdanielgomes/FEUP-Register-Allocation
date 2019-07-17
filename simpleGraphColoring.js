@@ -186,6 +186,8 @@ class simpleGraphColoring {
 
                     node.setCoalesced(true);
                     moveNode.setCoalesced(true);
+                    
+                    addMessage('Coalesce', node.id + ' and ' + moveNode.id);
 
                     return;
                 }
@@ -201,6 +203,9 @@ class simpleGraphColoring {
                 if(node.degree() < this.k || node.move.degree() < this.k) {
                     node.freeze(); // mark not move related
                     this.stacking();
+
+                    addMessage('Freeze', 'move related nodes ' + node.id + ' and ' + node.move.id);
+
                     return;
                 }
             }
@@ -235,6 +240,9 @@ class simpleGraphColoring {
             if (node.degree() < this.k && !node.isMoveRelated()) {
                 this.stack.push(node.id)
                 this.graph.removeNode(node);
+
+                addMessage('Stack', node.id);
+
                 return true;
             }
         }
