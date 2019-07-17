@@ -14,7 +14,6 @@ const colorsPallete = [
 const state = {
     PAINTING: 'paint',
     STACKING: 'stack',
-    COALESCING: 'coalesce',
     OVER: 'over'
 }
 

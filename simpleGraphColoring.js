@@ -82,7 +82,6 @@ class simpleGraphColoring {
 
         while (this.currentState === state.PAINTING) {
             this.paintNode()
-
         }
 
         setTimeout(
@@ -116,9 +115,6 @@ class simpleGraphColoring {
                 this.stacking()
                 this.show(this.graph)
                 break;
-            case state.COALESCING:
-                this.coalesce();
-                break;
             default:
                 alert('U SHOULDNT BE HERE')
         }
@@ -147,9 +143,6 @@ class simpleGraphColoring {
             case state.STACKING:
                 this.show(this.graph)
                 break;
-            case state.COALESCING:
-                this.coalesce();
-                break;
             default:
                 alert('U SHOULDNT BE HERE')
         }
@@ -162,29 +155,47 @@ class simpleGraphColoring {
         }
     }
 
+    /**
+     * Returns true if it was able to coalesce, false otherwise
+     */
     coalesce() {
-
         for (let node of this.graph.nodes) {
 
             if (node.isMoveRelated()) {
 
                 let moveNode = node.move;
-                node.removeMe()
-                node.removeNeighbor(moveNode) //need to remove the moved node from the neighbors of the "command" node
+                let mayCoalesce = true;
 
-                let combinedNeighbors = [...new Set(node.neighbors.concat(moveNode.neighbors))]; // set to eliminate duplicates
+                if (this.coalesceHeuristic === 1) { // coalesce, Briggs
+                    let combinedNeighbors = [...new Set(node.neighbors.concat(moveNode.neighbors))]; // set to eliminate duplicates
+                    if(combinedNeighbors.length >= this.k) {
+                        mayCoalesce = false; // can't coalesce;
+                    }
+                }
 
-                if (this.coalesceHeuristic === 1 && combinedNeighbors.length < this.k) { // coalesce, Briggs
+                if (this.coalesceHeuristic === 2) { // coalesce, George
+                    for(let nei of moveNode.neighbors) {
+                        if(!node.neighbor(nei) && nei.degree() >= this.k) {
+                            mayCoalesce = false;
+                        }
+                    }
+                }
+
+                if(mayCoalesce) {
                     this.graph.removeNode(node);
-                    node.id = node.id + '-' + moveNode.id;
-                    this.stack.push(node.id);
-                    node.setNeighbors(combinedNeighbors);
                     this.graph.removeNode(moveNode);
+
+                    this.stack.push(node.id + '-' + moveNode.id);
+
                     node.setCoalesced(true);
-                    break;
+                    moveNode.setCoalesced(true);
+
+                    return true;
                 }
             }
         }
+
+        return false;
     }
 
     //just stack one

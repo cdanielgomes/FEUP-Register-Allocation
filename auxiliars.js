@@ -137,7 +137,6 @@ function getK() {
             break;
         default:
             next = null;
-            ///print the message 
             break;
     }
 
@@ -145,15 +144,16 @@ function getK() {
 }
 
 function getHeuristics() {
-    let heuris = document.getElementsByClassName('form-check-input')
+    let heuris = document.getElementsByClassName('coalesce');
     let choice
 
     for (let element of heuris) {
-        if (element.checked) choice = element.value;
+        if (element.checked) {
+            choice = element.value;
+        }
     }
 
     if (!(choice === 'George' || choice === 'Briggs')) {
-        //print error
         choice = null
     }
 
@@ -178,7 +178,6 @@ function getSpilling() {
             break;
         default:
             choice = null;
-            ///print the message 
             break;
     }
 
@@ -205,7 +204,6 @@ function run() {
             break;
         default:
             choice = null
-            //print message 
             break;
     }
 
@@ -232,7 +230,6 @@ function getOrder() {
             break;
         default:
             choice = "file"
-            //print message 
             break;
     }
 

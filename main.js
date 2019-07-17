@@ -48,10 +48,6 @@ serialInclude([
             if (stepOrSol) {
 
                 if (input.files && input.files[0]) {
-
-                    console.log("running with file")
-                    // TO DO: get K, Heuristics, spilling and order of nodes from input
-
                     let k = getK()
 
                     let coalesce = getHeuristics()
