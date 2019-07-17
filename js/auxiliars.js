@@ -4,10 +4,10 @@ function createStepButtons(graph) {
     let fill = document.createElement('button')
     let undo = document.getElementsByClassName('buttonArrowsLeft')[0]
 
-    step.onclick = (e) => { 
-        e.preventDefault(); 
+    step.onclick = (e) => {
+        e.preventDefault();
         removeMessage();
-        graph.stepping(); 
+        graph.stepping();
     }
 
     fill.onclick = (e) => {
@@ -16,11 +16,11 @@ function createStepButtons(graph) {
         graph.solution();
     }
 
-    undo.onclick = (e) => { 
+    undo.onclick = (e) => {
         e.preventDefault();
-        removeMessage(); 
+        removeMessage();
         graph.undo();
-     }
+    }
 
 }
 
@@ -51,23 +51,28 @@ function getOrderNodes(order, nodes) {
 
     let array = []
 
-    if (order.length !== nodes.length) return { bool: false, error: "Inserted the wrong number of Nodes" }//PRINT AN ERROR
+    if (order.length == 0) return { bool: true, array: nodes }
 
     for (let id of order) {
-        let found = false
+
         for (let node of nodes) {
             if (node.id == id) {
                 array.push(node)
-                found = true
                 break
             }
         }
-
-        if (!found)
-            return { bool: false, error: "Inexistence of node" }
     }
 
-    return { bool: true, array: array }
+    let temp = nodes.filter((a) => {
+        for (let b of array) {
+            if (b.id == a.id) return false
+        }
+        return true
+    })
+
+
+
+    return { bool: true, array: array.concat(temp) }
 
 }
 
@@ -143,8 +148,7 @@ function getK() {
             break;
         case 'nameRegisters':
             next = document.getElementById('nameRegisters').value
-            next = next.split('-')
-            next.forEach(element => element.replace(/\s/g, ""))
+
             next = { k: next.length, registers: next }
             break;
         default:
@@ -238,8 +242,10 @@ function getOrder() {
         case "degree":
             break;
         case "order":
-            choice = document.getElementById("inputOrderNodes").split('-')
-            choice.forEach(element => element.replace(/\s/g, ""))
+
+            choice = document.getElementById("inputOrderNodes").value
+
+            choice = getArray(choice)
             break;
         default:
             choice = "file"
@@ -255,30 +261,47 @@ function getOrder() {
 function sleep(milliseconds) {
     let start = new Date().getTime();
     for (let i = 0; i < 1e7; i++) {
-      if ((new Date().getTime() - start) > milliseconds){
-        break;
-      }
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
     }
 }
 
 function addMessage(header, text, show) {
-    if(!show) {
+    if (!show) {
         return;
     }
 
     let message = document.createElement('div');
     message.className = 'alert alert-secondary text-center';
-    message.setAttribute('role', 'alert'); 
+    message.setAttribute('role', 'alert');
     message.id = 'newMessage';
-    message.innerHTML = '<strong>' +  header + '</strong> ' + text;
-    
+    message.innerHTML = '<strong>' + header + '</strong> ' + text;
+
     let messageBox = document.getElementById('message');
     messageBox.appendChild(message);
 }
 
 function removeMessage() {
     let messageBox = document.getElementById('message');
-    for(let i=messageBox.childNodes.length - 1; i >= 0; i--) {
+    for (let i = messageBox.childNodes.length - 1; i >= 0; i--) {
         messageBox.removeChild(messageBox.childNodes[i]);
     }
+}
+
+function getArray(string) {
+
+    let array = string.split(',')
+
+    let elem = array.length;
+
+    while (elem--) {
+        array[elem] = array[elem].replace(/\s/g, '')
+        if (array[elem] == '') {
+            array.splice(elem, 1);
+        }
+    }
+
+    return Array.from((new Set(array)))
+
 }

@@ -74,9 +74,11 @@ class simpleGraphColoring {
                 break;
             default:
                 let oi = getOrderNodes(this.order, this.graph.nodes)
-                if (oi.array) this.graph.nodes = oi
+
+                if (oi.array.length != 0) this.graph.nodes = oi.array
+
                 else {
-                    this.error.addAndPrint(oi.error)
+                    this.error.addAndPrint({ error: 'Nem aqui devia chegar' })
                     return false
                 }
                 break;
@@ -96,11 +98,10 @@ class simpleGraphColoring {
             this.paintNode()
         }
 
-        setTimeout(
-            () => this.show(this.paintingGraph), 1500
-        )
 
-        setTimeout(() => this.showRegisters(), 2000)
+        this.show(this.paintingGraph)
+
+        this.showRegisters()
     }
 
     copy() {
@@ -141,7 +142,6 @@ class simpleGraphColoring {
 
         let temp = this.history.length === 1 ? this.history[0] : this.history.pop();
 
-        console.log(temp)
         this.graph = temp.graph;
         this.paintingGraph = temp.painting;
         this.stack = temp.stack;
@@ -232,20 +232,30 @@ class simpleGraphColoring {
     }
 
     spill() {
-        if(this.spillingHeuristic.length > 0 ){
-            return;
-        }
+        let index = -1;
 
-        let max = -1, index = -1;
+        if (this.spillingHeuristic.length > 0) {
+            for (let i = 0; i < this.spillingHeuristic.length; i++) {
+                let id = this.spillingHeuristic[i].trim();
+                index = this.graph.nodes.findIndex(function (node) {
+                    return node.id === id;
+                });
+                if (index != -1) {
+                    break;
+                }
+            }
+        } else {
+            let max = -1;
 
-        for (let i=0; i<this.graph.nodes.length; i++) {
-            if(this.graph.nodes[i].degree() > max) {
-                max = this.graph.nodes[i].degree();
-                index = i;
+            for (let i = 0; i < this.graph.nodes.length; i++) {
+                if (this.graph.nodes[i].degree() > max) {
+                    max = this.graph.nodes[i].degree();
+                    index = i;
+                }
             }
         }
 
-        if(index != -1) {
+        if (index != -1) {
             let node = this.graph.nodes[index];
             this.stack.push(node.id)
             this.graph.removeNode(node);
@@ -316,11 +326,6 @@ class simpleGraphColoring {
 
         let paintingNode = this.paintingGraph.findNode(nodeId[0])
 
-        if(paintingNode.spilled) {
-            paintingNode.color = 8;
-            return;
-        }
-
         let used = [];
 
         for (let neigh of paintingNode.neighbors) {
@@ -338,7 +343,13 @@ class simpleGraphColoring {
             return true;
         }, this)[0]
 
+        if (paintingNode.spilled && color == null) {
+            color = 8;
+            addMessage('Actual spill', 'in node ' + paintingNode.id, this.stepbystep);
+        }
+
         paintingNode.color = color;
+
 
         for (let index = 1; nodeId.length > index; index++) {
             this.paintingGraph.findNode(nodeId[index]).color = color;
@@ -380,7 +391,8 @@ class simpleGraphColoring {
         }
 
         for (let node of this.paintingGraph.nodes) {
-            registers[node.color - 1].nodes.push(node.id)
+            if (node.color > this.k);
+            else registers[node.color - 1].nodes.push(node.id)
         }
 
         this.error.clean()
