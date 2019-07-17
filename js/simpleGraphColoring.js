@@ -12,6 +12,10 @@ class simpleGraphColoring {
         this.order = obj.order
         this.registers = obj.registers
         this.stepbystep = false
+
+        //
+        this.greedyColoring();
+        //
     }
 
     init(file, stepping) {
@@ -47,10 +51,14 @@ class simpleGraphColoring {
         this.paintingGraph = new Graph(graph);
 
         this.rawgraph = graph;
-        this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, {
+        this.network = new vis.Network(this.container, {
+            nodes: graph.nodes,
+            edges: graph.edges
+        }, {
             edges: {
-                color:
-                    { color: 'black' }
+                color: {
+                    color: 'black'
+                }
             },
             physics: {
                 enabled: true,
@@ -78,7 +86,9 @@ class simpleGraphColoring {
                 if (oi.array.length != 0) this.graph.nodes = oi.array
 
                 else {
-                    this.error.addAndPrint({ error: 'Nem aqui devia chegar' })
+                    this.error.addAndPrint({
+                        error: 'Nem aqui devia chegar'
+                    })
                     return false
                 }
                 break;
@@ -272,8 +282,7 @@ class simpleGraphColoring {
             if (this.graph.nodes.length === 0) {
                 this.fullStack = this.stack
                 this.currentState = state.PAINTING
-            }
-            else {
+            } else {
                 this.coalesce()
             }
         }
@@ -366,7 +375,9 @@ class simpleGraphColoring {
         for (let i of ind) {
             let n = graph.nodes[i]
             nodes.add({
-                color: { background: colorsPallete[n.color - 1] },
+                color: {
+                    background: colorsPallete[n.color - 1]
+                },
                 id: n.id,
                 label: n.label
             })
@@ -410,11 +421,107 @@ class simpleGraphColoring {
 
             msg += " }"
 
-            this.error.addMessage([{ register: k, msg: msg }])
+            this.error.addMessage([{
+                register: k,
+                msg: msg
+            }])
         }
 
 
 
         this.error.print()
+    }
+
+    /*
+    1. Color 1st vertex with the 1st color
+
+    2. Do following for remainig V-1 vertices.
+        a. Consider the currently picked vertex and 
+        color it with the lowest numbered color that 
+        has not been used on any previously colored
+        vertices adjancent o it. If all previously 
+        used colors appear on vertices to v, assign
+        new color to it.
+    */
+
+    // Assigns colors (starting from 0) to all vertices and prints 
+    // the assignment of colors 
+    greedyColoring() {
+        console.log("estou no coloring ...");
+
+        //int result[this.graph.nodes.number];
+        const result = new Array();
+        const sizeResult = this.graph.edges.length;
+
+        //
+        console.log(result);
+        console.log(sizeResult);
+        //
+
+        // Assign the first color to first vertex 
+        result[0] = global.colorsPallete[0];
+
+        // Initialize remaining V-1 vertices as unassigned 
+        for (let u = 1; u < sizeResult; u++) {
+            result[u] = -1; // no color is assigned to u */
+        }
+
+        // A temporary array to store the available colors. True 
+        // value of available[cr] would mean that the color cr is 
+        // assigned to one of its adjacent vertices 
+        //bool 
+        const availableColors = new Array();
+        for (let cr = 0; cr < sizeResult; cr++) {
+            available[cr] = false;
+        }
+
+        // Assign colors to remaining V-1 vertices 
+        for (let u = 1; u < sizeResult; u++) {
+            // Process all adjacent vertices and flag their colors 
+            // as unavailable 
+            //list < int > ::iterator i;
+            //for (let i = adj[u].begin(); i != adj[u].end(); ++i)
+            for (let index = 1; index < array.length; index++) {
+                //const element = array[index];
+
+                // if (result[ * i] != -1){
+                // available[result[ * i]] = true;
+                // }
+
+                if (result[i] != -1) {
+                    availableColors[i] = true;
+                }
+            }
+
+            // Find the first available color 
+            let cr;
+            for (cr = 0; cr < sizeResult; cr++) {
+                if (available[cr] == false) {
+                    break;
+                }
+            }
+
+            result[u] = cr; // Assign the found color 
+
+            // Reset the values back to false for the next iteration 
+            // for (let i = adj[u].begin(); i != adj[u].end(); ++i)
+            // if (result[ * i] != -1)
+            // available[result[ * i]] = false;
+
+            for (let index = 1; index < sizeResult; index++) {
+                if (result[index] != -1) {
+                    availableColors[index] = false;
+                }
+            }
+        }
+
+        // print the result 
+        // for (int u = 0; u < V; u++)
+            // cout << "Vertex " << u << " --->  Color " <<
+            // result[u] << endl;
+
+        for (let index = 0; index < sizeResult; index++) {
+            console.log("Vertex " + u + " --->  Color " + result[u]);
+        }
     }
 }
