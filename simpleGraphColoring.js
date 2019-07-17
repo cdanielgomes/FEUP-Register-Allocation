@@ -232,7 +232,7 @@ class simpleGraphColoring {
 
     spill() {
         let index = -1;
-        
+
         if (this.spillingHeuristic.length > 0) {
             for(let i=0; i<this.spillingHeuristic.length; i++) {
                 let id = this.spillingHeuristic[i].trim();
@@ -325,12 +325,6 @@ class simpleGraphColoring {
 
         let paintingNode = this.paintingGraph.findNode(nodeId[0])
 
-        if (paintingNode.spilled) {
-            paintingNode.color = 8;
-            this.currentState = this.stack.length === 0 ? state.OVER : state.PAINTING
-            return;
-        }
-
         let used = [];
 
         for (let neigh of paintingNode.neighbors) {
@@ -348,7 +342,13 @@ class simpleGraphColoring {
             return true;
         }, this)[0]
 
+        if (paintingNode.spilled && color == null) {
+            color = 8;
+            addMessage('Actual spill', 'in node ' + paintingNode.id, this.stepbystep);
+        }
+
         paintingNode.color = color;
+
 
         for (let index = 1; nodeId.length > index; index++) {
             this.paintingGraph.findNode(nodeId[index]).color = color;
