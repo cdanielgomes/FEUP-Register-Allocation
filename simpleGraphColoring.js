@@ -74,11 +74,11 @@ class simpleGraphColoring {
                 break;
             default:
                 let oi = getOrderNodes(this.order, this.graph.nodes)
-          
+
                 if (oi.array.length != 0) this.graph.nodes = oi.array
-                 
+
                 else {
-                    this.error.addAndPrint({error: 'Nem aqui devia chegar'})
+                    this.error.addAndPrint({ error: 'Nem aqui devia chegar' })
                     return false
                 }
                 break;
@@ -98,11 +98,10 @@ class simpleGraphColoring {
             this.paintNode()
         }
 
-        setTimeout(
-            () => this.show(this.paintingGraph), 1500
-        )
 
-        setTimeout(() => this.showRegisters(), 2000)
+        this.show(this.paintingGraph)
+
+        this.showRegisters()
     }
 
     copy() {
@@ -236,12 +235,12 @@ class simpleGraphColoring {
         let index = -1;
 
         if (this.spillingHeuristic.length > 0) {
-            for(let i=0; i<this.spillingHeuristic.length; i++) {
+            for (let i = 0; i < this.spillingHeuristic.length; i++) {
                 let id = this.spillingHeuristic[i].trim();
-                index = this.graph.nodes.findIndex(function(node) {
+                index = this.graph.nodes.findIndex(function (node) {
                     return node.id === id;
                 });
-                if(index != -1) {
+                if (index != -1) {
                     break;
                 }
             }
