@@ -182,6 +182,7 @@ function getSpilling() {
 
     switch (choice) {
         case 'degreeOfNodes':
+            choice = [];
             break;
         case 'orderingNodes':
             choice = document.getElementById('orderOfNodes').value
@@ -264,14 +265,12 @@ function addMessage(header, text, show) {
     if(!show) {
         return;
     }
-    
+
     let message = document.createElement('div');
     message.className = 'alert alert-secondary text-center';
     message.setAttribute('role', 'alert'); 
     message.id = 'newMessage';
     message.innerHTML = '<strong>' +  header + '</strong> ' + text;
-
-    console.log(message);
     
     let messageBox = document.getElementById('message');
     messageBox.appendChild(message);
@@ -279,8 +278,7 @@ function addMessage(header, text, show) {
 
 function removeMessage() {
     let messageBox = document.getElementById('message');
-    let message = messageBox.firstElementChild;
-    if(message != null) {
-        messageBox.removeChild(message);
+    for(let i=messageBox.childNodes.length - 1; i >= 0; i--) {
+        messageBox.removeChild(messageBox.childNodes[i]);
     }
 }

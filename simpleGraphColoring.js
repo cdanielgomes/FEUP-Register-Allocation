@@ -5,12 +5,13 @@ class simpleGraphColoring {
         this.stack = [];
         this.container = obj.container;
         this.coalesceHeuristic = obj.coalesce === 'Briggs' ? 1 : 2; // 1 - Briggs, 2 - George
+        this.spillingHeuristic = obj.spilling;
         this.history = []
         this.currentState = state.STACKING;
         this.error = obj.error
         this.order = obj.order
         this.registers = obj.registers
-        this.stepping = false
+        this.stepbystep = false
     }
 
     init(file, stepping) {
@@ -23,7 +24,7 @@ class simpleGraphColoring {
 
             if (stepping === type.SOLUTION) this.commonSteps();
             else {
-                this.stepping = true
+                this.stepbystep = true
                 createStepButtons(this)
             }
         }
@@ -83,6 +84,8 @@ class simpleGraphColoring {
         while (this.currentState === state.STACKING) {
             this.stacking()
         }
+
+        this.fullStack = this.stack;
 
         while (this.currentState === state.PAINTING) {
             this.paintNode()
@@ -193,7 +196,7 @@ class simpleGraphColoring {
                     node.setCoalesced(true);
                     moveNode.setCoalesced(true);
                     
-                    addMessage('Coalesce', node.id + ' and ' + moveNode.id, this.stepping);
+                    addMessage('Coalesce', node.id + ' and ' + moveNode.id, this.stepbystep);
 
                     return;
                 }
@@ -210,7 +213,7 @@ class simpleGraphColoring {
                     node.freeze(); // mark not move related
                     this.stacking();
 
-                    addMessage('Freeze', 'move related nodes ' + node.id + ' and ' + node.move.id, this.stepping);
+                    addMessage('Freeze', 'move related nodes ' + node.id + ' and ' + node.move.id, this.stepbystep);
 
                     return;
                 }
@@ -220,13 +223,38 @@ class simpleGraphColoring {
         // couldn't freeze - spill
     }
 
+    // spill() {
+    //     if(this.spillingHeuristic.length > 0 ){
+    //         return;
+    //     }
+
+    //     let max = -1, index = -1;
+    //     for (let i=0; i<this.graph.nodes; i++) {
+    //         if(this.graph.nodes[i].degree() > max) {
+    //             max = this.graph.nodes[i].degree();
+    //             index = i;
+    //         }
+    //     }
+
+    //     if(index != -1) {
+    //         let node = this.graph.nodes[i];
+    //         this.stack.push(node.id)
+    //         this.graph.removeNode(node);
+
+    //         addMessage('May spill', node.id, this.stepbystep);
+    //     }
+    // }
+
     //just stack one
     stacking() {
 
         if (!this.findAddStack()) {
-            if (this.graph.nodes.length === 0) this.currentState = state.PAINTING
+            if (this.graph.nodes.length === 0) {
+                this.fullStack = this.stack
+                this.currentState = state.PAINTING
+            }
             else {
-                this.coalesce();
+                this.coalesce()
             }
         }
     }
@@ -247,7 +275,7 @@ class simpleGraphColoring {
                 this.stack.push(node.id)
                 this.graph.removeNode(node);
 
-                addMessage('Stack', node.id, this.stepping);
+                addMessage('Stack', node.id, this.stepbystep);
 
                 return true;
             }
