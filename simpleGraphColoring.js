@@ -318,6 +318,7 @@ class simpleGraphColoring {
 
         if (paintingNode.spilled) {
             paintingNode.color = 8;
+            this.currentState = this.stack.length === 0 ? state.OVER : state.PAINTING
             return;
         }
 
