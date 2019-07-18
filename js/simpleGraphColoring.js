@@ -516,6 +516,5 @@ class simpleGraphColoring {
        // this.error.addAndPrint({msg: "The graph is colorable with at least " + (Math.max(...result) + 1)})
        
         addMessage(Math.max(...result) + 1,"The graph is colorable with at least ", true)
-        sleep(3000)
     }
 }
