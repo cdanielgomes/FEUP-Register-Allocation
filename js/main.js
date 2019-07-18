@@ -43,6 +43,7 @@ serialInclude([
 
         button.addEventListener('click', function (e) {
             e.preventDefault();
+            removeMessage();
             let stepOrSol = run();
 
             if (stepOrSol) {

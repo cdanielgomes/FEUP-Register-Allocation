@@ -385,6 +385,7 @@ class simpleGraphColoring {
 
     showRegisters() {
         let registers = {}
+        let spilled = []
 
         for (let number = 0; number < this.k; number++) {
             registers[number] = {}
@@ -394,12 +395,14 @@ class simpleGraphColoring {
         }
 
         for (let node of this.paintingGraph.nodes) {
+            if(node.spilled) {
+                spilled.push(node);
+            }
             if (node.color > this.k);
             else registers[node.color - 1].nodes.push(node.id)
         }
 
         this.error.clean()
-
 
         for (let k in registers) {
             let msg = registers[k].register + " {"
@@ -416,8 +419,13 @@ class simpleGraphColoring {
             this.error.addMessage([{ register: k, msg: msg }])
         }
 
-
-
+        if(spilled.length > 0) {
+            let msg = 'Spilled: ' + spilled[0].id;
+            for(let i = 1; i<spilled.length; i++) {
+                msg += ', ' + spilled[i].id;
+            }
+            this.error.addMessage([{msg: msg}]);
+        }
         this.error.print()
     }
 
@@ -773,6 +781,7 @@ class simpleGraphColoring {
 
     showRegisters() {
         let registers = {}
+        let spilled = []
 
         for (let number = 0; number < this.k; number++) {
             registers[number] = {}
@@ -782,6 +791,9 @@ class simpleGraphColoring {
         }
 
         for (let node of this.paintingGraph.nodes) {
+            if(node.spilled) {
+                spilled.push(node);
+            }
             if (node.color > this.k);
             else registers[node.color - 1].nodes.push(node.id)
         }
@@ -807,7 +819,13 @@ class simpleGraphColoring {
             }])
         }
 
-
+        if(spilled.length > 0) {
+            let msg = 'Spilled: ' + spilled[0].id;
+            for(let i = 1; i<spilled.length; i++) {
+                msg += ', ' + spilled[i].id;
+            }
+            this.error.addMessage([{msg: msg}]);
+        }
 
         this.error.print()
     }
@@ -827,13 +845,8 @@ class simpleGraphColoring {
     // Assigns colors (starting from 0) to all vertices and prints 
     // the assignment of colors 
     greedyColoring() {
-
-        //int result[this.graph.nodes.number];
-      
         const sizeResult = this.graph.nodes.length;
         let result = new Array(sizeResult);
-        //
-      
 
         // Assign the first color to first vertex 
         result[0] = 0;
@@ -844,12 +857,11 @@ class simpleGraphColoring {
         // A temporary array to store the available colors. True 
         // value of available[cr] would mean that the color cr is 
         // assigned to one of its adjacent vertices 
-        //bool 
+        // bool 
         let availableColors = new Array(sizeResult);
         
         availableColors.fill(true)
         
-        //
         // Assign colors to remaining V-1 vertices 
         for (let u = 1; u < sizeResult; u++) {
             // Process all adjacent vertices and flag their colors 
@@ -887,14 +899,8 @@ class simpleGraphColoring {
         
             availableColors.fill(true)
         }
-        
-
         // print the result 
         console.log("This graph is colorable with " +  (Math.max(...result) + 1) + " registers")
-
-       // this.error.addAndPrint({msg: "The graph is colorable with at least " + (Math.max(...result) + 1)})
-       
-     //   addMessage(Math.max(...result) + 1,"The graph is colorable with at least ", true)
     }
 }
 

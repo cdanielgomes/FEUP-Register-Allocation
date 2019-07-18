@@ -99,8 +99,6 @@ function deepClone(obj, hash = new WeakMap()) {
         key => ({ [key]: deepClone(obj[key], hash) })));
 }
 
-
-
 // sort functions for sort nodes analysis
 
 
@@ -202,7 +200,6 @@ function getSpilling() {
     return choice
 }
 
-
 function run() {
 
     let run = document.getElementsByClassName('solve')
@@ -253,18 +250,6 @@ function getOrder() {
     }
 
     return choice
-}
-
-/* 
-    Source: https://www.sitepoint.com/delay-sleep-pause-wait/
-*/
-function sleep(milliseconds) {
-    let start = new Date().getTime();
-    for (let i = 0; i < 1e7; i++) {
-        if ((new Date().getTime() - start) > milliseconds) {
-            break;
-        }
-    }
 }
 
 function addMessage(header, text, show) {
