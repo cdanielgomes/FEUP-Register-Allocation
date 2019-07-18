@@ -48,28 +48,27 @@ class simpleGraphColoring {
 
         const tryColoring = this.greedyColoring();
 
-        if (tryColoring == true) {
-            this.rawgraph = graph;
-            this.network = new vis.Network(this.container, {
-                nodes: graph.nodes,
-                edges: graph.edges
-            }, {
-                edges: {
-                    color: {
-                        color: 'black'
-                    }
-                },
-                physics: {
-                    enabled: true,
-                    stabilization: {
-                        enabled: true
-                    }
-                }
-            })
-        }else{
+        if (tryColoring == false) {
             console.error("not colorable");
         }
 
+        this.rawgraph = graph;
+        this.network = new vis.Network(this.container, {
+            nodes: graph.nodes,
+            edges: graph.edges
+        }, {
+            edges: {
+                color: {
+                    color: 'black'
+                }
+            },
+            physics: {
+                enabled: true,
+                stabilization: {
+                    enabled: true
+                }
+            }
+        })
     }
 
     checkOrder() {
@@ -466,7 +465,7 @@ class simpleGraphColoring {
         // Initialize remaining V-1 vertices as unassigned 
         for (let u = 1; u < sizeResult; u++) {
             result[u] = -1; // no color is assigned to u */
-            console.log('result[',u,'] = ', result[u]);
+            console.log('result[', u, '] = ', result[u]);
         }
         console.log(result);
 
@@ -494,7 +493,8 @@ class simpleGraphColoring {
                 // }
 
                 if (result[index] != -1) {
-                    availableColors[index] = true;
+                    //availableColors[index] = true;
+                    availableColors[result[index]] = true;
                 }
             }
 
@@ -515,7 +515,8 @@ class simpleGraphColoring {
 
             for (let index = 1; index < sizeResult; index++) {
                 if (result[index] != -1) {
-                    availableColors[index] = false;
+                    //availableColors[index] = false;
+                    availableColors[result[index]] = false;
                 }
             }
         }
