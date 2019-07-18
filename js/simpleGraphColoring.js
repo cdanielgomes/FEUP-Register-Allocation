@@ -12,10 +12,6 @@ class simpleGraphColoring {
         this.order = obj.order
         this.registers = obj.registers
         this.stepbystep = false
-
-        //
-        this.greedyColoring();
-        //
     }
 
     init(file, stepping) {
@@ -50,23 +46,27 @@ class simpleGraphColoring {
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
 
-        this.rawgraph = graph;
-        this.network = new vis.Network(this.container, {
-            nodes: graph.nodes,
-            edges: graph.edges
-        }, {
-            edges: {
-                color: {
-                    color: 'black'
+        const tryColoring = this.greedyColoring();
+
+        if (tryColoring == true) {
+            this.rawgraph = graph;
+            this.network = new vis.Network(this.container, {
+                nodes: graph.nodes,
+                edges: graph.edges
+            }, {
+                edges: {
+                    color: {
+                        color: 'black'
+                    }
+                },
+                physics: {
+                    enabled: true,
+                    stabilization: {
+                        enabled: true
+                    }
                 }
-            },
-            physics: {
-                enabled: true,
-                stabilization: {
-                    enabled: true
-                }
-            }
-        })
+            })
+        }
 
     }
 
@@ -517,8 +517,8 @@ class simpleGraphColoring {
 
         // print the result 
         // for (int u = 0; u < V; u++)
-            // cout << "Vertex " << u << " --->  Color " <<
-            // result[u] << endl;
+        // cout << "Vertex " << u << " --->  Color " <<
+        // result[u] << endl;
 
         for (let index = 0; index < sizeResult; index++) {
             console.log("Vertex " + u + " --->  Color " + result[u]);
