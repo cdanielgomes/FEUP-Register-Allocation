@@ -12,10 +12,6 @@ class simpleGraphColoring {
         this.order = obj.order
         this.registers = obj.registers
         this.stepbystep = false
-
-        //
-    
-        //
     }
 
     init(file, stepping) {
@@ -50,8 +46,12 @@ class simpleGraphColoring {
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
 
+        const tryColoring = this.greedyColoring();
 
-        this.greedyColoring();  
+        if (tryColoring == false) {
+            console.error("not colorable");
+        }
+
         this.rawgraph = graph;
         this.network = new vis.Network(this.container, {
             nodes: graph.nodes,
@@ -69,7 +69,6 @@ class simpleGraphColoring {
                 }
             }
         })
-
     }
 
     checkOrder() {
@@ -471,9 +470,7 @@ class simpleGraphColoring {
         let availableColors = new Array(sizeResult);
         
         availableColors.fill(true)
-     
-        console.log(result);
-        console.log(availableColors);
+        
         //
         // Assign colors to remaining V-1 vertices 
         for (let u = 1; u < sizeResult; u++) {
@@ -522,15 +519,16 @@ class simpleGraphColoring {
             availableColors.fill(true)
             /*for (let index = 1; index < sizeResult; index++) {
                 if (result[index] != -1) {
-                    availableColors[index] = false;
+                    //availableColors[index] = false;
+                    availableColors[result[index]] = false;
                 }
             }*/
         }
 
         // print the result 
         // for (int u = 0; u < V; u++)
-            // cout << "Vertex " << u << " --->  Color " <<
-            // result[u] << endl;
+        // cout << "Vertex " << u << " --->  Color " <<
+        // result[u] << endl;
 
         for (let index = 0; index < sizeResult; index++) {
             console.log("Vertex " + this.graph.nodes[index].id + " --->  Color " + result[index]);
