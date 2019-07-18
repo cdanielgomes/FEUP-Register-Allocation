@@ -475,26 +475,20 @@ class simpleGraphColoring {
         // Assign colors to remaining V-1 vertices 
         for (let u = 1; u < sizeResult; u++) {
             // Process all adjacent vertices and flag their colors 
-            // as unavailable 
-            //list < int > ::iterator i;
-            //for (let i = adj[u].begin(); i != adj[u].end(); ++i)
+            // as available
+    
             let array = this.graph.nodes[u].neighbors
 
-            for (let i = 1; i < array.length; i++) {
-                //const element = array[index];
+            for (let i = 0; i < array.length; i++) {
+                
                 let b;
-
+                //find index of the neighbor
                 for(let index = 0; index < sizeResult; index++ ){
                     if(this.graph.nodes[index].id == array[i].id){
                         b = index
-                    break
-
+                        break
                     }
                 }
-                
-                // if (result[ * i] != -1){
-                // available[result[ * i]] = true;
-                // }
 
                 if (result[b] != -1) {
                     availableColors[result[b]] = false;
@@ -512,26 +506,16 @@ class simpleGraphColoring {
             result[u] = cr; // Assign the found color 
 
             // Reset the values back to false for the next iteration 
-            // for (let i = adj[u].begin(); i != adj[u].end(); ++i)
-            // if (result[ * i] != -1)
-            // available[result[ * i]] = false;
-
+        
             availableColors.fill(true)
-            /*for (let index = 1; index < sizeResult; index++) {
-                if (result[index] != -1) {
-                    //availableColors[index] = false;
-                    availableColors[result[index]] = false;
-                }
-            }*/
         }
 
         // print the result 
-        // for (int u = 0; u < V; u++)
-        // cout << "Vertex " << u << " --->  Color " <<
-        // result[u] << endl;
+        console.log( Math.max(...result) + 1)
 
-        for (let index = 0; index < sizeResult; index++) {
-            console.log("Vertex " + this.graph.nodes[index].id + " --->  Color " + result[index]);
-        }
+       // this.error.addAndPrint({msg: "The graph is colorable with at least " + (Math.max(...result) + 1)})
+       
+        addMessage(Math.max(...result) + 1,"The graph is colorable with at least ", true)
+        sleep(3000)
     }
 }
