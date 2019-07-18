@@ -66,6 +66,8 @@ class simpleGraphColoring {
                     }
                 }
             })
+        }else{
+            console.error("not colorable");
         }
 
     }
@@ -459,12 +461,14 @@ class simpleGraphColoring {
         //
 
         // Assign the first color to first vertex 
-        result[0] = global.colorsPallete[0];
+        result[0] = colorsPallete[0];
 
         // Initialize remaining V-1 vertices as unassigned 
         for (let u = 1; u < sizeResult; u++) {
             result[u] = -1; // no color is assigned to u */
+            console.log('result[',u,'] = ', result[u]);
         }
+        console.log(result);
 
         // A temporary array to store the available colors. True 
         // value of available[cr] would mean that the color cr is 
@@ -472,8 +476,9 @@ class simpleGraphColoring {
         //bool 
         const availableColors = new Array();
         for (let cr = 0; cr < sizeResult; cr++) {
-            available[cr] = false;
+            availableColors[cr] = false;
         }
+        console.log(availableColors);
 
         // Assign colors to remaining V-1 vertices 
         for (let u = 1; u < sizeResult; u++) {
@@ -481,22 +486,22 @@ class simpleGraphColoring {
             // as unavailable 
             //list < int > ::iterator i;
             //for (let i = adj[u].begin(); i != adj[u].end(); ++i)
-            for (let index = 1; index < array.length; index++) {
+            for (let index = 1; index < sizeResult; index++) {
                 //const element = array[index];
 
                 // if (result[ * i] != -1){
                 // available[result[ * i]] = true;
                 // }
 
-                if (result[i] != -1) {
-                    availableColors[i] = true;
+                if (result[index] != -1) {
+                    availableColors[index] = true;
                 }
             }
 
             // Find the first available color 
             let cr;
             for (cr = 0; cr < sizeResult; cr++) {
-                if (available[cr] == false) {
+                if (availableColors[cr] == false) {
                     break;
                 }
             }
@@ -521,7 +526,7 @@ class simpleGraphColoring {
         // result[u] << endl;
 
         for (let index = 0; index < sizeResult; index++) {
-            console.log("Vertex " + u + " --->  Color " + result[u]);
+            console.log('Vertex', index, ' --->  Color ', result[index]);
         }
     }
 }
