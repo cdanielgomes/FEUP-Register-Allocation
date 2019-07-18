@@ -14,7 +14,7 @@ class simpleGraphColoring {
         this.stepbystep = false
 
         //
-        this.greedyColoring();
+    
         //
     }
 
@@ -50,6 +50,8 @@ class simpleGraphColoring {
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
 
+
+        this.greedyColoring();  
         this.rawgraph = graph;
         this.network = new vis.Network(this.container, {
             nodes: graph.nodes,
@@ -450,53 +452,62 @@ class simpleGraphColoring {
         console.log("estou no coloring ...");
 
         //int result[this.graph.nodes.number];
-        const result = new Array();
-        const sizeResult = this.graph.edges.length;
-
+      
+        const sizeResult = this.graph.nodes.length;
+        let result = new Array(sizeResult);
         //
-        console.log(result);
-        console.log(sizeResult);
-        //
+      
 
         // Assign the first color to first vertex 
-        result[0] = global.colorsPallete[0];
+        result[0] = 0;
 
         // Initialize remaining V-1 vertices as unassigned 
-        for (let u = 1; u < sizeResult; u++) {
-            result[u] = -1; // no color is assigned to u */
-        }
+        result.fill(-1, 1)
 
         // A temporary array to store the available colors. True 
         // value of available[cr] would mean that the color cr is 
         // assigned to one of its adjacent vertices 
         //bool 
-        const availableColors = new Array();
-        for (let cr = 0; cr < sizeResult; cr++) {
-            available[cr] = false;
-        }
-
+        let availableColors = new Array(sizeResult);
+        
+        availableColors.fill(true)
+     
+        console.log(result);
+        console.log(availableColors);
+        //
         // Assign colors to remaining V-1 vertices 
         for (let u = 1; u < sizeResult; u++) {
             // Process all adjacent vertices and flag their colors 
             // as unavailable 
             //list < int > ::iterator i;
             //for (let i = adj[u].begin(); i != adj[u].end(); ++i)
-            for (let index = 1; index < array.length; index++) {
-                //const element = array[index];
+            let array = this.graph.nodes[u].neighbors
 
+            for (let i = 1; i < array.length; i++) {
+                //const element = array[index];
+                let b;
+
+                for(let index = 0; index < sizeResult; index++ ){
+                    if(this.graph.nodes[index].id == array[i].id){
+                        b = index
+                    break
+
+                    }
+                }
+                
                 // if (result[ * i] != -1){
                 // available[result[ * i]] = true;
                 // }
 
-                if (result[i] != -1) {
-                    availableColors[i] = true;
+                if (result[b] != -1) {
+                    availableColors[result[b]] = false;
                 }
             }
 
             // Find the first available color 
             let cr;
             for (cr = 0; cr < sizeResult; cr++) {
-                if (available[cr] == false) {
+                if (availableColors[cr]) {
                     break;
                 }
             }
@@ -508,11 +519,12 @@ class simpleGraphColoring {
             // if (result[ * i] != -1)
             // available[result[ * i]] = false;
 
-            for (let index = 1; index < sizeResult; index++) {
+            availableColors.fill(true)
+            /*for (let index = 1; index < sizeResult; index++) {
                 if (result[index] != -1) {
                     availableColors[index] = false;
                 }
-            }
+            }*/
         }
 
         // print the result 
@@ -521,7 +533,7 @@ class simpleGraphColoring {
             // result[u] << endl;
 
         for (let index = 0; index < sizeResult; index++) {
-            console.log("Vertex " + u + " --->  Color " + result[u]);
+            console.log("Vertex " + this.graph.nodes[index].id + " --->  Color " + result[index]);
         }
     }
 }
