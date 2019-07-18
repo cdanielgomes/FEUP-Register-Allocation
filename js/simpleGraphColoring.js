@@ -503,7 +503,7 @@ class simpleGraphColoring {
                 }
             }
 
-            result[u] = cr; // Assign the found color 
+            result[u] = colorsPallete[cr]; // Assign the found color 
 
             // Reset the values back to false for the next iteration 
         
