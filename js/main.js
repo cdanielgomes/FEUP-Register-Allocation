@@ -24,8 +24,7 @@ function getUrlVars() {
 
 //Include additional files here
 serialInclude([
-    // Vis.js Library
-    'http://visjs.org/dist/vis.js',
+
     // core/ Main class files
     'js/graph.js', 'js/node.js', 'js/errors.js', 'js/simpleGraphColoring.js', 'js/global.js', 'js/auxiliars.js',
     main = function () {

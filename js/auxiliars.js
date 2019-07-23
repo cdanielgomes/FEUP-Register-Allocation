@@ -146,7 +146,7 @@ function getK() {
             break;
         case 'nameRegisters':
             next = document.getElementById('nameRegisters').value
-
+            next = getArray(next)
             next = { k: next.length, registers: next }
             break;
         default:
@@ -289,4 +289,39 @@ function getArray(string) {
 
     return Array.from((new Set(array)))
 
+}
+
+
+function downloadFile(string) {
+
+    // create the text file as a Blob:
+    let blob = new Blob([string], { type: "text/plain" });
+
+
+    // download the file:
+    download(blob, "file.dot");
+
+}
+
+
+
+function download(blob, name) {
+    let url = URL.createObjectURL(blob),
+        div = document.createElement("div"),
+        anch = document.createElement("a"),
+        elem = document.getElementsByClassName('col-sm')[0]
+
+    elem.appendChild(div);
+    div.appendChild(anch);
+
+    console.log(elem)
+    anch.innerHTML = "&nbsp;";
+    div.style.width = "100";
+    div.style.height = "100";
+    anch.href = url;
+    anch.download = name;
+
+    let ev = new MouseEvent("click", {});
+    anch.dispatchEvent(ev);
+    elem.removeChild(div);
 }
