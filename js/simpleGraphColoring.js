@@ -17,6 +17,7 @@ class simpleGraphColoring {
     init(file, stepping) {
         let reader = new FileReader();
         reader.readAsText(file);
+        removeDownloadButton()
 
         reader.onload = e => {
             this.createGraph(vis.network.convertDot(e.target.result));
@@ -35,6 +36,7 @@ class simpleGraphColoring {
     }
 
     initDefault(val, stepping) {
+        removeDownloadButton()
         this.createGraph(vis.network.convertDot(eval('graph' + val)));
         if (!this.checkOrder()) return
         if (stepping === type.SOLUTION) this.commonSteps();
@@ -46,10 +48,10 @@ class simpleGraphColoring {
     }
 
     createGraph(graph) {
-        
+        console.log(graph)
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
-
+        
         this.greedyColoring()
 
         this.rawgraph = graph;
@@ -109,6 +111,7 @@ class simpleGraphColoring {
 
         this.showRegisters()
 
+
         downloadFile(this.toDot())
 
     }
@@ -133,6 +136,8 @@ class simpleGraphColoring {
                 break;
             case state.OVER:
                 this.showRegisters()
+                removeDownloadButton()
+                downloadFile(this.toDot())
                 //alert('Algorithm complete')
                 console.log('Algorithm complete')
 
@@ -150,6 +155,7 @@ class simpleGraphColoring {
     undo() {
 
         let temp = this.history.length === 1 ? this.history[0] : this.history.pop();
+        removeDownloadButton()
 
         this.graph = temp.graph;
         this.paintingGraph = temp.painting;

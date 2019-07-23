@@ -294,18 +294,24 @@ function getArray(string) {
 
 function downloadFile(string) {
 
-    // create the text file as a Blob:
-    let blob = new Blob([string], { type: "text/plain" });
+    let downloadButton = document.createElement('button')
+    downloadButton.id = "download"
+    downloadButton.appendChild(document.createTextNode('Download'))
+    downloadButton.onclick = (ev) => {ev.preventDefault(); download(string)}
+    let elem = document.getElementsByClassName('col-sm-3')[0]
+    elem.appendChild(downloadButton)
+}
 
-
-    // download the file:
-    download(blob, "file.dot");
-
+function removeDownloadButton(){
+    let elem  = document.getElementById("download")
+    if(elem) elem.remove();
 }
 
 
+function download(string) {
 
-function download(blob, name) {
+    let blob = new Blob([string], { type: "text/plain" });
+
     let url = URL.createObjectURL(blob),
         div = document.createElement("div"),
         anch = document.createElement("a"),
@@ -314,12 +320,11 @@ function download(blob, name) {
     elem.appendChild(div);
     div.appendChild(anch);
 
-    console.log(elem)
     anch.innerHTML = "&nbsp;";
     div.style.width = "100";
     div.style.height = "100";
     anch.href = url;
-    anch.download = name;
+    anch.download = "graph.dot";
 
     let ev = new MouseEvent("click", {});
     anch.dispatchEvent(ev);

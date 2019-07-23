@@ -3,7 +3,8 @@ class Node {
     constructor(node) {
 
         this.id = node.id;
-        this.color = null;
+        
+        this.color = node.hasOwnProperty('color') ? (node.color.hasOwnProperty('background') ? colorsPallete.indexOf(node.color.background) : null) : null;
         this.label = node.label;
         this.neighbors = [];
         this.moveRelated = false;
