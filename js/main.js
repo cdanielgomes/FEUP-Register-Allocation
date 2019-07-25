@@ -41,6 +41,8 @@ serialInclude([
         button.addEventListener('click', function (e) {
             e.preventDefault();
             removeMessage();
+            hideStepButtons();
+
             let stepOrSol = run();
             let file = getFileOptions();
             let k = getK()

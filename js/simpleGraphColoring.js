@@ -26,6 +26,7 @@ class simpleGraphColoring {
             if (stepping === type.SOLUTION) this.commonSteps();
             else {
                 this.stepbystep = true
+                showStepButtons()
                 this.history.push(this.copy());
                 createStepButtons(this)
             }
@@ -40,8 +41,9 @@ class simpleGraphColoring {
         if (stepping === type.SOLUTION) this.commonSteps();
         else {
             this.stepbystep = true
-            createStepButtons(this)
+            showStepButtons()
             this.history.push(this.copy());
+            createStepButtons(this)
         }
     }
 

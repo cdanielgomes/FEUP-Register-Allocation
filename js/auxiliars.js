@@ -350,3 +350,11 @@ function getFileOptions() {
 
     return null;
 }
+
+function showStepButtons() {
+    document.getElementById('buttonsDivNextUndo').style.display = "flex";
+}
+
+function hideStepButtons() {
+    document.getElementById('buttonsDivNextUndo').style.display = "none";
+}
