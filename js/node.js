@@ -12,6 +12,8 @@ class Node {
         this.coalesce = false;
         this.spilled = false;
         this.raw = node;
+        this.borderColor = '#2B7CE9'; // default
+        this.borderWidth = 1; // default
     }
 
     addMove(node) {
