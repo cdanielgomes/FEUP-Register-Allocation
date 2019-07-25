@@ -2,6 +2,8 @@
 
 <head>
     <meta charset="utf-8">
+    <title>Register Allocation</title>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -16,7 +18,7 @@
 
 <body>
 
-    <div class="col-sm">
+    <div id="page-content" class="col-sm">
         <div class="col-sm-2">
             <table id="stack" class="table table-bordered">
                 <thead>
@@ -40,6 +42,13 @@
         </div>
 
         <div class="col-sm-3">
+            <div id="about">
+                <a id="about-link" href="about.html">
+                <i class="far fa-question-circle fa-lg"></i>
+                What is this?
+                </a>
+            </div>
+
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading">
