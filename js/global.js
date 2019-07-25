@@ -89,3 +89,8 @@ const graph2 = 'graph {' +
     '8 -- 9;' +
     '10;' +
     '}'
+
+const graph3 = 'graph {' +
+    'A -- B;' +
+    'B -- C;' +
+    '}'

@@ -45,7 +45,7 @@
                     <div class="panel-heading">
                         <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#uploadFiles">
-                                Upload files
+                                Upload file or choose example
                             </a>
                         </h4>
                     </div>
@@ -53,8 +53,21 @@
                     <div id="uploadFiles" class="panel-collapse collapse">
                         <div class="panel-body">
                             <div id="fileField">
+                                <input id="uploadFile" class="dotFiles" type="radio" name="files" checked> 
+                                <label for="uploadFile">Upload file</label>
                                 <input id="myFile" type='file' accept=".gv,.dot">
                                 <br>
+                            </div>
+
+                            
+                            <div class="form-group">
+                                <input id="chooseExample" class="dotFiles" type="radio" name="files"> 
+                                <label for="chooseExample">Choose example</label>
+                                <select class="form-control" id="fileExamples">
+                                    <option value="3" selected>Basic graph</option>
+                                    <option value="2">Another basic graph but bigger</option>
+                                    <option value="1">Graph with move-related nodes</option>
+                                </select>
                             </div>
                             
                         </div>

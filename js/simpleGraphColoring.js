@@ -32,6 +32,7 @@ class simpleGraphColoring {
         }
     }
 
+
     initDefault(val, stepping) {
         removeDownloadButton()
         this.createGraph(vis.network.convertDot(eval('graph' + val)));
@@ -348,7 +349,6 @@ class simpleGraphColoring {
 
         nodeIds.forEach(function(id) {
             let node = this.graph.findNode(id);
-            console.log(id)
             if(node != null) {
                 node.borderWidth = 4;
                 node.borderColor = '#FF3300';

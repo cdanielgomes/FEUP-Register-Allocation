@@ -30,10 +30,8 @@ serialInclude([
     main = function () {
 
         let button = document.getElementById('start');
-        let input = document.getElementById("myFile");
         let print = document.getElementById('network')
         let message = document.getElementById('message')
-        //  let options = document.getElementsByClassName('option')
         let error = new Error(message)
         let obj = {
             container: print,
@@ -44,64 +42,25 @@ serialInclude([
             e.preventDefault();
             removeMessage();
             let stepOrSol = run();
+            let file = getFileOptions();
+            let k = getK()
 
-            if (stepOrSol) {
+            obj.k = k.k
+            obj.registers = k.registers
+            obj.coalesce = getHeuristics()
+            obj.spilling = getSpilling()
+            obj.order = getOrder()
 
-                if (input.files && input.files[0]) {
-                    let k = getK()
+            let coloring = new simpleGraphColoring(obj);
 
-                    let coalesce = getHeuristics()
-
-                    let spilling = getSpilling()
-
-                    let order = getOrder()
-
-                    if (k && spilling) {
-
-
-                        obj.k = k.k
-                        obj.registers = k.registers
-                        obj.coalesce = coalesce
-                        obj.spilling = spilling
-                        obj.order = order
-
-                        let coloring = new simpleGraphColoring(obj);
-                        coloring.init(input.files[0], stepOrSol);
-
-                    } else {
-                        error.addAndPrint({ error: true, msg: "Coalesce, K and Spilling must be selected" },
-                            { error: true, msg: "K = " + k },
-                            { error: true, msg: "Coalesce = " + coalesce },
-                            { error: true, msg: "Spilling = " + spilling },
-                            { error: true, msg: "Node order analysis = " + order })
-
-                    }
-                }
-                else {
-                    // Start default
-                    obj.coalesce = 'Briggs'
-                    obj.spilling = []
-                    obj.order = "random"
-                    let random = Math.floor(Math.random() * 2) + 1
-
-
-                    if (random === 2) obj.k = 3
-                    else obj.k = 4
-
-
-                    error.addAndPrint({ msg: "Starting a random default graph" },
-                        { msg: "K = " + obj.k },
-                        { msg: "Coalesce = " + obj.coalesce },
-                        { msg: "Spilling = " + obj.spilling },
-                        { msg: "Order = " + obj.order })
-
-                    let coloring = new simpleGraphColoring(obj);
-                    coloring.initDefault(random, stepOrSol);
-                }
-            } else {
-                error.addAndPrint('You need to select how you want see the result')
-                //message
+            if (file instanceof File) {
+                coloring.init(file, stepOrSol);
             }
+            else if (file != null) {
+                coloring.initDefault(file, stepOrSol);
+            } else {
+                addMessage('', 'You need to upload a file or choose an example', true);
+            } 
         })
     }
 ]);

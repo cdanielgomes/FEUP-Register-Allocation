@@ -310,7 +310,6 @@ function removeDownloadButton(){
     if(elem) elem.remove();
 }
 
-
 function download(string) {
 
     let blob = new Blob([string], { type: "text/plain" });
@@ -332,4 +331,22 @@ function download(string) {
     let ev = new MouseEvent("click", {});
     anch.dispatchEvent(ev);
     elem.removeChild(div);
+}
+
+function createBasicGraph() {
+    this.createGraph(vis.network.convertDot(e.target.result));
+}
+
+function getFileOptions() {
+    let options = document.getElementsByClassName('dotFiles');
+    let uploadFileOp = options[0], chooseExampleOp = options[1];
+
+    if(uploadFileOp.checked) {
+        return document.getElementById("myFile").files[0];
+    } else if (chooseExampleOp.checked) {
+        let dropdown = document.getElementById('fileExamples');
+        return dropdown.options[dropdown.selectedIndex].value;
+    }
+
+    return null;
 }
