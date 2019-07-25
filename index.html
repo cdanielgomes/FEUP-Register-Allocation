@@ -52,8 +52,11 @@
 
                     <div id="uploadFiles" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <input id="myFile" type='file' accept=".gv,.dot">
-                            <br>
+                            <div id="fileField">
+                                <input id="myFile" type='file' accept=".gv,.dot">
+                                <br>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -105,16 +108,24 @@
 
                     <div id="heuristics" class="panel-collapse collapse">
                         <div class="panel-body">
-                                <input class="form-check-input coalesce" name="coalescing" type="radio" value="Briggs" id="defaultCheck1" checked>
+                                <input class="form-check-input coalesce" name="coalescing" type="radio" value="Briggs" id="defaultCheck1" >
                                 <label class="form-check-label" for="defaultCheck1">
                                     Briggs
                                 </label>
                                 <br>
 
-                                <input class="form-check-input coalesce" name="coalescing" type="radio" value="George" id="defaultCheck2">
+                                <input class="form-check-input coalesce" name="coalescing" type="radio" value="George" id="defaultCheck2" checked>
                                 <label class="form-check-label" for="defaultCheck2">
                                     George
                                 </label>
+
+                                
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="always" checked>
+                                    <label class="custom-control-label" for="always">do coalesce</label>
+                                </div>
+
+            
                         </div>
                     </div>
                 </div>

@@ -55,8 +55,8 @@ serialInclude([
                     let spilling = getSpilling()
 
                     let order = getOrder()
-                    
-                    if (k && coalesce && spilling) {
+
+                    if (k && spilling) {
 
 
                         obj.k = k.k

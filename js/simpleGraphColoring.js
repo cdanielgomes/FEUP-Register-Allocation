@@ -4,8 +4,7 @@ class simpleGraphColoring {
         this.k = obj.k
         this.stack = [];
         this.container = obj.container;
-        this.coalesceHeuristic = obj.coalesce === 'Briggs' ? 1 : 2; // 1 - Briggs, 2 - George
-        this.spillingHeuristic = obj.spilling;
+        this.readInputs()
         this.history = []
         this.currentState = state.STACKING;
         this.error = obj.error
@@ -48,7 +47,7 @@ class simpleGraphColoring {
     }
 
     createGraph(graph) {
-        console.log(graph)
+        
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
         
@@ -86,7 +85,7 @@ class simpleGraphColoring {
                 if (oi.array.length != 0) this.graph.nodes = oi.array
 
                 else {
-                    this.error.addAndPrint({ error: 'Nem aqui devia chegar' })
+                    this.error.addAndPrint({ error:true, msg: 'Nem aqui devia chegar' })
                     return false
                 }
                 break;
@@ -96,19 +95,36 @@ class simpleGraphColoring {
     }
 
     commonSteps() {
+        showStack(this.stack)
         while (this.currentState === state.STACKING) {
             this.stacking()
         }
 
         this.fullStack = this.stack;
 
-        while (this.currentState === state.PAINTING) {
-            this.paintNode()
+        try{
+            
+            while (this.currentState === state.PAINTING) {
+          
+                this.paintNode()
+            }
+
+        } catch(error){
+
+            this.currentState = state.ERROR
+            this.error.addAndPrint(
+                {msg: "Cannot paint the nodes [" +  error.nodes + ']', error:true},
+                {msg:error.msg, error: true},
+                {msg : "K = " + this.k, error: true},
+                {msg : "Spilling Heuristic = " + (this.spillingHeuristic.length ? 'input order' : 'nodes degree'), error: true},
+                {msg : "Coalesce Heuristic = " + (this.coalesceHeuristic ? (this.coalesceHeuristic === 1 ? 'Briggs': 'George') : 'No Coalesce'), error: true})
+        
+            this.show(this.paintingGraph)
+            showStack(this.stack)
+            return
         }
 
-
         this.show(this.paintingGraph)
-
         this.showRegisters()
 
 
@@ -121,7 +137,9 @@ class simpleGraphColoring {
             painting: deepClone(this.paintingGraph),
             graph: deepClone(this.graph),
             stack: this.stack.slice(0),
-            state: this.currentState.slice(0)
+            state: this.currentState.slice(0),
+            coalesceHeuristic: JSON.parse(JSON.stringify(this.coalesceHeuristic)),
+            spillingHeuristic: JSON.parse(JSON.stringify(this.spillingHeuristic))
         }
     }
 
@@ -131,8 +149,30 @@ class simpleGraphColoring {
 
         switch (this.currentState) {
             case state.PAINTING:
-                this.paintNode()
+                try{
+                    this.paintNode()
+                } catch(error) {
+                  
+                   // this.currentState = state.ERROR
+                    this.error.addAndPrint(
+                    {msg: "Cannot paint the nodes [" +  error.nodes + ']', error:true},
+                    {msg:error.msg, error: true},
+                    {msg : "K = " + this.k, error: true},
+                    {msg : "Spilling Heuristic = " + (this.spillingHeuristic.length ? 'input order' : 'nodes degree'), error: true},
+                    {msg : "Coalesce Heuristic = " + (this.coalesceHeuristic ? (this.coalesceHeuristic === 1 ? 'Briggs': 'George') : 'No Coalesce'), error: true})
+                    
+                    let id = ""
+                    for(let i of error.nodes){
+                        id += i + "-"
+                    }
+    
+                    this.stack.push(id.slice(0,-1))
+                    
+                    this.history.pop()
+                }
+
                 this.show(this.paintingGraph);
+                
                 break;
             case state.OVER:
                 this.showRegisters()
@@ -143,12 +183,18 @@ class simpleGraphColoring {
 
                 break;
             case state.STACKING:
+                this.readInputs()
                 this.stacking()
                 this.show(this.graph)
+                break;
+            
+            case state.ERROR:
+                
                 break;
             default:
                 alert('U SHOULDNT BE HERE')
         }
+
         showStack(this.stack);
     }
 
@@ -161,7 +207,10 @@ class simpleGraphColoring {
         this.paintingGraph = temp.painting;
         this.stack = temp.stack;
         this.currentState = temp.state;
+        this.spillingHeuristic = temp.spillingHeuristic
+        this.coalesceHeuristic = temp.coalesceHeuristic
         this.print();
+
         showStack(this.stack);
     }
 
@@ -188,7 +237,11 @@ class simpleGraphColoring {
     }
 
     coalesce() {
-        for (let node of this.graph.nodes) {
+        let length = this.graph.nodes.length
+
+        for(let b = 0; b < length && this.coalesceHeuristic !== 0; b++ ){
+             let node = this.graph.nodes[b]
+            //for (let node of this.graph.nodes) {
 
             if (node.isMoveRelated()) {
 
@@ -205,6 +258,7 @@ class simpleGraphColoring {
                 if (this.coalesceHeuristic === 2) { // coalesce, George
                     for (let nei of moveNode.neighbors) {
                         if (!node.neighbor(nei) && nei.degree() >= this.k) {
+
                             mayCoalesce = false; // can't coalesce;
                         }
                     }
@@ -308,27 +362,20 @@ class simpleGraphColoring {
         for (let node of nodes) {
 
             if (node.degree() < this.k && !node.isMoveRelated()) {
-                this.stack.push(node.id)
+                if(!node.color) {
+                    addMessage('Stack', node.id, this.stepbystep);
+                    this.stack.push(node.id)
+                } else{
+                    addMessage('Node Precolored', node.id, this.stepbystep)
+                }
+
                 this.graph.removeNode(node);
-
-                addMessage('Stack', node.id, this.stepbystep);
-
+                
                 return true;
             }
         }
 
         return false;
-    }
-
-    //paint all stack
-    painting() {
-        this.currentState = this.OVER
-        while (this.stack.length > 0) {
-
-            this.paintNode()
-        }
-
-        this.currentState = state.OVER
     }
 
     //paint a node 
@@ -345,7 +392,7 @@ class simpleGraphColoring {
         let used = [];
 
         for (let neigh of paintingNode.neighbors) {
-            if (neigh.color === null)
+            if (neigh.color == null)
                 continue;
 
             else used.push(neigh.color);
@@ -364,9 +411,11 @@ class simpleGraphColoring {
             addMessage('Actual spill', 'in node ' + paintingNode.id, this.stepbystep);
         }
 
+        if(!color) throw {nodes: nodeId, msg: "Graph can not be colored with the following settings: "} 
+
         paintingNode.color = color;
 
-
+      
         for (let index = 1; nodeId.length > index; index++) {
             this.paintingGraph.findNode(nodeId[index]).color = color;
         }
@@ -407,14 +456,17 @@ class simpleGraphColoring {
 
         }
 
+  
+
         for (let node of this.paintingGraph.nodes) {
+
             if (node.spilled) {
                 spilled.push(node);
             }
             if (node.color > this.k);
             else registers[node.color - 1].nodes.push(node.id)
         }
-
+       
         this.error.clean()
 
         for (let k in registers) {
@@ -516,6 +568,7 @@ class simpleGraphColoring {
     }
 
 
+    //read painted graph and convert it to a string in dot language with only the color and id
 
     toDot() {
 
@@ -534,6 +587,21 @@ class simpleGraphColoring {
        
         return content
     }
+
+    /**
+     * Read the current inputs for graph coloring algorithm
+     * 
+     * K ?, coalesce and spilling rules 
+     *  
+     */
+    readInputs(){
+
+        let tmp = getHeuristics()
+        this.coalesceHeuristic = tmp === 0 ? 0 : (tmp === 'Briggs' ? 1 : 2);
+        this.spillingHeuristic = getSpilling()
+
+    }
+
 
 }
 

@@ -44,7 +44,8 @@ const colorsPallete = [
 const state = {
     PAINTING: 'paint',
     STACKING: 'stack',
-    OVER: 'over'
+    OVER: 'over',
+    ERROR: 'error'
 }
 
 const type = {

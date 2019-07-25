@@ -158,18 +158,23 @@ function getK() {
 }
 
 function getHeuristics() {
+
+    let always = document.getElementById('always').checked
+    
     let heuris = document.getElementsByClassName('coalesce');
+
     let choice
 
-    for (let element of heuris) {
-        if (element.checked) {
-            choice = element.value;
+    if(always){
+        for (let element of heuris) {
+            if (element.checked) choice = element.value;
+        }
+
+        if (!(choice === 'George' || choice === 'Briggs')) {
+            choice = null
         }
     }
-
-    if (!(choice === 'George' || choice === 'Briggs')) {
-        choice = null
-    }
+    else choice = 0
 
     return choice
 }

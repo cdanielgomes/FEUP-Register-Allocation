@@ -23,10 +23,9 @@ class Error {
 
                 if (elem.error) {
 
-                    message += "<div class='.text-danger texting'> " + elem.msg + "</div>"
+                    message += "<div class='text-danger texting'> " + elem.msg + "</div>"
 
-                }
-            message += "<div class='texting'> " + elem.msg + "</div> "
+                }else message += "<div class='texting'> " + elem.msg + "</div> "
 
             }
         })
