@@ -244,9 +244,7 @@ function getOrder() {
         case "degree":
             break;
         case "order":
-
             choice = document.getElementById("inputOrderNodes").value
-
             choice = getArray(choice)
             break;
         default:

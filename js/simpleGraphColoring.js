@@ -21,8 +21,6 @@ class simpleGraphColoring {
         reader.onload = e => {
             this.createGraph(vis.network.convertDot(e.target.result));
 
-
-
             if (!this.checkOrder()) return
 
             if (stepping === type.SOLUTION) this.commonSteps();
@@ -47,7 +45,6 @@ class simpleGraphColoring {
     }
 
     createGraph(graph) {
-        
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
         
@@ -144,7 +141,7 @@ class simpleGraphColoring {
     }
 
     stepping() {
-
+        showStack(this.stack);
         this.history.push(this.copy());
 
         switch (this.currentState) {
@@ -184,8 +181,11 @@ class simpleGraphColoring {
                 break;
             case state.STACKING:
                 this.readInputs()
-                this.stacking()
-                this.show(this.graph)
+                this.stacking();
+                this.stacked = this.stack[this.stack.length - 1];
+                this.markStacked(); // outline node to stack
+                this.show(this.graph);
+                this.removeNode(this.stacked);
                 break;
             
             case state.ERROR:
@@ -194,8 +194,6 @@ class simpleGraphColoring {
             default:
                 alert('U SHOULDNT BE HERE')
         }
-
-        showStack(this.stack);
     }
 
     undo() {
@@ -265,9 +263,6 @@ class simpleGraphColoring {
                 }
 
                 if (mayCoalesce) {
-                    this.graph.removeNode(node);
-                    this.graph.removeNode(moveNode);
-
                     this.stack.push(node.id + '-' + moveNode.id);
 
                     node.setCoalesced(true);
@@ -288,10 +283,8 @@ class simpleGraphColoring {
             if (node.isMoveRelated()) {
                 if (node.degree() < this.k || node.move.degree() < this.k) {
                     node.freeze(); // mark not move related
-                    this.stacking();
-
                     addMessage('Freeze', 'move related nodes ' + node.id + ' and ' + node.move.id, this.stepbystep);
-
+                    this.stacking();
                     return;
                 }
             }
@@ -309,7 +302,7 @@ class simpleGraphColoring {
                 index = this.graph.nodes.findIndex(function (node) {
                     return node.id === id;
                 });
-                if (index != -1) {
+                if (index != -1 && !this.graph.nodes[index].isMoveRelated()) {
                     this.spillingHeuristic.splice(i, 1);
                     break;
                 }
@@ -318,7 +311,7 @@ class simpleGraphColoring {
             let max = -1;
 
             for (let i = 0; i < this.graph.nodes.length; i++) {
-                if (this.graph.nodes[i].degree() > max) {
+                if (this.graph.nodes[i].degree() > max && !this.graph.nodes[i].isMoveRelated()) {
                     max = this.graph.nodes[i].degree();
                     index = i;
                 }
@@ -327,8 +320,7 @@ class simpleGraphColoring {
 
         if (index != -1) {
             let node = this.graph.nodes[index];
-            this.stack.push(node.id)
-            this.graph.removeNode(node);
+            this.stack.push(node.id);
             this.paintingGraph.findNode(node.id).spilled = true;
 
             addMessage('May spill', node.id, this.stepbystep);
@@ -347,6 +339,27 @@ class simpleGraphColoring {
                 this.coalesce()
             }
         }
+    }
+
+    markStacked() {
+        let nodeIds = String(this.stacked).split('-');
+
+        nodeIds.forEach(function(id) {
+            let node = this.graph.findNode(id);
+            if(node != null) {
+                node.borderWidth = 4;
+                node.borderColor = '#FF3300';
+            }
+        }, this); 
+    }
+
+    removeNode(id) {
+        let nodeIds = String(id).split('-');
+
+        nodeIds.forEach(function(id) {
+            let node = this.graph.findNode(id);
+            if(node != null) this.graph.removeNode(node);
+        }, this)
     }
 
     /**
@@ -431,7 +444,8 @@ class simpleGraphColoring {
         for (let i of ind) {
             let n = graph.nodes[i]
             nodes.add({
-                color: { background: colorsPallete[n.color - 1] },
+                borderWidth: n.borderWidth,
+                color: { background: colorsPallete[n.color - 1], border: n.borderColor },
                 id: n.id,
                 label: n.label
             })
