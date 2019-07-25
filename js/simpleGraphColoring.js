@@ -11,6 +11,9 @@ class simpleGraphColoring {
         this.order = obj.order
         this.registers = obj.registers
         this.stepbystep = false
+        this.coloredNode = null
+
+        
     }
 
     init(file, stepping) {
@@ -49,6 +52,21 @@ class simpleGraphColoring {
         this.paintingGraph = new Graph(graph);
         
         this.greedyColoring()
+        
+        this.precolored = this.graph.nodes.filter((elem)=>{
+            if(elem.color === null) {return false}
+            return true
+        }).length
+
+        let tmpColor = []
+        this.paintingGraph.nodes.forEach(elem => {
+            if(elem.color != null) tmpColor.push(elem.color)
+        })
+
+        this.colors = Array.from(Array(this.k), (x, index) => index + 1)
+        
+        this.colors = Array.from(new Set(tmpColor.concat(this.colors))) 
+        
 
         this.rawgraph = graph;
         this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, {
@@ -95,17 +113,22 @@ class simpleGraphColoring {
         showStack(this.stack)
         while (this.currentState === state.STACKING) {
             this.stacking();
+           
             this.stacked = this.stack[this.stack.length - 1];
+         
             this.removeNode(this.stacked);
+
         }
 
         this.fullStack = this.stack;
+
 
         try{
             
             while (this.currentState === state.PAINTING) {
           
                 this.paintNode()
+                
             }
 
         } catch(error){
@@ -333,7 +356,7 @@ class simpleGraphColoring {
     stacking() {
 
         if (!this.findAddStack()) {
-            if (this.graph.nodes.length === 0) {
+            if (this.graph.nodes.length === this.precolored) {
                 this.fullStack = this.stack
                 this.currentState = state.PAINTING
             }
@@ -382,21 +405,18 @@ class simpleGraphColoring {
                     addMessage('Stack', node.id, this.stepbystep);
                     this.stack.push(node.id)
                 } else{
+                    
                     addMessage('Node Precolored', node.id, this.stepbystep)
+                    continue
                 }
-                
                 return true;
             }
         }
-
         return false;
     }
 
     //paint a node 
     paintNode() {
-        let colors = Array.from(Array(this.k), (x, index) => index + 1)
-
-
         let nodeId = this.stack.pop()
 
         nodeId = String(nodeId).split('-') // in case of coalesce, in the stack will be x-x, so they will have the same color
@@ -412,7 +432,7 @@ class simpleGraphColoring {
             else used.push(neigh.color);
         }
 
-        let color = colors.filter((value) => {
+        let color = this.colors.filter((value) => {
 
             for (let c of used) {
                 if (c === value) return false
@@ -463,23 +483,21 @@ class simpleGraphColoring {
     showRegisters() {
         let registers = {}
         let spilled = []
-
+        
         for (let number = 0; number < this.k; number++) {
-            registers[number] = {}
-            registers[number].register = this.registers ? this.registers[number] : 'R' + number
-            registers[number].nodes = []
+            registers[this.colors[number]-1] = {}
+            registers[this.colors[number]-1].register = this.registers ? this.registers[number] : 'R' + number
+            registers[this.colors[number]-1].nodes = []
 
         }
-
-  
 
         for (let node of this.paintingGraph.nodes) {
 
             if (node.spilled) {
                 spilled.push(node);
             }
-            if (node.color > this.k);
-            else registers[node.color - 1].nodes.push(node.id)
+
+            if(!node.spilled)  registers[node.color-1].nodes.push(node.id)
         }
        
         this.error.clean()
