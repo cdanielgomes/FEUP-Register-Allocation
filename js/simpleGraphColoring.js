@@ -94,7 +94,9 @@ class simpleGraphColoring {
     commonSteps() {
         showStack(this.stack)
         while (this.currentState === state.STACKING) {
-            this.stacking()
+            this.stacking();
+            this.stacked = this.stack[this.stack.length - 1];
+            this.removeNode(this.stacked);
         }
 
         this.fullStack = this.stack;
