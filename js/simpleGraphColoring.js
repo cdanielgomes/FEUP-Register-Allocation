@@ -348,6 +348,7 @@ class simpleGraphColoring {
 
         nodeIds.forEach(function(id) {
             let node = this.graph.findNode(id);
+            console.log(id)
             if(node != null) {
                 node.borderWidth = 4;
                 node.borderColor = '#FF3300';
@@ -383,8 +384,6 @@ class simpleGraphColoring {
                 } else{
                     addMessage('Node Precolored', node.id, this.stepbystep)
                 }
-
-                this.graph.removeNode(node);
                 
                 return true;
             }
