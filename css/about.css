@@ -1,0 +1,27 @@
+body {
+    text-align: center;
+    background-color: #f5f7fa;
+}
+
+#register-allocation, h2 {
+    color: #0069d9;
+}
+
+p {
+    padding: 1em 2em;
+    font-size: 1.2rem;
+}
+
+a, a:focus {
+    color: #3d87d6;
+    text-decoration: none;
+}
+
+a:hover{
+    color: #0069d9;
+    text-decoration: none;
+}
+
+ul {
+    text-align: left;
+}

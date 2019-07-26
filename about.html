@@ -6,13 +6,87 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/about.css">
 
     <title>About this project</title>
   </head>
   <body>
-    <h1>About</h1>
+    <div class="jumbotron">
+        <h1 class="display-3">About this project</h1>
+        <p class="lead">Here you can find information about the contents of this page and tips on using it.</p>
+        <hr class="my-2">
+        <!-- <p>It uses utility classes for typography and
+            spacing to space content out within the larger container.</p> -->
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="index.html" role="button">Go back</a>
+        </p>
+    </div>
 
-    
+    <div>
+      <h1 id="register-allocation">
+          Register Allocation
+      </h1>
+      <p class="text-center">
+        <strong><a href="https://en.wikipedia.org/wiki/Register_allocation">Register allocation</a></strong> is an important stage of compilers. It is responsible to allocate internal microprocessor registers for scalar variables in a software program. As the number of registers may not be enough to store, e.g., all the scalar variables in a function, some of those variables may have to be stored in memory (something that a compiler wants to avoid because of the overhead imposed by the memory access latencies). Register allocation considers that multiple variables might be allocated to the same register, the removal of <em>move instructions</em>, and cost models in order to select the variables to be stored in memory if needed. 
+      </p>
+    </div>
+
+    <div>
+      <h2 id="project">
+        Register Allocation - Our project
+      </h2>
+      <p>
+        This program implements part of a <strong>graph coloring based algorithm</strong> to do register allocation. The program was developed for teaching purposes in the context of a Compilers course and intends to show how a very important and widely used register allocation approach works. Chaitin et al. <a href="#ca+81">[CA+81]</a><a href="#chai82">[Chai82]</a> have been the first to abstract the register allocation problem as a <a href="https://en.wikipedia.org/wiki/Graph_coloring">graph coloring problem</a> and in their approach prosed the use of the Kempe’s algorithm <a href="#kem79">[Kem79]</a> for finding a <strong>K-coloring</strong> of a graph.
+        The algorithm is based on the approach of <a href="#ga96">[GA96]</a>, which extended the Chaitin et al. approach, e.g., by proposing an iterative register coalescing scheme. We note that the algorithm presented here only performs one iteration of the register allocation algorithm as it does not consider the necessity of additional runs of the algorithm whenever spilling needs to be done. 
+      </p>
+      <p>The implementation considers as input the <strong>interference graph</strong> as a DOT file (that can be output by liveness analysis) and the number of registers (or the set of registers) available.</p>
+      <figure class="figure">
+        <img src="images/base.png" class="figure-img img-fluid rounded" alt="An example of an interference graph">
+        <figcaption class="figure-caption">An interference graph</figcaption>
+      </figure>
+      <figure class="figure">
+        <img src="images/colored.png" class="figure-img img-fluid rounded" alt="An interference graph colored. K=4">
+        <figcaption class="figure-caption">An interference graph colored. K=4</figcaption>
+      </figure>
+      <p>
+        For <strong>coalescing</strong>, the program allows users to select between two different heuristics: Briggs et al. <a href="#bct94">[BCT94]</a> or George et al. <a href="#ga96">[GA96]</a>.
+      </p>
+      <p>
+        For <strong>spilling</strong>, the program used the degree of the nodes or a manual selection of the nodes to spill.
+      </p>
+    </div>
+
+    <div>
+      <h2>
+        References and further reading
+      </h2>
+      <p>
+        To learn more about register allocation, we suggest first the reading of Chapter 11.1 to 11.3 of the Appel’s Tiger book <a href="#app02">[App02]</a>. <br>
+        To know about other approaches to register allocation, we suggest the article <a href="#ps99">[PS99]</a>, which proposed the “Linear Scan Register Allocation” approach.
+      </p>
+      <ul>
+        <li id="kem79"><strong>[Kem79]</strong> Kempe, A. B. 1879. On the geographical problem of the four colors. Am. J. Math. 2, 193-200.</li>
+        <li id="chai82"><strong>[Chai82]</strong> G. J. Chaitin. 1982. Register allocation & spilling via graph coloring. In Proceedings of the 1982 SIGPLAN symposium on Compiler construction(SIGPLAN '82). ACM, New York, NY, USA, 98-105. <a href="http://dx.doi.org/10.1145/800230.806984">DOI</a> </li>
+        <li id="ca+81"><strong>[CA+81]</strong> Gregory J. Chaitin, Marc A. Auslander, Ashok K. Chandra, John Cocke, Martin E. Hopkins, and Peter W. Markstein. 1981. Register allocation via coloring. Comput. Lang. 6, 1 (January 1981), 47-57. <a href="http://dx.doi.org/10.1016/0096-0551(81)90048-5">DOI</a></li>
+        <li id="bct94"><strong>[BCT94]</strong> Preston Briggs, Keith D. Cooper, and Linda Torczon. 1994. Improvements to graph coloring register allocation. ACM Trans. Program. Lang. Syst. 16, 3 (May 1994), 428-455. <a href="https://doi.org/10.1145/177492.177575">DOI</a></li>
+        <li id="ga96"><strong>[GA96]</strong> Lal George and Andrew W. Appel. 1996. Iterated register coalescing. ACM Trans. Program. Lang. Syst. 18, 3 (May 1996), 300-324. <a href="http://dx.doi.org/10.1145/229542.229546">DOI</a></li>
+        <li id="app02"><strong>[App02]</strong> Appel, Andrew Wilson, Modern Compiler Implementation in Java, 2nd edition. Cambridge University Press, 2002. ISBN 0-521-82060-X</li>
+        <li id="ps99"><strong>[PS99]</strong> Massimiliano Poletto and Vivek Sarkar. 1999. Linear scan register allocation. ACM Trans. Program. Lang. Syst. 21, 5 (September 1999), 895-913. <a href="http://dx.doi.org/10.1145/330249.330250">DOI</a></li>
+      </ul>
+      <p>
+        Some patents about the topic:
+      </p>
+      <ul>
+        <li><strong>[Cha86]</strong> Gregory J. Chaitin, “Register allocation and spilling via graph coloring,” Patent US4571678A, filed 1986/02/18. <a href="http://patft.uspto.gov/netacgi/nph-Parser?
+          Sect1=PTO1&Sect2=HITOFF&p=1&u=/netahtml/PTO/srchnum.html&r=1&f=G&l=50&d=PALL&s1=4571678.PN">Patent</a></li>
+        <li><strong>[BC+93]</strong> Briggs, Preston P., Cooper, Keith D., Kennedy Jr., Kenneth W. and Torczon, Linda M., "Digital computer register allocation and code spilling using interference graph coloring." Patent US5249295A. issued 1993-09-28. <a href="http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&p=1&u=/netahtml/PTO/srchnum.html&r=1&f=G&l=50&d=PALL&s1=5249295.PN">Patent</a></li>
+      </ul>
+    </div>
+
+    <p class="lead">
+      <a class="btn btn-primary btn-lg" href="index.html" role="button">Go back</a>
+    </p>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
