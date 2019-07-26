@@ -4,7 +4,7 @@ class Node {
 
         this.id = node.id;
         
-        this.color = node.hasOwnProperty('color') ? (node.color.hasOwnProperty('background') ? colorsPallete.indexOf(node.color.background) : null) : null;
+        this.color = node.hasOwnProperty('color') ? (node.color.hasOwnProperty('background') ? colorsPallete.indexOf(node.color.background) +1 : null) : null;
         this.label = node.label;
         this.neighbors = [];
         this.moveRelated = false;
