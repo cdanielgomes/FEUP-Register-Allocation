@@ -4,17 +4,6 @@ div#buttonsDivNextUndo {
     margin-bottom: 10px;
 }
 
-/*
-div#buttonsDivNextUndo {
-    display: flex;
-}
-*/
-
-/* 
-#message{
-    background-color: grey;
-} */
-
 button#buttonArrows.btn.btn-light {
     border-color: transparent;
     background: transparent;
@@ -92,4 +81,8 @@ a#about-link, a#about-link:focus {
 
 a#about-link:hover{
     color: #009933;
+}
+
+#fast-forward {
+    background-color: white;
 }

@@ -1,8 +1,8 @@
 function createStepButtons(graph) {
 
     let step = document.getElementsByClassName('buttonArrowsRigth')[0]
-    let fill = document.createElement('button')
     let undo = document.getElementsByClassName('buttonArrowsLeft')[0]
+    let fastForward = document.getElementById('fast-forward');
 
     step.onclick = (e) => {
         e.preventDefault();
@@ -10,16 +10,17 @@ function createStepButtons(graph) {
         graph.stepping();
     }
 
-    fill.onclick = (e) => {
-        e.preventDefault();
-        removeMessage();
-        graph.solution();
-    }
-
     undo.onclick = (e) => {
         e.preventDefault();
         removeMessage();
         graph.undo();
+    }
+
+    fastForward.onclick = (e) => {
+        e.preventDefault();
+        removeMessage();
+        graph.solution();
+        removeMessage();
     }
 
 }
