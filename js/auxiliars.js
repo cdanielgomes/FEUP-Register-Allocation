@@ -19,8 +19,8 @@ function createStepButtons(graph) {
     fastForward.onclick = (e) => {
         e.preventDefault();
         removeMessage();
-        graph.solution();
-        removeMessage();
+        removeDownloadButton();
+        graph.commonSteps();
     }
 
 }
