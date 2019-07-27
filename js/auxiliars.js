@@ -31,7 +31,7 @@ function showStack(stack) {
     st.innerHTML = "<thead> <tr> <th scope='col'>Stack</th> </tr> </thead><tbody>"
 
     for (let index = stack.length - 1; index >= 0; index--) {
-        st.innerHTML += "<tr> <th scope='row'>" + stack[index] + "</th></tr>"
+        st.innerHTML += "<tr> <th scope='row'>" + stack[index].id + ", " + stack[index].message + "</th></tr>"
     }
 
     st.innerHTML += "</body>"

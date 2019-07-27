@@ -117,7 +117,7 @@ class simpleGraphColoring {
         while (this.currentState === state.STACKING) {
             this.stacking();
            
-            this.stacked = this.stack[this.stack.length - 1];
+            this.stacked = this.stack[this.stack.length - 1].id;
          
             this.removeNode(this.stacked);
 
@@ -191,7 +191,7 @@ class simpleGraphColoring {
                         id += i + "-"
                     }
     
-                    this.stack.push(id.slice(0,-1))
+                    this.stack.push({id: id.slice(0,-1), message: ''});
                     
                     this.history.pop()
                 }
@@ -210,7 +210,7 @@ class simpleGraphColoring {
             case state.STACKING:
                 this.readInputs()
                 this.stacking();
-                this.stacked = this.stack[this.stack.length - 1];
+                this.stacked = this.stack[this.stack.length - 1].id;
                 this.markStacked(); // outline node to stack
                 this.show(this.graph);
                 this.removeNode(this.stacked);
@@ -291,7 +291,7 @@ class simpleGraphColoring {
                 }
 
                 if (mayCoalesce) {
-                    this.stack.push(node.id + '-' + moveNode.id);
+                    this.stack.push({id: node.id + '-' + moveNode.id, message: 'no spill'});
 
                     node.setCoalesced(true);
                     moveNode.setCoalesced(true);
@@ -348,7 +348,7 @@ class simpleGraphColoring {
 
         if (index != -1) {
             let node = this.graph.nodes[index];
-            this.stack.push(node.id);
+            this.stack.push({id: node.id, message: 'may spill'});
             this.paintingGraph.findNode(node.id).spilled = true;
 
             addMessage('May spill', node.id, this.stepbystep);
@@ -405,7 +405,7 @@ class simpleGraphColoring {
             if (node.degree() < this.k && !node.isMoveRelated()) {
                 if(!node.color) {
                     addMessage('Stack', node.id, this.stepbystep);
-                    this.stack.push(node.id)
+                    this.stack.push({id: node.id, message: 'no spill'});
                 } else{
                     
                     addMessage('Node Precolored', node.id, this.stepbystep)
@@ -419,7 +419,7 @@ class simpleGraphColoring {
 
     //paint a node 
     paintNode() {
-        let nodeId = this.stack.pop()
+        let nodeId = this.stack.pop().id;
 
         nodeId = String(nodeId).split('-') // in case of coalesce, in the stack will be x-x, so they will have the same color
 
