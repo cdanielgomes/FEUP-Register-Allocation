@@ -4,17 +4,6 @@ div#buttonsDivNextUndo {
     margin-bottom: 10px;
 }
 
-/*
-div#buttonsDivNextUndo {
-    display: flex;
-}
-*/
-
-/* 
-#message{
-    background-color: grey;
-} */
-
 button#buttonArrows.btn.btn-light {
     border-color: transparent;
     background: transparent;
@@ -77,4 +66,23 @@ button.btn.btn-dark {
         border-bottom-color: transparent;
         border-left-color: transparent;
     border-radius: .25rem;
+}
+
+#about {
+    font-family: 'Source Sans Pro', 'Helvetica', sans-serif;
+    font-size: 1.5rem;
+    margin: 1em;
+}
+
+a#about-link, a#about-link:focus {
+    color: black;
+    text-decoration: none;
+}
+
+a#about-link:hover{
+    color: #009933;
+}
+
+#fast-forward {
+    background-color: white;
 }
