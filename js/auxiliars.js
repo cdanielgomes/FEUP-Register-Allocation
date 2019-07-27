@@ -3,6 +3,7 @@ function createStepButtons(graph) {
     let step = document.getElementsByClassName('buttonArrowsRigth')[0]
     let undo = document.getElementsByClassName('buttonArrowsLeft')[0]
     let fastForward = document.getElementById('fast-forward');
+    let fastReward = document.getElementById('fast-reward');
 
     step.onclick = (e) => {
         e.preventDefault();
@@ -21,6 +22,14 @@ function createStepButtons(graph) {
         removeMessage();
         removeDownloadButton();
         graph.commonSteps();
+    }
+
+    fastReward.onclick = (e) => {
+        e.preventDefault();
+        removeMessage();
+        removeDownloadButton();
+        graph.restart();
+        addMessage('Restarting', '', true);
     }
 
 }

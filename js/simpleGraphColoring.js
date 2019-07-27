@@ -53,6 +53,7 @@ class simpleGraphColoring {
     createGraph(graph) {
         this.graph = new Graph(graph);
         this.paintingGraph = new Graph(graph);
+        this.unchangedGraph = deepClone(this.graph);
         
         this.greedyColoring()
         
@@ -637,7 +638,14 @@ class simpleGraphColoring {
 
     }
 
-
+    restart() {
+        this.graph = deepClone(this.unchangedGraph);
+        this.stack = [];
+        this.history = [];
+        this.currentState = state.STACKING;
+        this.show(this.graph);
+        showStack(this.stack);
+    }
 }
 
 
