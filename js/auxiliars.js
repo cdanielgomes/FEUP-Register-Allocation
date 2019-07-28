@@ -3,6 +3,7 @@ function createStepButtons(graph) {
     let step = document.getElementsByClassName('buttonArrowsRigth')[0]
     let undo = document.getElementsByClassName('buttonArrowsLeft')[0]
     let fastForward = document.getElementById('fast-forward');
+    let fastReward = document.getElementById('fast-reward');
 
     step.onclick = (e) => {
         e.preventDefault();
@@ -19,8 +20,16 @@ function createStepButtons(graph) {
     fastForward.onclick = (e) => {
         e.preventDefault();
         removeMessage();
-        graph.solution();
+        removeDownloadButton();
+        graph.commonSteps();
+    }
+
+    fastReward.onclick = (e) => {
+        e.preventDefault();
         removeMessage();
+        removeDownloadButton();
+        graph.restart();
+        addMessage('Restarting', '', true);
     }
 
 }
@@ -31,7 +40,7 @@ function showStack(stack) {
     st.innerHTML = "<thead> <tr> <th scope='col'>Stack</th> </tr> </thead><tbody>"
 
     for (let index = stack.length - 1; index >= 0; index--) {
-        st.innerHTML += "<tr> <th scope='row'>" + stack[index] + "</th></tr>"
+        st.innerHTML += "<tr> <th scope='row'>" + stack[index].id + ", " + stack[index].message + "</th></tr>"
     }
 
     st.innerHTML += "</body>"

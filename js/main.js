@@ -41,6 +41,7 @@ serialInclude([
         button.addEventListener('click', function (e) {
             e.preventDefault();
             removeMessage();
+            removeDownloadButton();
             hideStepButtons();
 
             let stepOrSol = run();
