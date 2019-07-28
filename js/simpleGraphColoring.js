@@ -596,10 +596,11 @@ class simpleGraphColoring {
 
             // Reset the values back to false for the next iteration 
 
-            availableColors.fill(true)
+            availableColors.fill(true);
         }
         // print the result 
-        console.log("This graph is colorable with " + (Math.max(...result) + 1) + " registers")
+        console.log("This graph is colorable with " + (Math.max(...result) + 1) + " registers");
+        window.alert("This graph is colorable with " + (Math.max(...result) + 1) + " registers");
     }
 
 
