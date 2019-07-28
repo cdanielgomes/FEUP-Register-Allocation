@@ -1,3 +1,7 @@
+div#page-content.col-sm{
+    padding-bottom: 53%;
+}
+
 div#buttonsDiv,
 div#buttonsDivNextUndo {
     display: flex;
@@ -85,4 +89,8 @@ a#about-link:hover{
 
 #fast-forward, #fast-reward {
     background-color: white;
+}
+
+footer{
+    display: block;
 }
