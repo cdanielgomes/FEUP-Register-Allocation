@@ -3,6 +3,7 @@ class simpleGraphColoring {
     constructor(obj) {
         this.k = obj.k
         this.stack = [];
+        this.remove = false
         this.container = obj.container;
         this.readInputs()
         this.history = []
@@ -115,15 +116,24 @@ class simpleGraphColoring {
 
     commonSteps() {
         showStack(this.stack)
+
+
         while (this.currentState === state.STACKING) {
             this.stacking();
-           
-            this.stacked = this.stack[this.stack.length - 1].id;
-         
-            this.removeNode(this.stacked);
+            
+            if(this.remove)
+            { 
+                this.stacked = this.stack[this.stack.length - 1].id;
+              
+                console.log(this.stacked)
+                console.log(this.graph)
 
+                this.removeNode(this.stacked);
+                this.remove = false
+            }
         }
 
+        console.log('go paintingg')
         this.fullStack = this.stack;
 
 
@@ -211,10 +221,14 @@ class simpleGraphColoring {
             case state.STACKING:
                 this.readInputs()
                 this.stacking();
-                this.stacked = this.stack[this.stack.length - 1].id;
+                if(this.remove) this.stacked = this.stack[this.stack.length - 1].id;
                 this.markStacked(); // outline node to stack
                 this.show(this.graph);
-                this.removeNode(this.stacked);
+                
+                if(this.remove) {
+                    this.removeNode(this.stacked);
+                    this.remove = false
+                }
                 break;
             
             case state.ERROR:
@@ -292,17 +306,41 @@ class simpleGraphColoring {
                 }
 
                 if (mayCoalesce) {
-                    this.stack.push({id: node.id + '-' + moveNode.id, message: 'no spill'});
+                  //  this.stack.push({id: node.id + '-' + moveNode.id, message: 'no spill'});
+                  console.log(node)
+                  console.log(moveNode)
 
+                  let neigh1 = node.neighbors.filter((elem) => {
+                        if(moveNode.id === elem.id) return false
+                        return true
+                    })
+
+                    let neigh2 = moveNode.neighbors.filter((elem) => {
+                        if(moveNode.id === elem.id) return false
+                        return true
+                    })
+
+                    
+                    let x = this.graph.addNode(node.id + '-' + moveNode.id, neigh1.concat(neigh2))
+                    x.setCoalesced(true)
                     node.setCoalesced(true);
                     moveNode.setCoalesced(true);
 
-                    addMessage('Coalesce', node.id + ' and ' + moveNode.id, this.stepbystep);
+                    this.graph.removeNode(node)
+                    this.graph.removeNode(moveNode)
+                    
+                    console.log('end bro')
+                    this.remove = true;
 
+
+                    console.log(this.graph)
+                    addMessage('Coalesce', node.id + ' and ' + moveNode.id, this.stepbystep);
+                    this.show(this.graph)
                     return;
                 }
             }
         }
+        console.log("this.freeze")
 
         this.freeze(); // can't coalesce so try to freeze
     }
@@ -319,6 +357,7 @@ class simpleGraphColoring {
             }
         }
 
+        console.log("this.spill")
         this.spill();
     }
 
@@ -350,8 +389,9 @@ class simpleGraphColoring {
         if (index != -1) {
             let node = this.graph.nodes[index];
             this.stack.push({id: node.id, message: 'may spill'});
+            this.remove = true;
             this.paintingGraph.findNode(node.id).spilled = true;
-
+            console.log(node.id)
             addMessage('May spill', node.id, this.stepbystep);
         }
     }
@@ -365,6 +405,8 @@ class simpleGraphColoring {
                 this.currentState = state.PAINTING
             }
             else {
+                
+
                 this.coalesce()
             }
         }
@@ -383,7 +425,8 @@ class simpleGraphColoring {
     }
 
     removeNode(id) {
-        let nodeIds = String(id).split('-');
+        //let nodeIds = String(id).split('-');
+        let nodeIds = [id]
 
         nodeIds.forEach(function(id) {
             let node = this.graph.findNode(id);
@@ -405,8 +448,11 @@ class simpleGraphColoring {
 
             if (node.degree() < this.k && !node.isMoveRelated()) {
                 if(!node.color) {
+                    
                     addMessage('Stack', node.id, this.stepbystep);
                     this.stack.push({id: node.id, message: 'no spill'});
+                    this.remove = true;
+                    console.log(node.id)
                 } else{
                     
                     addMessage('Node Precolored', node.id, this.stepbystep)

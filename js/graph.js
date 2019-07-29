@@ -63,4 +63,17 @@ class Graph {
 
         }
     }
+
+    addNode(id, neighbors){
+        let newNode = new Node({id: id, label:id}) 
+        newNode.neighbors = Array.from(new Set(neighbors))
+        
+        this.nodes.push(newNode)
+
+        for(let n of newNode.neighbors){
+            n.addNeighbor(newNode)
+            this.edges.push({from: id, to: n.id})
+        }
+        return newNode
+    }
 }
