@@ -25,13 +25,16 @@ For spilling, the program used the degree of the nodes or a manual selection of 
 
 _**Beatriz**_ 
 * Mockups
-* Interface
-* k-Coloring 
+* Main page's interface
+* Graph coloring [greedy algorithm](https://www.geeksforgeeks.org/graph-coloring-set-2-greedy-algorithm/)
 
 _**Daniel**_ 
 * Dot files
 * Pre-colored
 
 _**Joana**_ 
-* Requirements 
-* Coalescing
+* Requirements specification
+* Graph coloring algorithm (slides)
+* Coalescing, spilling and freeze
+* About page
+

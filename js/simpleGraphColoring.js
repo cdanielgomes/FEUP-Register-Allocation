@@ -602,9 +602,9 @@ class simpleGraphColoring {
         }
         // print the result 
         this.numberOfRegisters = (Math.max(...result) + 1);
-        let msg = "By the greedy algorithm, we can determine that graph is colorable with " + (Math.max(...result) + 1) + " colors at least"; 
+        let msg = "By the graph coloring greedy algorithm (non optimal), the graph is colorable with at least " + (Math.max(...result) + 1) + " colors"; 
         console.log(msg);
-        addMessage("Coloring", msg, true);
+        addMessage("", msg, true);
     }
 
 
