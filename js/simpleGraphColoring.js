@@ -12,7 +12,7 @@ class simpleGraphColoring {
         this.registers = obj.registers
         this.stepbystep = false
         this.coloredNode = null
-
+        this.numberOfRegisters = null;
         
     }
 
@@ -55,7 +55,7 @@ class simpleGraphColoring {
         this.paintingGraph = new Graph(graph);
         this.unchangedGraph = deepClone(this.graph);
         
-        this.greedyColoring()
+        this.greedyColoring();
         
         this.precolored = this.graph.nodes.filter((elem)=>{
             if(elem.color === null) {return false}
@@ -184,6 +184,7 @@ class simpleGraphColoring {
                     {msg: "Cannot paint the nodes [" +  error.nodes + ']', error:true},
                     {msg:error.msg, error: true},
                     {msg : "K = " + this.k, error: true},
+                    {msg : "because K < " + this.numberOfRegisters, error: true},
                     {msg : "Spilling Heuristic = " + (this.spillingHeuristic.length ? 'input order' : 'nodes degree'), error: true},
                     {msg : "Coalesce Heuristic = " + (this.coalesceHeuristic ? (this.coalesceHeuristic === 1 ? 'Briggs': 'George') : 'No Coalesce'), error: true})
                     
@@ -489,7 +490,7 @@ class simpleGraphColoring {
         
         for (let number = 0; number < this.k; number++) {
             registers[this.colors[number]-1] = {}
-            registers[this.colors[number]-1].register = this.registers ? this.registers[number] : 'R' + number
+            registers[this.colors[number]-1].register = this.registers ? this.registers[number] : 'R' + number;
             registers[this.colors[number]-1].nodes = []
 
         }
@@ -531,6 +532,7 @@ class simpleGraphColoring {
     }
 
     /*
+    Greedy coloring
     1. Color 1st vertex with the 1st color
 
     2. Do following for remainig V-1 vertices.
@@ -596,12 +598,13 @@ class simpleGraphColoring {
             result[u] = cr; // Assign the found color 
 
             // Reset the values back to false for the next iteration 
-
             availableColors.fill(true);
         }
         // print the result 
-        console.log("This graph is colorable with " + (Math.max(...result) + 1) + " registers");
-        window.alert("This graph is colorable with " + (Math.max(...result) + 1) + " registers");
+        this.numberOfRegisters = (Math.max(...result) + 1);
+        let msg = "By the greedy algorithm, we can determine that graph is colorable with " + (Math.max(...result) + 1) + " colors at least"; 
+        console.log(msg);
+        addMessage("Coloring", msg, true);
     }
 
 

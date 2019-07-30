@@ -1,5 +1,11 @@
-div#page-content.col-sm{
-    padding-bottom: 53%;
+div#page-content.col-sm {
+    padding-bottom: 61%;
+}
+
+body:after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
 div#buttonsDiv,
@@ -65,10 +71,10 @@ button.btn.btn-dark {
     padding: .75rem 1.25rem;
     margin-bottom: 1rem;
     border: 1px solid transparent;
-        border-top-color: transparent;
-        border-right-color: transparent;
-        border-bottom-color: transparent;
-        border-left-color: transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
     border-radius: .25rem;
 }
 
@@ -78,19 +84,21 @@ button.btn.btn-dark {
     margin: 1em;
 }
 
-a#about-link, a#about-link:focus {
+a#about-link,
+a#about-link:focus {
     color: black;
     text-decoration: none;
 }
 
-a#about-link:hover{
+a#about-link:hover {
     color: #009933;
 }
 
-#fast-forward, #fast-reward {
+#fast-forward,
+#fast-reward {
     background-color: white;
 }
 
-footer{
+footer {
     display: block;
 }
