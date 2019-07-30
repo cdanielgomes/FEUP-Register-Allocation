@@ -20,7 +20,7 @@ class simpleGraphColoring {
         let reader = new FileReader();
         reader.readAsText(file);
         removeDownloadButton()
-
+      
         reader.onload = e => {
             this.createGraph(vis.network.convertDot(e.target.result));
 
@@ -505,6 +505,7 @@ class simpleGraphColoring {
         }
        
         this.error.clean()
+        this.error.addMessage([{msg: "By the greedy algorithm, we can determine that graph is colorable with " + this.numberOfRegisters + " colors at least"}])
 
         for (let k in registers) {
             let msg = registers[k].register + " {"
@@ -512,7 +513,6 @@ class simpleGraphColoring {
             registers[k].nodes.forEach(element => {
                 msg += " " + element + ','
             });
-
 
             msg = msg.slice(0, -1);
 
@@ -603,7 +603,7 @@ class simpleGraphColoring {
         // print the result 
         this.numberOfRegisters = (Math.max(...result) + 1);
         let msg = "By the greedy algorithm, we can determine that graph is colorable with " + (Math.max(...result) + 1) + " colors at least"; 
-        console.log(msg);
+      //  console.log(msg);
         addMessage("Coloring", msg, true);
     }
 

@@ -14,7 +14,7 @@ class Error {
     print() {
         
         let message = ""
-
+    
         this.message.forEach(elem => {
             if (elem.register) {
                 message += '<div class="input-color"> <div class="color-box" style="background-color:' + colorsPallete[elem.register] + ';" ></div>'

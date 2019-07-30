@@ -55,7 +55,7 @@ serialInclude([
             obj.order = getOrder()
 
             let coloring = new simpleGraphColoring(obj);
-
+            showStack([])
             if (file instanceof File) {
                 coloring.init(file, stepOrSol);
             }
