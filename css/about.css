@@ -3,7 +3,8 @@ body {
     background-color: #f5f7fa;
 }
 
-#register-allocation, h2 {
+#register-allocation,
+h2 {
     color: #0069d9;
 }
 
@@ -12,16 +13,22 @@ p {
     font-size: 1.2rem;
 }
 
-a, a:focus {
+a,
+a:focus {
     color: #3d87d6;
     text-decoration: none;
 }
 
-a:hover{
+a:hover {
     color: #0069d9;
     text-decoration: none;
 }
 
 ul {
     text-align: left;
+}
+
+div.row {
+    justify-content: center;
+    padding-bottom: 1.5%;
 }
