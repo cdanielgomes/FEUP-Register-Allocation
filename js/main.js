@@ -63,7 +63,8 @@ serialInclude([
                 coloring.initDefault(file, stepOrSol);
             } else {
                 addMessage('', 'You need to upload a file or choose an example', true);
-            } 
+            }
+       
         })
     }
 ]);

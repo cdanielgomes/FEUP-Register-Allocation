@@ -3,6 +3,7 @@ class simpleGraphColoring {
     constructor(obj) {
         this.k = obj.k
         this.stack = [];
+        this.remove = false
         this.container = obj.container;
         this.readInputs()
         this.history = []
@@ -22,7 +23,15 @@ class simpleGraphColoring {
         removeDownloadButton()
       
         reader.onload = e => {
-            this.createGraph(vis.network.convertDot(e.target.result));
+
+   try{         
+       this.createGraph(vis.network.convertDot(e.target.result));
+        removeMessage()
+    }catch (error){
+
+        addMessage('ERROR', 'dot file is bad written', true)
+       return
+   }
 
             if (!this.checkOrder()) return
 
@@ -51,7 +60,11 @@ class simpleGraphColoring {
     }
 
     createGraph(graph) {
+        
+        if(graph.nodes.length === 0) throw new SyntaxError('no nodes input')
+
         this.graph = new Graph(graph);
+        
         this.paintingGraph = new Graph(graph);
         this.unchangedGraph = deepClone(this.graph);
         
@@ -73,19 +86,18 @@ class simpleGraphColoring {
         
 
         this.rawgraph = graph;
-        this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, {
+
+        let data = new vis.DataSet({})
+        data.add(graph.nodes)
+    
+        this.network = (new vis.Network(this.container, { nodes: data, edges: graph.edges }, {
             edges: {
                 color:
                     { color: 'black' }
-            },
-            physics: {
-                enabled: true,
-                stabilization: {
-                    enabled: true
-                }
             }
-        })
+        }))
 
+        this.network.redraw()
     }
 
     checkOrder() {
@@ -115,13 +127,17 @@ class simpleGraphColoring {
 
     commonSteps() {
         showStack(this.stack)
+
+
         while (this.currentState === state.STACKING) {
             this.stacking();
-           
-            this.stacked = this.stack[this.stack.length - 1].id;
-         
-            this.removeNode(this.stacked);
-
+            
+            if(this.remove)
+            { 
+                this.stacked = this.stack[this.stack.length - 1].id;
+                this.removeNode(this.stacked);
+                this.remove = false
+            }
         }
 
         this.fullStack = this.stack;
@@ -171,7 +187,7 @@ class simpleGraphColoring {
 
     stepping() {
         showStack(this.stack);
-        this.history.push(this.copy());
+        if(this.currentState !== state.OVER) this.history.push(this.copy());
 
         switch (this.currentState) {
             case state.PAINTING:
@@ -199,6 +215,7 @@ class simpleGraphColoring {
                 }
 
                 this.show(this.paintingGraph);
+                showStack(this.stack);
                 
                 break;
             case state.OVER:
@@ -212,10 +229,14 @@ class simpleGraphColoring {
             case state.STACKING:
                 this.readInputs()
                 this.stacking();
-                this.stacked = this.stack[this.stack.length - 1].id;
+                if(this.remove) this.stacked = this.stack[this.stack.length - 1].id;
                 this.markStacked(); // outline node to stack
                 this.show(this.graph);
-                this.removeNode(this.stacked);
+                
+                if(this.remove) {
+                    this.removeNode(this.stacked);
+                    this.remove = false
+                }
                 break;
             
             case state.ERROR:
@@ -293,13 +314,32 @@ class simpleGraphColoring {
                 }
 
                 if (mayCoalesce) {
-                    this.stack.push({id: node.id + '-' + moveNode.id, message: 'no spill'});
+                  //  this.stack.push({id: node.id + '-' + moveNode.id, message: 'no spill'});
+                  
+                  let neigh1 = node.neighbors.filter((elem) => {
+                        if(moveNode.id === elem.id) return false
+                        return true
+                    })
 
+                    let neigh2 = moveNode.neighbors.filter((elem) => {
+                        if(moveNode.id === elem.id) return false
+                        return true
+                    })
+
+                    
+                    let x = this.graph.addNode(node.id + '-' + moveNode.id, neigh1.concat(neigh2))
+                    x.setCoalesced(true)
                     node.setCoalesced(true);
                     moveNode.setCoalesced(true);
 
-                    addMessage('Coalesce', node.id + ' and ' + moveNode.id, this.stepbystep);
+                    this.graph.removeNode(node)
+                    this.graph.removeNode(moveNode)
+                    
+                    this.remove = true;
 
+
+                    addMessage('Coalesce', node.id + ' and ' + moveNode.id, this.stepbystep);
+                    this.show(this.graph)
                     return;
                 }
             }
@@ -351,8 +391,8 @@ class simpleGraphColoring {
         if (index != -1) {
             let node = this.graph.nodes[index];
             this.stack.push({id: node.id, message: 'may spill'});
+            this.remove = true;
             this.paintingGraph.findNode(node.id).spilled = true;
-
             addMessage('May spill', node.id, this.stepbystep);
         }
     }
@@ -372,24 +412,17 @@ class simpleGraphColoring {
     }
 
     markStacked() {
-        let nodeIds = String(this.stacked).split('-');
-
-        nodeIds.forEach(function(id) {
-            let node = this.graph.findNode(id);
+           let node = this.graph.findNode(this.stacked);
             if(node != null) {
                 node.borderWidth = 4;
                 node.borderColor = '#FF3300';
             }
-        }, this); 
+        
     }
 
     removeNode(id) {
-        let nodeIds = String(id).split('-');
-
-        nodeIds.forEach(function(id) {
-            let node = this.graph.findNode(id);
-            if(node != null) this.graph.removeNode(node);
-        }, this)
+        let node = this.graph.findNode(id);
+        if(node != null) this.graph.removeNode(node);
     }
 
     /**
@@ -406,10 +439,11 @@ class simpleGraphColoring {
 
             if (node.degree() < this.k && !node.isMoveRelated()) {
                 if(!node.color) {
+                    
                     addMessage('Stack', node.id, this.stepbystep);
                     this.stack.push({id: node.id, message: 'no spill'});
-                } else{
-                    
+                    this.remove = true;
+                } else{                    
                     addMessage('Node Precolored', node.id, this.stepbystep)
                     continue
                 }
@@ -465,15 +499,22 @@ class simpleGraphColoring {
         let nodes = new vis.DataSet({});
 
         let ind = Object.keys(graph.nodes)
+        let pre = this.network.getPositions()
 
         for (let i of ind) {
             let n = graph.nodes[i]
-            nodes.add({
+            let obj = { 
                 borderWidth: n.borderWidth,
                 color: { background: colorsPallete[n.color - 1], border: n.borderColor },
                 id: n.id,
                 label: n.label
-            })
+            }
+
+            if(pre.hasOwnProperty(n.id)) {
+                obj.x = pre[n.id].x
+                obj.y =  pre[n.id].y
+            }
+            nodes.add(obj)
         }
 
         this.network.setData({
@@ -509,12 +550,13 @@ class simpleGraphColoring {
 
         for (let k in registers) {
             let msg = registers[k].register + " {"
-
+            let regs = ""
             registers[k].nodes.forEach(element => {
-                msg += " " + element + ','
+                regs += " " + element + ','
             });
 
-            msg = msg.slice(0, -1);
+            msg += regs
+            msg = regs === "" ? msg : msg.slice(0, -1);
 
             msg += " }"
 
