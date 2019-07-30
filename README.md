@@ -29,6 +29,9 @@ _**Beatriz**_
 * k-Coloring 
 
 _**Daniel**_ 
-
+* Dot files
+* Pre-colored
 
 _**Joana**_ 
+* Requirements 
+* Coalescing
