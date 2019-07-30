@@ -23,7 +23,15 @@ class simpleGraphColoring {
         removeDownloadButton()
 
         reader.onload = e => {
-            this.createGraph(vis.network.convertDot(e.target.result));
+
+   try{         
+       this.createGraph(vis.network.convertDot(e.target.result));
+        removeMessage()
+    }catch (error){
+
+        addMessage('ERROR', 'dot file is bad written', true)
+       return
+   }
 
             if (!this.checkOrder()) return
 
@@ -52,7 +60,11 @@ class simpleGraphColoring {
     }
 
     createGraph(graph) {
+        
+        if(graph.nodes.length === 0) throw new SyntaxError('no nodes input')
+
         this.graph = new Graph(graph);
+        
         this.paintingGraph = new Graph(graph);
         this.unchangedGraph = deepClone(this.graph);
         
@@ -74,19 +86,18 @@ class simpleGraphColoring {
         
 
         this.rawgraph = graph;
-        this.network = new vis.Network(this.container, { nodes: graph.nodes, edges: graph.edges }, {
+
+        let data = new vis.DataSet({})
+        data.add(graph.nodes)
+    
+        this.network = (new vis.Network(this.container, { nodes: data, edges: graph.edges }, {
             edges: {
                 color:
                     { color: 'black' }
-            },
-            physics: {
-                enabled: true,
-                stabilization: {
-                    enabled: true
-                }
             }
-        })
+        }))
 
+        this.network.redraw()
     }
 
     checkOrder() {
@@ -176,7 +187,7 @@ class simpleGraphColoring {
 
     stepping() {
         showStack(this.stack);
-        this.history.push(this.copy());
+        if(this.currentState !== state.OVER) this.history.push(this.copy());
 
         switch (this.currentState) {
             case state.PAINTING:
@@ -203,6 +214,7 @@ class simpleGraphColoring {
                 }
 
                 this.show(this.paintingGraph);
+                showStack(this.stack);
                 
                 break;
             case state.OVER:
@@ -486,15 +498,22 @@ class simpleGraphColoring {
         let nodes = new vis.DataSet({});
 
         let ind = Object.keys(graph.nodes)
+        let pre = this.network.getPositions()
 
         for (let i of ind) {
             let n = graph.nodes[i]
-            nodes.add({
+            let obj = { 
                 borderWidth: n.borderWidth,
                 color: { background: colorsPallete[n.color - 1], border: n.borderColor },
                 id: n.id,
                 label: n.label
-            })
+            }
+
+            if(pre.hasOwnProperty(n.id)) {
+                obj.x = pre[n.id].x
+                obj.y =  pre[n.id].y
+            }
+            nodes.add(obj)
         }
 
         this.network.setData({
@@ -529,13 +548,13 @@ class simpleGraphColoring {
 
         for (let k in registers) {
             let msg = registers[k].register + " {"
-
+            let regs = ""
             registers[k].nodes.forEach(element => {
-                msg += " " + element + ','
+                regs += " " + element + ','
             });
 
-
-            msg = msg.slice(0, -1);
+            msg += regs
+            msg = regs === "" ? msg : msg.slice(0, -1);
 
             msg += " }"
 
