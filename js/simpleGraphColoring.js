@@ -28,7 +28,7 @@ class simpleGraphColoring {
        this.createGraph(vis.network.convertDot(e.target.result));
         removeMessage()
     }catch (error){
-
+        
         addMessage('ERROR', 'dot file is bad written', true)
        return
    }

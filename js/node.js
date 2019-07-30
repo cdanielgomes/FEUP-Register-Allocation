@@ -4,7 +4,7 @@ class Node {
 
         this.id = node.id;
         
-        this.color = node.hasOwnProperty('color') ? (node.color.hasOwnProperty('background') ? colorsPallete.indexOf(node.color.background) +1 : null) : null;
+        this.color = node.hasOwnProperty('color') ? (node.color.hasOwnProperty('background') ? this.findIndex(node.color.background) : null) : null;
         this.label = node.label;
         this.neighbors = [];
         this.moveRelated = false;
@@ -14,6 +14,15 @@ class Node {
         this.raw = node;
         this.borderColor = '#2B7CE9'; // default
         this.borderWidth = 1; // default
+    }
+
+    findIndex(color){
+        let ind = colorsPallete.indexOf(color)
+        if(ind == -1){
+            ind = Math.floor(Math.random() * colorsPallete.length)
+        }
+
+        return ind + 1;
     }
 
     addMove(node) {

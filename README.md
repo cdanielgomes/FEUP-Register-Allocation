@@ -23,8 +23,11 @@ _**Beatriz**_
 * Graph coloring [greedy algorithm](https://www.geeksforgeeks.org/graph-coloring-set-2-greedy-algorithm/)
 
 _**Daniel**_ 
-* Dot files
+* Dot files 
+* Graph coloring algorithm (slides)
+* Simplify, Select
 * Pre-colored
+* Vis.js integration
 
 _**Joana**_ 
 * Requirements specification
