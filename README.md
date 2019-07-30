@@ -23,7 +23,7 @@ _**Beatriz**_
 * Graph coloring [greedy algorithm](https://www.geeksforgeeks.org/graph-coloring-set-2-greedy-algorithm/)
 
 _**Daniel**_ 
-* Dot files 
+* Dot files reader and export
 * Graph coloring algorithm (slides)
 * Simplify, Select
 * Pre-colored
