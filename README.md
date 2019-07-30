@@ -1,7 +1,7 @@
 # Register-Allocation
 Extra project to Compiladores subject 
 
-### GROUP:
+### Group:
 
 up201502858 - Beatriz de Henriques Martins
 
@@ -9,7 +9,7 @@ up201603404 - Carlos Daniel Coelho Ferreira Gomes
 
 up201605017 - Joana Sofia Mendes Ramos
 
-### SUMMARY:
+### Summary:
 
 Register allocation is an important stage of compilers. It is responsible to allocate internal microprocessor registers for scalar variables in a software program. As the number of registers may not be enough to store, e.g., all the scalar variables in a function, some of those variables may have to be stored in memory (something that a compiler wants to avoid because of the overhead imposed by the memory access latencies). Register allocation considers that multiple variables might be allocated to the same register, the removal of move instructions, and cost models in order to select the variables to be stored in memory if needed.
 
