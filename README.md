@@ -15,21 +15,23 @@ Register allocation is an important stage of compilers. It is responsible to all
 
 This program implements part of a graph coloring based algorithm to do register allocation. The program was developed for teaching purposes in the context of a Compilers course and intends to show how a very important and widely used register allocation approach works. The implementation considers as input the interference graph as a DOT file (that can be output by liveness analysis) and the number of registers (or the set of registers) available. For coalescing, the program allows users to select between two different heuristics: Briggs or George. For spilling, the program used the degree of the nodes or a manual selection of the nodes to spill.
 
-### Task assignment :
+### Task assignment and grades:
 
-_**Beatriz**_ 
+_**Final grade of project:**_  19
+
+_**Beatriz (33,3% - 19 valores)**_ 
 * Mockups
 * Main page's interface
 * Graph coloring [greedy algorithm](https://www.geeksforgeeks.org/graph-coloring-set-2-greedy-algorithm/)
 
-_**Daniel**_ 
+_**Daniel (33,3% - 19 valores)**_ 
 * Dot files reader and export
 * Graph coloring algorithm (slides)
 * Simplify, Select
 * Pre-colored
 * Vis.js integration
 
-_**Joana**_ 
+_**Joana (33,3% - 19 valores)**_ 
 * Requirements specification
 * Graph coloring algorithm (slides)
 * Coalescing, spilling and freeze
